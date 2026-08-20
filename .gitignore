@@ -1,0 +1,14 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.idea/
+.vscode/
+*.swp
+
+# Archives / dumps should never be committed to this repo
+*.zip
+*.sql
+*.sqlite
+*.sqlite3

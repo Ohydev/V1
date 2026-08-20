@@ -1,0 +1,650 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 0 0% 98%;
+    --foreground: 135 8% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 135 8% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 135 8% 15%;
+
+    --primary: 0 70% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 0 65% 45%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 0 0% 100%;
+    --muted-foreground: 0 0% 40%;
+
+    --accent: 45 100% 60%;
+    --accent-foreground: 0 0% 15%;
+
+    --hero-bg: 0 70% 50%;
+    --hero-overlay: 0 0% 0% / 0.1;
+
+    --nature: 110 50% 35%;
+    --nature-light: 110 30% 85%;
+    --earth: 35 25% 45%;
+    --earth-light: 35 15% 90%;
+    
+    --category-hover: 131 8% 15%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 120 15% 88%;
+    --input: 120 15% 88%;
+    --ring: 135 40% 25%;
+
+    --gradient-nature: linear-gradient(135deg, hsl(var(--nature)), hsl(var(--accent)));
+    --gradient-earth: linear-gradient(180deg, hsl(var(--earth-light)), hsl(var(--nature-light)));
+    --gradient-hero: linear-gradient(135deg, hsl(var(--hero-bg)), hsl(var(--secondary)));
+    --gradient-hero-overlay: linear-gradient(135deg, hsl(var(--hero-overlay)), hsl(var(--hero-overlay)));
+    --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    --gradient-modern: linear-gradient(135deg, hsl(var(--nature) / 0.08), hsl(var(--accent) / 0.12));
+
+    --shadow-organic: 0 10px 40px -10px hsl(var(--nature) / 0.15);
+    --shadow-elevated: 0 20px 60px -10px hsl(var(--nature) / 0.2);
+    --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    --backdrop-blur: blur(12px);
+
+    --radius: 0.5rem;
+
+    /* Used by Tailwind theme; auth pages override these */
+    /* --primary-hover: 0 70% 45%;
+    --text-link: 0 70% 50%;
+    --text-muted: 0 0% 40%;
+    --surface-glass: hsla(0, 0%, 100%, 0.9);
+    --border-glow: hsla(135, 8%, 15%, 0.08); */
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+/* Auth pages only: reference design system (ohy-6cecd87b) – does not affect rest of app */
+/* .auth-pages {
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 84% 4.9%;
+  --primary: 222.2 47.4% 11.2%;
+  --primary-foreground: 210 40% 98%;
+  --primary-hover: 222.2 47.4% 8%;
+  --muted: 210 40% 96.1%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 222.2 84% 4.9%;
+  --radius: 0.75rem;
+  --text-link: 222.2 47.4% 11.2%;
+  --text-muted: 215.4 16.3% 46.9%;
+  --surface-glass: hsla(0, 0%, 100%, 0.8);
+  --border-glow: hsla(222.2, 47.4%, 11.2%, 0.1);
+}
+
+.dark .auth-pages {
+  --background: 240 10% 3.9%;
+  --foreground: 0 0% 98%;
+  --card: 240 10% 3.9%;
+  --card-foreground: 0 0% 98%;
+  --primary: 263 70% 50%;
+  --primary-foreground: 0 0% 98%;
+  --primary-hover: 263 70% 45%;
+  --muted: 240 5.9% 10%;
+  --muted-foreground: 240 5% 64.9%;
+  --border: 240 3.7% 15.9%;
+  --input: 240 3.7% 15.9%;
+  --ring: 263 70% 50%;
+  --text-link: 263 70% 65%;
+  --text-muted: 240 5% 64.9%;
+  --surface-glass: hsla(240, 5%, 15%, 0.8);
+  --border-glow: hsla(263, 70%, 50%, 0.2);
+} */
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  /* Fade Animations */
+  .animate-fade-in {
+    animation: fadeIn 1.2s ease-out forwards;
+    opacity: 0;
+  }
+  
+  .animate-fade-in-up {
+    animation: fadeInUp 1.5s ease-out forwards;
+    opacity: 0;
+  }
+  
+  .animate-fade-in-down {
+    animation: fadeInDown 1.2s ease-out forwards;
+    opacity: 0;
+  }
+  
+  .animate-fade-in-left {
+    animation: fadeInLeft 1.2s ease-out forwards;
+    opacity: 0;
+  }
+  
+  .animate-fade-in-right {
+    animation: fadeInRight 1.2s ease-out forwards;
+    opacity: 0;
+  }
+
+  /* Scale Animations */
+  .animate-scale-in {
+    animation: scaleIn 0.8s ease-out forwards;
+    opacity: 0;
+  }
+  
+  .animate-scale-in-bounce {
+    animation: scaleInBounce 1.2s ease-out forwards;
+    opacity: 0;
+  }
+
+  /* Slide Animations */
+  .animate-slide-in-left {
+    animation: slideInLeft 0.6s ease-out forwards;
+  }
+  
+  .animate-slide-in-right {
+    animation: slideInRight 0.6s ease-out forwards;
+  }
+  
+  .animate-slide-in-up {
+    animation: slideInUp 0.6s ease-out forwards;
+  }
+
+  /* Stagger Animations */
+  .animate-stagger-1 {
+    animation-delay: 0.1s;
+  }
+  
+  .animate-stagger-2 {
+    animation-delay: 0.2s;
+  }
+  
+  .animate-stagger-3 {
+    animation-delay: 0.3s;
+  }
+  
+  .animate-stagger-4 {
+    animation-delay: 0.4s;
+  }
+  
+  .animate-stagger-5 {
+    animation-delay: 0.5s;
+  }
+
+  /* Hover Effects */
+  .hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .hover-lift:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-elevated);
+  }
+  
+  .hover-scale {
+    transition: transform 0.2s ease;
+  }
+  
+  .hover-scale:hover {
+    transform: scale(1.05);
+  }
+  
+  .hover-glow {
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .hover-glow:hover {
+    box-shadow: 0 0 20px hsl(var(--primary) / 0.3);
+  }
+
+  /* Hero crossfade slide */
+  .hero-slide {
+    position: absolute;
+    inset: 0;
+    transition: opacity 2000ms ease-in-out;
+    will-change: opacity;
+    backface-visibility: hidden;
+  }
+
+  /* Loading Animations */
+  .animate-pulse-soft {
+    animation: pulseSoft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  
+  .animate-shimmer {
+    animation: shimmer 2s linear infinite;
+    background: linear-gradient(90deg, transparent, hsl(var(--muted-foreground) / 0.1), transparent);
+    background-size: 200% 100%;
+  }
+
+  /* Reveal on Scroll */
+  .scroll-reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  
+  .scroll-reveal.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Hero zoom animation */
+  .animate-hero-zoom {
+    animation: heroZoom 4s ease-out forwards;
+  }
+
+  .animate-hero-zoom-continuous {
+    animation: heroZoomContinuous 20s ease-out infinite;
+  }
+
+  .animate-hero-zoom-in {
+    animation: heroZoomIn 4s ease-out forwards;
+  }
+
+  .animate-hero-zoom-in-slow {
+    animation: heroZoomIn 8s ease-out infinite;
+  }
+
+  @keyframes heroZoom {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.1);
+    }
+  }
+
+  @keyframes heroZoomIn {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.12);
+    }
+  }
+
+  @keyframes heroZoomContinuous {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+  }
+
+  /* Button Animations */
+  .btn-magnetic {
+    transition: transform 0.2s ease;
+  }
+  
+  .btn-magnetic:hover {
+    transform: translateY(-2px);
+  }
+  
+  .btn-ripple {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .btn-ripple::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+  }
+  
+  .btn-ripple:active::before {
+    width: 300px;
+    height: 300px;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes scaleInBounce {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulseSoft {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink-caret {
+  from, to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: hsl(var(--foreground));
+  }
+}
+
+/* Natural Party Cracker Physics Animations */
+
+/* Balloons - Natural float with wind resistance */
+@keyframes balloon-natural-rise {
+  0% {
+    transform: translate(0, 0) scale(0.5) rotate(0deg);
+    opacity: 0;
+  }
+  2% {
+    transform: translate(var(--burst-x, 0), calc(var(--burst-y, -15vh))) scale(1.1) rotate(var(--initial-rot, 20deg));
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--end-x, 0), -120vh) scale(0.95) rotate(var(--end-rot, 720deg));
+    opacity: 0;
+  }
+}
+
+@keyframes balloon-sway {
+  0%, 100% { transform: translateX(0) rotate(0deg); }
+  25% { transform: translateX(var(--sway-1, 20px)) rotate(var(--rot-1, 8deg)); }
+  50% { transform: translateX(var(--sway-2, -15px)) rotate(var(--rot-2, -6deg)); }
+  75% { transform: translateX(var(--sway-3, 25px)) rotate(var(--rot-3, 10deg)); }
+}
+
+/* Confetti - Parabolic arc with gravity */
+@keyframes confetti-physics-left {
+  0% {
+    transform: translate(0, 0) rotate(0deg) scale(0.8);
+    opacity: 0;
+  }
+  3% {
+    transform: translate(var(--initial-vx, 15vw), var(--initial-vy, -25vh)) rotate(var(--initial-spin, 120deg)) scale(1.2);
+    opacity: 1;
+  }
+  15% {
+    transform: translate(calc(var(--initial-vx, 15vw) * 2.5), calc(var(--initial-vy, -25vh) * 1.8)) rotate(calc(var(--initial-spin, 120deg) * 3)) scale(1);
+  }
+  100% {
+    transform: translate(var(--final-x, 25vw), 115vh) rotate(var(--final-spin, 2160deg)) scale(0.4);
+    opacity: 0;
+  }
+}
+
+@keyframes confetti-physics-right {
+  0% {
+    transform: translate(0, 0) rotate(0deg) scale(0.8);
+    opacity: 0;
+  }
+  3% {
+    transform: translate(var(--initial-vx, -15vw), var(--initial-vy, -25vh)) rotate(var(--initial-spin, -120deg)) scale(1.2);
+    opacity: 1;
+  }
+  15% {
+    transform: translate(calc(var(--initial-vx, -15vw) * 2.5), calc(var(--initial-vy, -25vh) * 1.8)) rotate(calc(var(--initial-spin, -120deg) * 3)) scale(1);
+  }
+  100% {
+    transform: translate(var(--final-x, -25vw), 115vh) rotate(var(--final-spin, -2160deg)) scale(0.4);
+    opacity: 0;
+  }
+}
+
+/* Streamers - Ribbon flutter */
+@keyframes streamer-burst {
+  0% {
+    transform: translate(0, 0) rotate(0deg) scaleY(0.2);
+    opacity: 0;
+  }
+  4% {
+    transform: translate(var(--burst-vx, 20vw), -35vh) rotate(var(--burst-rot, 180deg)) scaleY(1.5);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--final-x, 15vw), 110vh) rotate(var(--final-rot, 1080deg)) scaleY(1);
+    opacity: 0;
+  }
+}
+
+/* Sparkles - Quick burst */
+@keyframes sparkle-burst {
+  0% {
+    transform: translate(0, 0) scale(0) rotate(0deg);
+    opacity: 0;
+  }
+  5% {
+    transform: translate(var(--pop-x, 0), var(--pop-y, -10vh)) scale(2) rotate(90deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--end-x, 0), var(--end-y, 30vh)) scale(0) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* Animation classes */
+.animate-balloon-rise {
+  animation: balloon-natural-rise var(--duration, 6s) cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+
+.animate-balloon-sway {
+  animation: balloon-sway var(--sway-duration, 3s) ease-in-out infinite;
+}
+
+.animate-confetti-left {
+  animation: confetti-physics-left var(--duration, 4s) cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+
+.animate-confetti-right {
+  animation: confetti-physics-right var(--duration, 4s) cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+
+.animate-streamer {
+  animation: streamer-burst var(--duration, 4.5s) cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+
+.animate-sparkle {
+  animation: sparkle-burst var(--duration, 1.2s) cubic-bezier(0.6, 0.1, 0.4, 1) forwards;
+}
