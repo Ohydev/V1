@@ -7,7 +7,7 @@ namespace App\Documentation\Swagger\CartManagement;
  *     path="/v1/add_cart_item",
  *     summary="Add Cart Item",
  *     description="Allows authenticated End Users to add tickets to their shopping cart. This endpoint handles adding tickets to cart with comprehensive validation for ticket availability, max per user limits, and automatically updates existing cart items if the same ticket is added again. Protected route - requires authentication via Laravel Sanctum token.
- * 
+ *
  * **Complete Flow:**
  * 1. Authentication check: Middleware (AuthenticateApiToken and AuthenticateUser) verifies Sanctum token and retrieves authenticated user
  * 2. Request validation: Validates required fields (ticket_id: required|integer|min:1, quantity: required|integer|min:1)
@@ -17,7 +17,7 @@ namespace App\Documentation\Swagger\CartManagement;
  * 6. Existing cart item check: Queries carts table to check if cart item already exists for this user and ticket combination (user_id, ticket_id)
  * 7. Final quantity calculation: If cart item exists, calculates final quantity as current cart quantity + new quantity. If not exists, final quantity = new quantity
  * 8. Availability validation: Checks if final quantity exceeds available tickets. If insufficient, returns business logic error (E004) with remaining tickets count
- * 9. Max per user limit check: 
+ * 9. Max per user limit check:
  *    - Queries orders table to get all order_ids for authenticated user
  *    - Queries order_tickets table to sum purchased quantity for this ticket from user's orders
  *    - Calculates total user quantity: existing purchases + current cart quantity + new quantity
@@ -60,11 +60,14 @@ namespace App\Documentation\Swagger\CartManagement;
  * - Ownership validation: Cart items can only be added by the authenticated user",
  *     tags={"End User - Cart Management API"},
  *     security={{"sanctum": {}}},
+ *
  *     @OA\RequestBody(
  *         required=true,
  *         description="Request body containing ticket information to add to cart",
+ *
  *         @OA\JsonContent(
  *             required={"ticket_id", "quantity"},
+ *
  *             @OA\Property(
  *                 property="ticket_id",
  *                 type="integer",
@@ -79,10 +82,13 @@ namespace App\Documentation\Swagger\CartManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=200,
  *         description="Success - Ticket added to cart successfully",
+ *
  *         @OA\JsonContent(
+ *
  *             @OA\Property(property="success", type="boolean", example=true),
  *             @OA\Property(
  *                 property="data",
@@ -108,10 +114,13 @@ namespace App\Documentation\Swagger\CartManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=400,
  *         description="Bad Request - Validation error or business logic error",
+ *
  *         @OA\JsonContent(
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -120,6 +129,7 @@ namespace App\Documentation\Swagger\CartManagement;
  *                 @OA\Property(
  *                     property="error_message",
  *                     oneOf={
+ *
  *                         @OA\Schema(type="object", description="Validation errors object (E001)", example={"ticket_id": {"The ticket id field is required."}, "quantity": {"The quantity must be at least 1."}}),
  *                         @OA\Schema(type="string", description="Business logic error message (E004)", example="Ticket belongs to an unpublished event")
  *                     }
@@ -127,10 +137,13 @@ namespace App\Documentation\Swagger\CartManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=404,
  *         description="Not Found - Ticket not found",
+ *
  *         @OA\JsonContent(
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -140,10 +153,13 @@ namespace App\Documentation\Swagger\CartManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=500,
  *         description="Internal Server Error",
+ *
  *         @OA\JsonContent(
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -159,4 +175,3 @@ class AddCartItem
 {
     // Empty class - annotations are in docblock
 }
-

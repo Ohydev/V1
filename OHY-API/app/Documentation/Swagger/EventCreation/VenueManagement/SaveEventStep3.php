@@ -69,13 +69,17 @@ namespace App\Documentation\Swagger\EventCreation\VenueManagement;
  * - Server errors (500): E002 error code for unexpected server-side exceptions",
  *     tags={"Event Creation Management API - Venue Management API"},
  *     security={{"sanctum": {}}},
+ *
  *     @OA\RequestBody(
  *         required=true,
+ *
  *         @OA\MediaType(
  *             mediaType="multipart/form-data",
+ *
  *             @OA\Schema(
  *                 type="object",
  *                 required={"event_id", "venue_name", "venue_address", "city", "state_province", "postal_code", "country_id", "latitude", "longitude", "maximum_attendees"},
+ *
  *                 @OA\Property(
  *                     property="event_id",
  *                     type="integer",
@@ -160,11 +164,14 @@ namespace App\Documentation\Swagger\EventCreation\VenueManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=200,
  *         description="Event Step 3 saved successfully. Returns venue data with coordinates formatted as strings.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=true),
  *             @OA\Property(
  *                 property="data",
@@ -190,11 +197,14 @@ namespace App\Documentation\Swagger\EventCreation\VenueManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=400,
  *         description="Validation error (E001) or Business logic error (E004). Request validation failed or event is published.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -203,22 +213,28 @@ namespace App\Documentation\Swagger\EventCreation\VenueManagement;
  *                 @OA\Property(
  *                     property="error_message",
  *                     oneOf={
+ *
  *                         @OA\Schema(
  *                             type="object",
  *                             description="Validation error messages object when field validation fails",
+ *
  *                             @OA\Property(
  *                                 property="latitude",
  *                                 type="array",
+ *
  *                                 @OA\Items(type="string"),
  *                                 example={"The latitude must be between -90 and 90."}
  *                             ),
+ *
  *                             @OA\Property(
  *                                 property="venue_image",
  *                                 type="array",
+ *
  *                                 @OA\Items(type="string"),
  *                                 example={"The venue image must be an image.", "The venue image must not be greater than 5120 kilobytes."}
  *                             )
  *                         ),
+ *
  *                         @OA\Schema(
  *                             type="string",
  *                             description="Business logic error message",
@@ -229,11 +245,14 @@ namespace App\Documentation\Swagger\EventCreation\VenueManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=401,
  *         description="Authentication error (E003). User authentication failed. Token is missing, invalid, or expired.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -243,11 +262,14 @@ namespace App\Documentation\Swagger\EventCreation\VenueManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=404,
  *         description="Not found error (E404). Event not found or doesn't belong to authenticated user.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -257,11 +279,14 @@ namespace App\Documentation\Swagger\EventCreation\VenueManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=500,
  *         description="Internal server error (E002). An unexpected error occurred while saving event Step 3. This could be due to database connection issues, file storage failures, transaction failures, or other server-side exceptions.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -277,4 +302,3 @@ class SaveEventStep3
 {
     // Save Event Step 3 API documentation
 }
-

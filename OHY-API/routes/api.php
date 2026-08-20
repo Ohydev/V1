@@ -1,33 +1,32 @@
 <?php
 
 // Here are the controller for the Host User's
-use App\Http\Controllers\Host\HostUserController;
-use App\Http\Controllers\Host\EventController;
-use App\Http\Controllers\User\EventController as UserEventCategoryController;
-use App\Http\Controllers\SuperAdmin\SuperAdminController;
-use App\Http\Controllers\SuperAdmin\SettlementController;
-use App\Http\Controllers\SuperAdmin\PlatformFeeController;
+use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\HealthController;
+use App\Http\Controllers\Host\EventController;
+use App\Http\Controllers\Host\HostUserController;
 use App\Http\Controllers\MasterDataController;
+use App\Http\Controllers\ProfileSwitchController;
+use App\Http\Controllers\StripeWebhookController;
+use App\Http\Controllers\SuperAdmin\PlatformFeeController;
+use App\Http\Controllers\SuperAdmin\SettlementController;
+use App\Http\Controllers\SuperAdmin\SuperAdminController;
+use App\Http\Controllers\SupportRequestController;
+use App\Http\Controllers\User\CartController;
+use App\Http\Controllers\User\EventController as UserEventCategoryController;
+// Here are the controller for the End Users
+use App\Http\Controllers\User\OrderController;
+use App\Http\Controllers\User\ReportController;
+use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\User\UserEventController;
+use App\Http\Controllers\User\WishlistController;
 use App\Http\Middleware\AuthenticateApiToken;
 use App\Http\Middleware\AuthenticateHostUser;
 use App\Http\Middleware\AuthenticateSuperAdmin;
-use App\Http\Middleware\AuthenticateUserOrHost;
-use Illuminate\Support\Facades\Route;
-
-// Here are the controller for the End Users
-use App\Http\Controllers\User\UserEventController;
-use App\Http\Controllers\User\UserController;
-use App\Http\Controllers\User\CartController;
-use App\Http\Controllers\User\OrderController;
-use App\Http\Controllers\User\WishlistController;
-use App\Http\Controllers\User\ReportController;
 use App\Http\Middleware\AuthenticateUser;
-use App\Http\Controllers\StripeWebhookController;
-use App\Http\Controllers\ProfileSwitchController;
-use App\Http\Controllers\FeedbackController;
-use App\Http\Controllers\SupportRequestController;
+use App\Http\Middleware\AuthenticateUserOrHost;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,6 +47,7 @@ Route::get('/v1/health', [HealthController::class, 'check']);
 Route::get('/v1/clear-config', function () {
     Artisan::call('config:clear');
     Artisan::call('cache:clear');
+
     return 'Config cleared';
 });
 
@@ -86,7 +86,7 @@ Route::prefix('v1')->group(function () {
     Route::post('/host_user_register', [HostUserController::class, 'hostUserRegister']);
     Route::post('/host_user_login', [HostUserController::class, 'hostUserLogin']);
     Route::post('/super_admin_login', [SuperAdminController::class, 'superAdminLogin']);
-    
+
     // Routes:: These are the public routes for host forgot password functionality.
     Route::post('/host_forgot_password_request', [HostUserController::class, 'requestForgotPassword']);
     Route::post('/host_verify_forgot_password_otp', [HostUserController::class, 'verifyForgotPasswordOtp']);
@@ -104,7 +104,7 @@ Route::prefix('v1')->group(function () {
     Route::post('/user_registration_otp_request', [UserController::class, 'requestRegistrationOtp']);
     Route::post('/user_register', [UserController::class, 'userRegister']);
     Route::post('/user_login', [UserController::class, 'userLogin']);
-    
+
     // Routes:: These are the public routes for forgot password functionality.
     Route::post('/user_forgot_password_request', [UserController::class, 'requestForgotPassword']);
     Route::post('/user_verify_forgot_password_otp', [UserController::class, 'verifyForgotPasswordOtp']);
@@ -124,7 +124,7 @@ Route::prefix('v1')->middleware([AuthenticateApiToken::class])->group(function (
 
     // Route: Submit Support Request (accessible to both User and Host)
     Route::post('/submit_support_request', [SupportRequestController::class, 'submitSupportRequest'])->middleware([AuthenticateUserOrHost::class]);
-    
+
     // Routes:: Event Host Routes Authentication is required.
 
     // Routes:: Event Host Routes Authentication is required.

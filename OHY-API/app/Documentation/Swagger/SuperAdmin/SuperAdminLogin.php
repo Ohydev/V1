@@ -8,13 +8,17 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *    summary="Super Admin Login",
  *     description="Authenticates Super Admin using email/password, generates Sanctum token, and returns Super Admin profile information. Token expiration is controlled by the remember_me flag using Carbon-based date handling (1 hour default, 30 days when remember_me=true).",
  *     tags={"Super Admin API"},
+ *
  *     @OA\RequestBody(
  *         required=true,
+ *
  *         @OA\MediaType(
  *             mediaType="application/json",
+ *
  *             @OA\Schema(
  *                 type="object",
  *                 required={"email","password"},
+ *
  *                 @OA\Property(
  *                     property="email",
  *                     type="string",
@@ -39,11 +43,14 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=200,
  *         description="Login successful.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=true),
  *             @OA\Property(
  *                 property="data",
@@ -63,11 +70,14 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=400,
  *         description="Validation error (E001).",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -81,11 +91,14 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=401,
  *         description="Authentication error (E003).",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -95,11 +108,14 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=500,
  *         description="Server error (E002).",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -115,4 +131,3 @@ class SuperAdminLogin
 {
     // Super Admin Login API documentation
 }
-

@@ -34,11 +34,11 @@ class TicketPurchaseConfirmationEmail extends Mailable
 
     /**
      * Create a new message instance.
-     * 
-     * @param string $orderNumber Order number
-     * @param string $eventTitle Event title
-     * @param float $totalAmount Total amount paid
-     * @param string $fullName Full name of purchaser
+     *
+     * @param  string  $orderNumber  Order number
+     * @param  string  $eventTitle  Event title
+     * @param  float  $totalAmount  Total amount paid
+     * @param  string  $fullName  Full name of purchaser
      */
     public function __construct($orderNumber, $eventTitle, $totalAmount, $fullName)
     {
@@ -70,13 +70,13 @@ class TicketPurchaseConfirmationEmail extends Mailable
 
     /**
      * Get HTML email template for ticket purchase confirmation
-     * 
+     *
      * @return string HTML email content
      */
     private function getTicketPurchaseEmailTemplate()
     {
-        $formattedAmount = number_format((float)$this->totalAmount, 2, '.', '');
-        
+        $formattedAmount = number_format((float) $this->totalAmount, 2, '.', '');
+
         $html = '<!DOCTYPE html>
 <html>
 <head>
@@ -87,14 +87,14 @@ class TicketPurchaseConfirmationEmail extends Mailable
 <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
     <div style="background-color: #f8f9fa; padding: 30px; border-radius: 8px;">
         <h2 style="color: #333; margin-top: 0;">Thank You for Your Purchase!</h2>
-        <p>Hello ' . htmlspecialchars($this->fullName) . ',</p>
+        <p>Hello '.htmlspecialchars($this->fullName).',</p>
         <p>Thank you for using OHY Platform to purchase your ticket. Your order has been confirmed and your payment has been processed successfully.</p>
         
         <div style="background-color: #fff; border: 1px solid #ddd; border-radius: 6px; padding: 20px; margin: 20px 0;">
             <h3 style="color: #333; margin-top: 0;">Order Details</h3>
-            <p style="margin: 5px 0;"><strong>Order Number:</strong> ' . htmlspecialchars($this->orderNumber) . '</p>
-            <p style="margin: 5px 0;"><strong>Event:</strong> ' . htmlspecialchars($this->eventTitle) . '</p>
-            <p style="margin: 5px 0;"><strong>Total Amount:</strong> $' . htmlspecialchars($formattedAmount) . '</p>
+            <p style="margin: 5px 0;"><strong>Order Number:</strong> '.htmlspecialchars($this->orderNumber).'</p>
+            <p style="margin: 5px 0;"><strong>Event:</strong> '.htmlspecialchars($this->eventTitle).'</p>
+            <p style="margin: 5px 0;"><strong>Total Amount:</strong> $'.htmlspecialchars($formattedAmount).'</p>
         </div>
         
         <p>Your tickets have been confirmed. You will receive additional details about the event closer to the date.</p>

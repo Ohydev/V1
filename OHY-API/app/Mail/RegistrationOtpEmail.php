@@ -24,9 +24,9 @@ class RegistrationOtpEmail extends Mailable
 
     /**
      * Create a new message instance.
-     * 
-     * @param string $otpCode 6-digit OTP code
-     * @param string $userTypeLabel User type label ('User' or 'Host')
+     *
+     * @param  string  $otpCode  6-digit OTP code
+     * @param  string  $userTypeLabel  User type label ('User' or 'Host')
      */
     public function __construct($otpCode, $userTypeLabel = 'User')
     {
@@ -56,7 +56,7 @@ class RegistrationOtpEmail extends Mailable
 
     /**
      * Get HTML email template for registration OTP
-     * 
+     *
      * @return string HTML email content
      */
     private function getRegistrationOtpEmailTemplate()
@@ -71,10 +71,10 @@ class RegistrationOtpEmail extends Mailable
 <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
     <div style="background-color: #f8f9fa; padding: 30px; border-radius: 8px;">
         <h2 style="color: #333; margin-top: 0;">Welcome to OHY Platform!</h2>
-        <p>Hello ' . htmlspecialchars($this->userTypeLabel) . ',</p>
+        <p>Hello '.htmlspecialchars($this->userTypeLabel).',</p>
         <p>Thank you for registering with OHY Platform. To complete your registration and verify your email address, please use the following OTP code:</p>
         <div style="background-color: #fff; border: 2px solid #007bff; border-radius: 6px; padding: 20px; text-align: center; margin: 20px 0;">
-            <h1 style="color: #007bff; font-size: 32px; letter-spacing: 5px; margin: 0;">' . htmlspecialchars($this->otpCode) . '</h1>
+            <h1 style="color: #007bff; font-size: 32px; letter-spacing: 5px; margin: 0;">'.htmlspecialchars($this->otpCode).'</h1>
         </div>
         <p style="color: #666; font-size: 14px;">This OTP will expire in 10 minutes.</p>
         <p style="color: #666; font-size: 14px;">If you did not create an account with OHY Platform, please ignore this email.</p>

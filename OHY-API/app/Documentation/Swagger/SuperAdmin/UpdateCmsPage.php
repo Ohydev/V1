@@ -9,13 +9,17 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *     description="Allows an authenticated Super Admin to update an existing CMS page. Supports partial updates - only provided fields will be updated. If title is updated and slug is not explicitly provided, the slug will be automatically regenerated from the new title. The slug uniqueness is ensured (excluding the current page). All fields are optional except cms_page_id, allowing flexible partial updates.",
  *     tags={"Super Admin API"},
  *     security={{"sanctum": {}}},
+ *
  *     @OA\RequestBody(
  *         required=true,
+ *
  *         @OA\MediaType(
  *             mediaType="application/json",
+ *
  *             @OA\Schema(
  *                 type="object",
  *                 required={"cms_page_id"},
+ *
  *                 @OA\Property(
  *                     property="cms_page_id",
  *                     type="integer",
@@ -53,6 +57,7 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *                     description="Updated active status. If false, page will not appear in footer links. Validation rule: 'nullable|boolean'."
  *                 )
  *             ),
+ *
  *             @OA\Examples(
  *                 example="UpdateTitle",
  *                 summary="Update Title Only",
@@ -89,11 +94,14 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=200,
  *         description="CMS page updated successfully",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=true),
  *             @OA\Property(
  *                 property="data",
@@ -113,11 +121,14 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=400,
  *         description="Validation error (E001)",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -127,11 +138,14 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=401,
  *         description="Authentication error (E003)",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -141,11 +155,14 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=404,
  *         description="CMS page not found (E404)",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -155,11 +172,14 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=500,
  *         description="Server error (E002)",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -175,4 +195,3 @@ class UpdateCmsPage
 {
     // Empty class for Swagger annotations
 }
-

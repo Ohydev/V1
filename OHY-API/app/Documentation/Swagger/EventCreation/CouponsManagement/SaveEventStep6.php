@@ -86,13 +86,17 @@ namespace App\Documentation\Swagger\EventCreation\CouponsManagement;
  * - Server errors (500): E002 error code for unexpected server-side exceptions",
  *     tags={"Event Creation Management API - Coupons Management API"},
  *     security={{"sanctum": {}}},
+ *
  *     @OA\RequestBody(
  *         required=true,
+ *
  *         @OA\MediaType(
  *             mediaType="application/json",
+ *
  *             @OA\Schema(
  *                 type="object",
  *                 required={"event_id", "coupons"},
+ *
  *                 @OA\Property(
  *                     property="event_id",
  *                     type="integer",
@@ -104,9 +108,11 @@ namespace App\Documentation\Swagger\EventCreation\CouponsManagement;
  *                     type="array",
  *                     minItems=0,
  *                     description="Array of coupon objects. Required field. Can be empty array (deletes all coupons). Each coupon object represents one discount coupon. All existing coupons are deleted and replaced with coupons in this array. Validation rule: 'required|array|min:0'",
+ *
  *                     @OA\Items(
  *                         type="object",
  *                         required={"coupon_code", "discount_type", "max_times_applicable", "start_date"},
+ *
  *                         @OA\Property(
  *                             property="coupon_code",
  *                             type="string",
@@ -189,11 +195,14 @@ namespace App\Documentation\Swagger\EventCreation\CouponsManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=200,
  *         description="Event Step 6 saved successfully. Returns all created coupons with dates formatted as d-m-Y and discount-specific fields.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=true),
  *             @OA\Property(
  *                 property="data",
@@ -203,8 +212,10 @@ namespace App\Documentation\Swagger\EventCreation\CouponsManagement;
  *                     property="coupons",
  *                     type="array",
  *                     description="Array of all created coupons with discount-specific fields",
+ *
  *                     @OA\Items(
  *                         type="object",
+ *
  *                         @OA\Property(property="coupon_id", type="integer", example=1),
  *                         @OA\Property(property="event_id", type="integer", example=1),
  *                         @OA\Property(property="coupon_code", type="string", example="EARLY20"),
@@ -222,11 +233,14 @@ namespace App\Documentation\Swagger\EventCreation\CouponsManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=400,
  *         description="Validation error (E001) or Business logic error (E004). Request validation failed, event is published, coupons have been used, or global uniqueness violation.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -235,22 +249,28 @@ namespace App\Documentation\Swagger\EventCreation\CouponsManagement;
  *                 @OA\Property(
  *                     property="error_message",
  *                     oneOf={
+ *
  *                         @OA\Schema(
  *                             type="object",
  *                             description="Validation error messages object when field validation fails",
+ *
  *                             @OA\Property(
  *                                 property="coupons.0.discount_percent",
  *                                 type="array",
+ *
  *                                 @OA\Items(type="string"),
  *                                 example={"The coupons.0.discount percent field is required when coupons.0.discount type is percentage."}
  *                             ),
+ *
  *                             @OA\Property(
  *                                 property="coupons.0.start_date",
  *                                 type="array",
+ *
  *                                 @OA\Items(type="string"),
  *                                 example={"The coupons.0.start date does not match the format d-m-Y."}
  *                             )
  *                         ),
+ *
  *                         @OA\Schema(
  *                             type="string",
  *                             description="Business logic error message - coupons used",
@@ -276,11 +296,14 @@ namespace App\Documentation\Swagger\EventCreation\CouponsManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=401,
  *         description="Authentication error (E003). User authentication failed. Token is missing, invalid, or expired.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -290,11 +313,14 @@ namespace App\Documentation\Swagger\EventCreation\CouponsManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=404,
  *         description="Not found error (E404). Event not found or doesn't belong to authenticated user.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -304,11 +330,14 @@ namespace App\Documentation\Swagger\EventCreation\CouponsManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=500,
  *         description="Internal server error (E002). An unexpected error occurred while saving event Step 6. This could be due to database connection issues, transaction failures, or other server-side exceptions.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -324,4 +353,3 @@ class SaveEventStep6
 {
     // Save Event Step 6 API documentation
 }
-

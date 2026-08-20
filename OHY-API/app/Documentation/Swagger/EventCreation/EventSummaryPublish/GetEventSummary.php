@@ -74,19 +74,24 @@ namespace App\Documentation\Swagger\EventCreation\EventSummaryPublish;
  * - event_data_score: Completion percentage, label, completed_sections, total_sections",
  *     tags={"Event Creation Management API - Event Summary & Publish Event API"},
  *     security={{"sanctum": {}}},
+ *
  *     @OA\Parameter(
  *         name="event_id",
  *         in="query",
  *         required=true,
  *         description="Event ID to retrieve summary for. Must exist in events table and belong to authenticated host user.",
+ *
  *         @OA\Schema(type="integer", example=1),
  *         example=1
  *     ),
+ *
  *     @OA\Response(
  *         response=200,
  *         description="Event summary retrieved successfully. Returns comprehensive data from all 7 steps with event data score.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=true),
  *             @OA\Property(
  *                 property="data",
@@ -115,8 +120,10 @@ namespace App\Documentation\Swagger\EventCreation\EventSummaryPublish;
  *                         @OA\Property(
  *                             property="thumbnail",
  *                             type="array",
+ *
  *                             @OA\Items(
  *                                 type="object",
+ *
  *                                 @OA\Property(property="event_media_id", type="integer", example=1),
  *                                 @OA\Property(property="media_type", type="string", example="thumbnail"),
  *                                 @OA\Property(property="file_path", type="string", example="events/1/thumbnail/image.jpg"),
@@ -127,18 +134,24 @@ namespace App\Documentation\Swagger\EventCreation\EventSummaryPublish;
  *                         @OA\Property(
  *                             property="banner",
  *                             type="array",
+ *
  *                             @OA\Items(type="object")
  *                         ),
+ *
  *                         @OA\Property(
  *                             property="flyer",
  *                             type="array",
+ *
  *                             @OA\Items(type="object")
  *                         ),
+ *
  *                         @OA\Property(
  *                             property="video",
  *                             type="array",
+ *
  *                             @OA\Items(
  *                                 type="object",
+ *
  *                                 @OA\Property(property="video_duration", type="string", example="2:30", description="Only for video type")
  *                             )
  *                         )
@@ -146,8 +159,10 @@ namespace App\Documentation\Swagger\EventCreation\EventSummaryPublish;
  *                     @OA\Property(
  *                         property="social_media",
  *                         type="array",
+ *
  *                         @OA\Items(
  *                             type="object",
+ *
  *                             @OA\Property(property="event_social_media_id", type="integer", example=1),
  *                             @OA\Property(property="platform", type="string", example="facebook"),
  *                             @OA\Property(property="url", type="string", example="https://facebook.com/eventpage")
@@ -157,8 +172,10 @@ namespace App\Documentation\Swagger\EventCreation\EventSummaryPublish;
  *                         property="tickets",
  *                         type="array",
  *                         description="Tickets with category names and revenue",
+ *
  *                         @OA\Items(
  *                             type="object",
+ *
  *                             @OA\Property(property="ticket_id", type="integer", example=1),
  *                             @OA\Property(property="category_name", type="string", example="Early Bird"),
  *                             @OA\Property(property="ticket_type", type="string", example="single_entry"),
@@ -185,16 +202,20 @@ namespace App\Documentation\Swagger\EventCreation\EventSummaryPublish;
  *                         property="artists",
  *                         type="array",
  *                         description="Artists with nested social media links",
+ *
  *                         @OA\Items(
  *                             type="object",
+ *
  *                             @OA\Property(property="event_artist_id", type="integer", example=1),
  *                             @OA\Property(property="artist_name", type="string", example="John Doe"),
  *                             @OA\Property(property="artist_image", type="string", nullable=true),
  *                             @OA\Property(
  *                                 property="social_media",
  *                                 type="array",
+ *
  *                                 @OA\Items(
  *                                     type="object",
+ *
  *                                     @OA\Property(property="platform", type="string", example="instagram"),
  *                                     @OA\Property(property="url", type="string", example="https://instagram.com/@artistname")
  *                                 )
@@ -213,8 +234,10 @@ namespace App\Documentation\Swagger\EventCreation\EventSummaryPublish;
  *                         property="coupons",
  *                         type="array",
  *                         description="Active coupons only (filtered by validity and usage)",
+ *
  *                         @OA\Items(
  *                             type="object",
+ *
  *                             @OA\Property(property="coupon_id", type="integer", example=1),
  *                             @OA\Property(property="coupon_code", type="string", example="EARLY20"),
  *                             @OA\Property(property="discount_type", type="string", example="percentage"),
@@ -236,11 +259,14 @@ namespace App\Documentation\Swagger\EventCreation\EventSummaryPublish;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=400,
  *         description="Validation error (E001). Request validation failed. event_id is missing or invalid.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -253,6 +279,7 @@ namespace App\Documentation\Swagger\EventCreation\EventSummaryPublish;
  *                     @OA\Property(
  *                         property="event_id",
  *                         type="array",
+ *
  *                         @OA\Items(type="string"),
  *                         example={"The event id field is required.", "The selected event id is invalid."}
  *                     )
@@ -260,11 +287,14 @@ namespace App\Documentation\Swagger\EventCreation\EventSummaryPublish;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=401,
  *         description="Authentication error (E003). User authentication failed. Token is missing, invalid, or expired.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -274,11 +304,14 @@ namespace App\Documentation\Swagger\EventCreation\EventSummaryPublish;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=404,
  *         description="Not found error (E404). Event not found or doesn't belong to authenticated user.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -288,11 +321,14 @@ namespace App\Documentation\Swagger\EventCreation\EventSummaryPublish;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=500,
  *         description="Internal server error (E002). An unexpected error occurred while retrieving event summary. This could be due to database connection issues or other server-side exceptions.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -308,4 +344,3 @@ class GetEventSummary
 {
     // Get Event Summary API documentation
 }
-

@@ -7,7 +7,7 @@ namespace App\Documentation\Swagger\ProfileManagement;
  *     path="/v1/update_user_profile",
  *     summary="Update User Profile",
  *     description="Allows authenticated End Users to update their profile information, including full name, contact number, and optionally upload a new profile image. This endpoint handles profile updates with file upload support, automatic old file deletion, and database transactions to ensure data consistency. Protected route - requires authentication via Laravel Sanctum token.
- * 
+ *
  * **Complete Flow:**
  * 1. Authentication check: Middleware (AuthenticateApiToken and AuthenticateUser) verifies Sanctum token and retrieves authenticated user
  * 2. Request validation: Validates request fields:
@@ -44,7 +44,7 @@ namespace App\Documentation\Swagger\ProfileManagement;
  *    - contact_number: Updated contact number
  *    - profile_image: Updated profile image path (if uploaded)
  * 10. Success response: Returns formatted user profile data with updated fields
- * 
+ *
  * **File Upload Handling:**
  * - File validation: Validates file type (image), mime types (jpeg, jpg, gif, png), and file size (max 2MB = 2048 KB)
  * - Storage location: Files stored in storage/public/users/{user_id}/ directory
@@ -52,35 +52,39 @@ namespace App\Documentation\Swagger\ProfileManagement;
  * - Directory creation: User directory created automatically if doesn't exist
  * - Old file cleanup: Previous profile image automatically deleted when new one uploaded
  * - Database storage: Relative file path stored in database (e.g., 'users/1/profile_image_1234567890.jpg')
- * 
+ *
  * **Database Operations:**
  * - Transaction: All database operations wrapped in transaction to ensure atomicity
  * - Update operation: Updates user record in users table with new profile data
  * - Model refresh: User model refreshed after update to get latest data
- * 
+ *
  * **Data Transformations:**
  * - File path: Absolute file path converted to relative path for database storage
  * - Contact number: Null value stored if not provided in request
- * 
+ *
  * **Security Considerations:**
  * - Requires valid Sanctum token in request header (Authorization: Bearer {token} or token: {token})
  * - Only authenticated user can update their own profile
  * - File upload validation prevents malicious file uploads
  * - File size limit prevents storage abuse
- * 
+ *
  * **Error Scenarios:**
  * - Validation Error (400): Returns E001 error code with detailed validation error messages if full_name, contact_number, or profile_image validation fails
  * - Server Error (500): Returns E002 error code if database operation fails or file upload/storage fails",
  *     tags={"End User - Profile Management API"},
  *     security={{"sanctum": {}}},
+ *
  *     @OA\RequestBody(
  *         required=true,
  *         description="User profile update data with optional file upload",
+ *
  *         @OA\MediaType(
  *             mediaType="multipart/form-data",
+ *
  *             @OA\Schema(
  *                 type="object",
  *                 required={"full_name"},
+ *
  *                 @OA\Property(
  *                     property="full_name",
  *                     type="string",
@@ -107,11 +111,14 @@ namespace App\Documentation\Swagger\ProfileManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=200,
  *         description="Profile updated successfully",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=true),
  *             @OA\Property(
  *                 property="data",
@@ -130,11 +137,14 @@ namespace App\Documentation\Swagger\ProfileManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=400,
  *         description="Validation error occurred",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -144,11 +154,14 @@ namespace App\Documentation\Swagger\ProfileManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=500,
  *         description="Server error occurred",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -164,4 +177,3 @@ class UpdateUserProfile
 {
     // Empty class - annotations are in docblock
 }
-

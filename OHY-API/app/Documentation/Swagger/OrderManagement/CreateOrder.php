@@ -7,7 +7,7 @@ namespace App\Documentation\Swagger\OrderManagement;
  *     path="/v1/create_order",
  *     summary="Create Order",
  *     description="Allows authenticated End Users to complete ticket purchase and create order. This endpoint processes cart items for a specific event, validates ticket availability and max per user limits, optionally validates and applies coupon discount, encrypts payment details, creates order and order_tickets records, updates ticket sold_quantity atomically, updates coupon times_used atomically if coupon applied, and clears cart items for that event after successful order creation. Users can only proceed with one event at a time. All operations are wrapped in a database transaction to ensure data consistency. Protected route - requires authentication via Laravel Sanctum token.
- * 
+ *
  * **Complete Flow:**
  * 1. Authentication check: Middleware (AuthenticateApiToken and AuthenticateUser) verifies Sanctum token and retrieves authenticated user
  * 2. Request validation: Validates all required fields with comprehensive validation rules:
@@ -123,11 +123,14 @@ namespace App\Documentation\Swagger\OrderManagement;
  * - Ownership validation: Users can only create orders from their own cart items",
  *     tags={"End User - Order Management API"},
  *     security={{"sanctum": {}}},
+ *
  *     @OA\RequestBody(
  *         required=true,
  *         description="Request body containing order information including contact details, payment information, billing address, and optional coupon code",
+ *
  *         @OA\JsonContent(
  *             required={"event_id", "full_name", "email", "phone_number", "card_number", "expiry_date", "cvv", "street_address", "city", "state", "zip_code", "country_id"},
+ *
  *             @OA\Property(
  *                 property="event_id",
  *                 type="integer",
@@ -210,10 +213,13 @@ namespace App\Documentation\Swagger\OrderManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=200,
  *         description="Success - Order created successfully",
+ *
  *         @OA\JsonContent(
+ *
  *             @OA\Property(property="success", type="boolean", example=true),
  *             @OA\Property(
  *                 property="data",
@@ -233,8 +239,10 @@ namespace App\Documentation\Swagger\OrderManagement;
  *                         property="order_tickets",
  *                         type="array",
  *                         description="Array of order tickets purchased",
+ *
  *                         @OA\Items(
  *                             type="object",
+ *
  *                             @OA\Property(property="order_ticket_id", type="integer", description="Order ticket ID", example=1),
  *                             @OA\Property(property="ticket_id", type="integer", description="Ticket ID", example=1),
  *                             @OA\Property(property="ticket_type", type="string", description="Ticket type (single_entry or table_ticket)", example="single_entry"),
@@ -248,10 +256,13 @@ namespace App\Documentation\Swagger\OrderManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=400,
  *         description="Bad Request - Validation error or business logic error",
+ *
  *         @OA\JsonContent(
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -260,6 +271,7 @@ namespace App\Documentation\Swagger\OrderManagement;
  *                 @OA\Property(
  *                     property="error_message",
  *                     oneOf={
+ *
  *                         @OA\Schema(type="object", description="Validation errors object (E001)", example={"event_id": {"The event id field is required."}, "expiry_date": {"The expiry date format is invalid."}}),
  *                         @OA\Schema(type="string", description="Business logic error message (E004)", example="Ticket belongs to an unpublished event")
  *                     }
@@ -267,10 +279,13 @@ namespace App\Documentation\Swagger\OrderManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=404,
  *         description="Not Found - No cart items, ticket not found, or coupon not found",
+ *
  *         @OA\JsonContent(
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -280,10 +295,13 @@ namespace App\Documentation\Swagger\OrderManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=500,
  *         description="Internal Server Error",
+ *
  *         @OA\JsonContent(
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -299,4 +317,3 @@ class CreateOrder
 {
     // Empty class - annotations are in docblock
 }
-

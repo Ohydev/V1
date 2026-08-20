@@ -39,19 +39,24 @@ namespace App\Documentation\Swagger\EventCreation\EventTicketManagement;
  * - Server errors (500): E002 error code for unexpected server-side exceptions",
  *     tags={"Event Creation Management API - Event Ticket Management API"},
  *     security={{"sanctum": {}}},
+ *
  *     @OA\Parameter(
  *         name="event_id",
  *         in="query",
  *         required=true,
  *         description="Event ID to retrieve ticket categories for. Must exist in events table and belong to authenticated host user.",
+ *
  *         @OA\Schema(type="integer", example=1),
  *         example=1
  *     ),
+ *
  *     @OA\Response(
  *         response=200,
  *         description="Ticket categories retrieved successfully. Returns sorted list of categories.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=true),
  *             @OA\Property(
  *                 property="data",
@@ -61,8 +66,10 @@ namespace App\Documentation\Swagger\EventCreation\EventTicketManagement;
  *                     property="ticket_categories",
  *                     type="array",
  *                     description="Array of ticket categories sorted alphabetically by category_name",
+ *
  *                     @OA\Items(
  *                         type="object",
+ *
  *                         @OA\Property(property="ticket_category_id", type="integer", example=1),
  *                         @OA\Property(property="category_name", type="string", example="Early Bird")
  *                     ),
@@ -71,11 +78,14 @@ namespace App\Documentation\Swagger\EventCreation\EventTicketManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=400,
  *         description="Validation error (E001). Request validation failed. event_id is missing or invalid.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -88,6 +98,7 @@ namespace App\Documentation\Swagger\EventCreation\EventTicketManagement;
  *                     @OA\Property(
  *                         property="event_id",
  *                         type="array",
+ *
  *                         @OA\Items(type="string"),
  *                         example={"The event id field is required.", "The selected event id is invalid."}
  *                     )
@@ -95,11 +106,14 @@ namespace App\Documentation\Swagger\EventCreation\EventTicketManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=401,
  *         description="Authentication error (E003). User authentication failed. Token is missing, invalid, or expired.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -109,11 +123,14 @@ namespace App\Documentation\Swagger\EventCreation\EventTicketManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=404,
  *         description="Not found error (E404). Event not found or doesn't belong to authenticated user.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -123,11 +140,14 @@ namespace App\Documentation\Swagger\EventCreation\EventTicketManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=500,
  *         description="Internal server error (E002). An unexpected error occurred while retrieving ticket categories. This could be due to database connection issues or other server-side exceptions.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -143,4 +163,3 @@ class GetTicketCategories
 {
     // Get Ticket Categories API documentation
 }
-

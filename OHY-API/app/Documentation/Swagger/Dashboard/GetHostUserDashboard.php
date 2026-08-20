@@ -75,11 +75,14 @@ namespace App\Documentation\Swagger\Dashboard;
  * - Server errors (500): E002 error code for unexpected server-side exceptions",
  *     tags={"Host Dashboard"},
  *     security={{"sanctum": {}}},
+ *
  *     @OA\Response(
  *         response=200,
  *         description="Dashboard data retrieved successfully. Returns summary metrics (active events, completed events, total revenue) and recent events (limit 3) with complete details.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=true),
  *             @OA\Property(
  *                 property="data",
@@ -98,8 +101,10 @@ namespace App\Documentation\Swagger\Dashboard;
  *                     type="array",
  *                     description="Array of 3 most recent events sorted by creation date (newest first)",
  *                     maxItems=3,
+ *
  *                     @OA\Items(
  *                         type="object",
+ *
  *                         @OA\Property(property="event_id", type="integer", example=1),
  *                         @OA\Property(property="event_title", type="string", example="Tech Conference 2025"),
  *                         @OA\Property(property="status", type="string", description="Calculated event status: 'live', 'upcoming', 'completed', or 'draft'", example="live"),
@@ -114,11 +119,14 @@ namespace App\Documentation\Swagger\Dashboard;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=401,
  *         description="Authentication error (E003). User authentication failed. Token is missing, invalid, or expired.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -128,11 +136,14 @@ namespace App\Documentation\Swagger\Dashboard;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=500,
  *         description="Server error (E002). An unexpected error occurred while retrieving dashboard data.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -148,4 +159,3 @@ class GetHostUserDashboard
 {
     // Empty class for swagger-php to parse annotations
 }
-

@@ -7,7 +7,7 @@ namespace App\Documentation\Swagger\OrderManagement;
  *     path="/v1/get_user_orders_list",
  *     summary="Get User Orders List",
  *     description="Retrieves a paginated list of orders for the authenticated End User with event information and calculated event status. This endpoint retrieves all orders for the authenticated user, calculates event status (Live/Upcoming/Completed) based on current date/time and event dates/times, and returns paginated results sorted by order date (newest first). Protected route - requires authentication via Laravel Sanctum token.
- * 
+ *
  * **Complete Flow:**
  * 1. Authentication check: Middleware (AuthenticateApiToken and AuthenticateUser) verifies Sanctum token and retrieves authenticated user
  * 2. Request validation: Validates optional query parameters (page: nullable|integer|min:1, per_page: nullable|integer|min:1|max:100)
@@ -81,24 +81,31 @@ namespace App\Documentation\Swagger\OrderManagement;
  * - Ownership validation: Users can only view their own orders",
  *     tags={"End User - Order Management API"},
  *     security={{"sanctum": {}}},
+ *
  *     @OA\Parameter(
  *         name="page",
  *         in="query",
  *         required=false,
  *         description="Page number for pagination. Minimum 1. Default is 1. Validation rule: 'nullable|integer|min:1'",
+ *
  *         @OA\Schema(type="integer", example=1)
  *     ),
+ *
  *     @OA\Parameter(
  *         name="per_page",
  *         in="query",
  *         required=false,
  *         description="Number of items per page. Minimum 1, maximum 100. Default is 30. Validation rule: 'nullable|integer|min:1|max:100'",
+ *
  *         @OA\Schema(type="integer", minimum=1, maximum=100, example=30)
  *     ),
+ *
  *     @OA\Response(
  *         response=200,
  *         description="Success - Orders retrieved successfully",
+ *
  *         @OA\JsonContent(
+ *
  *             @OA\Property(property="success", type="boolean", example=true),
  *             @OA\Property(
  *                 property="data",
@@ -108,8 +115,10 @@ namespace App\Documentation\Swagger\OrderManagement;
  *                     property="orders",
  *                     type="array",
  *                     description="Array of formatted orders with event information",
+ *
  *                     @OA\Items(
  *                         type="object",
+ *
  *                         @OA\Property(property="order_id", type="integer", description="Order ID", example=1),
  *                         @OA\Property(property="order_number", type="string", description="Order number (e.g., 'OHY1763043605664592')", example="OHY1763043605664592"),
  *                         @OA\Property(property="event_id", type="integer", nullable=true, description="Event ID (if available)", example=1),
@@ -136,10 +145,13 @@ namespace App\Documentation\Swagger\OrderManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=400,
  *         description="Bad Request - Validation error",
+ *
  *         @OA\JsonContent(
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -154,10 +166,13 @@ namespace App\Documentation\Swagger\OrderManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=500,
  *         description="Internal Server Error",
+ *
  *         @OA\JsonContent(
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -173,4 +188,3 @@ class GetUserOrdersList
 {
     // Empty class - annotations are in docblock
 }
-

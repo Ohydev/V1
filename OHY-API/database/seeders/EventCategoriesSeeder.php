@@ -9,7 +9,7 @@ class EventCategoriesSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     * 
+     *
      * Seeds common event categories that will be used in dropdowns
      * during event creation and for filtering events.
      */
@@ -28,7 +28,7 @@ class EventCategoriesSeeder extends Seeder
             'Health & Wellness',
             'Fashion',
         ];
-        
+
         // Loop through each category and insert into database
         foreach ($categories as $categoryName) {
             // Insert category into event_categories table
@@ -40,4 +40,3 @@ class EventCategoriesSeeder extends Seeder
         }
     }
 }
-

@@ -7,7 +7,7 @@ namespace App\Documentation\Swagger\CartManagement;
  *     path="/v1/apply_coupon",
  *     summary="Apply Coupon",
  *     description="Allows authenticated End Users to apply a coupon to their cart. This endpoint validates the coupon, verifies it's valid for events in the user's cart, checks date range and usage limits, calculates the discount amount based on cart subtotal, and returns the coupon details with calculated discount. Protected route - requires authentication via Laravel Sanctum token.
- * 
+ *
  * **Complete Flow:**
  * 1. Authentication check: Middleware (AuthenticateApiToken and AuthenticateUser) verifies Sanctum token and retrieves authenticated user
  * 2. Request validation: Validates required fields (coupon_id: required|integer|min:1, subtotal: required|numeric|min:0)
@@ -74,11 +74,14 @@ namespace App\Documentation\Swagger\CartManagement;
  * - Ownership validation: Only coupons for events in user's cart can be applied",
  *     tags={"End User - Cart Management API"},
  *     security={{"sanctum": {}}},
+ *
  *     @OA\RequestBody(
  *         required=true,
  *         description="Request body containing coupon and subtotal information",
+ *
  *         @OA\JsonContent(
  *             required={"coupon_id", "subtotal"},
+ *
  *             @OA\Property(
  *                 property="coupon_id",
  *                 type="integer",
@@ -94,10 +97,13 @@ namespace App\Documentation\Swagger\CartManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=200,
  *         description="Success - Coupon applied successfully",
+ *
  *         @OA\JsonContent(
+ *
  *             @OA\Property(property="success", type="boolean", example=true),
  *             @OA\Property(
  *                 property="data",
@@ -122,10 +128,13 @@ namespace App\Documentation\Swagger\CartManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=400,
  *         description="Bad Request - Validation error or business logic error",
+ *
  *         @OA\JsonContent(
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -134,6 +143,7 @@ namespace App\Documentation\Swagger\CartManagement;
  *                 @OA\Property(
  *                     property="error_message",
  *                     oneOf={
+ *
  *                         @OA\Schema(type="object", description="Validation errors object (E001)", example={"coupon_id": {"The coupon id field is required."}, "subtotal": {"The subtotal must be at least 0."}}),
  *                         @OA\Schema(type="string", description="Business logic error message (E004)", example="Coupon is not valid for events in your cart")
  *                     }
@@ -141,10 +151,13 @@ namespace App\Documentation\Swagger\CartManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=404,
  *         description="Not Found - Coupon not found",
+ *
  *         @OA\JsonContent(
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -154,10 +167,13 @@ namespace App\Documentation\Swagger\CartManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=500,
  *         description="Internal Server Error",
+ *
  *         @OA\JsonContent(
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -173,4 +189,3 @@ class ApplyCoupon
 {
     // Empty class - annotations are in docblock
 }
-

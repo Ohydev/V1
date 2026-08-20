@@ -9,9 +9,12 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *     description="Returns all registered end users with search, date filtering, gender, age range, state, zipcode, sorting, and pagination. All filters are sent in the request body.",
  *     tags={"Super Admin API"},
  *     security={{"sanctum":{}}},
+ *
  *     @OA\RequestBody(
  *         required=false,
+ *
  *         @OA\JsonContent(
+ *
  *             @OA\Property(property="page", type="integer", minimum=1, description="Page number (default 1)"),
  *             @OA\Property(property="per_page", type="integer", minimum=1, maximum=100, description="Items per page (default 10)"),
  *             @OA\Property(property="search", type="string", description="Search by full name or email"),
@@ -24,11 +27,14 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *             @OA\Property(property="zipcode", type="string", nullable=true, maxLength=20, description="Filter users by zipcode (matches users.zipcode)")
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=200,
  *         description="Users retrieved successfully.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=true),
  *             @OA\Property(
  *                 property="data",
@@ -37,8 +43,10 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *                 @OA\Property(
  *                     property="users",
  *                     type="array",
+ *
  *                     @OA\Items(
  *                         type="object",
+ *
  *                         @OA\Property(property="user_id", type="integer", example=10),
  *                         @OA\Property(property="full_name", type="string", example="Jane Doe"),
  *                         @OA\Property(property="email", type="string", example="jane@example.com"),
@@ -62,11 +70,14 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=400,
  *         description="Validation error (E001).",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -76,11 +87,14 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=401,
  *         description="Authentication error (E003).",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -90,11 +104,14 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=500,
  *         description="Server error (E002).",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -110,4 +127,3 @@ class GetSuperAdminRegisteredUsersList
 {
     // Swagger docs for registered users list
 }
-

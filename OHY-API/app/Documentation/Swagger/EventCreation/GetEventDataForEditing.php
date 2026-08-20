@@ -65,19 +65,24 @@ namespace App\Documentation\Swagger\EventCreation;
  * - Server errors (500): E002 error code for unexpected server-side exceptions",
  *     tags={"Event Creation Management API - Get Event Data For Editing API"},
  *     security={{"sanctum": {}}},
+ *
  *     @OA\Parameter(
  *         name="event_id",
  *         in="query",
  *         required=true,
  *         description="Event ID to retrieve data for editing. Must exist in events table and belong to authenticated host user.",
+ *
  *         @OA\Schema(type="integer", example=1),
  *         example=1
  *     ),
+ *
  *     @OA\Response(
  *         response=200,
  *         description="Event data retrieved successfully. Returns complete event data organized by steps (step_1 through step_6) for form preloading.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=true),
  *             @OA\Property(
  *                 property="data",
@@ -108,8 +113,10 @@ namespace App\Documentation\Swagger\EventCreation;
  *                         @OA\Property(
  *                             property="thumbnail",
  *                             type="array",
+ *
  *                             @OA\Items(
  *                                 type="object",
+ *
  *                                 @OA\Property(property="event_media_id", type="integer", example=1),
  *                                 @OA\Property(property="media_type", type="string", example="thumbnail"),
  *                                 @OA\Property(property="file_path", type="string", example="events/1/thumbnail/image.jpg"),
@@ -120,8 +127,10 @@ namespace App\Documentation\Swagger\EventCreation;
  *                         @OA\Property(
  *                             property="banner",
  *                             type="array",
+ *
  *                             @OA\Items(
  *                                 type="object",
+ *
  *                                 @OA\Property(property="event_media_id", type="integer", example=2),
  *                                 @OA\Property(property="media_type", type="string", example="banner"),
  *                                 @OA\Property(property="file_path", type="string", example="events/1/banner/banner.jpg"),
@@ -132,8 +141,10 @@ namespace App\Documentation\Swagger\EventCreation;
  *                         @OA\Property(
  *                             property="flyer",
  *                             type="array",
+ *
  *                             @OA\Items(
  *                                 type="object",
+ *
  *                                 @OA\Property(property="event_media_id", type="integer", example=3),
  *                                 @OA\Property(property="media_type", type="string", example="flyer"),
  *                                 @OA\Property(property="file_path", type="string", example="events/1/flyer/flyer1.jpg"),
@@ -144,8 +155,10 @@ namespace App\Documentation\Swagger\EventCreation;
  *                         @OA\Property(
  *                             property="video",
  *                             type="array",
+ *
  *                             @OA\Items(
  *                                 type="object",
+ *
  *                                 @OA\Property(property="event_media_id", type="integer", example=4),
  *                                 @OA\Property(property="media_type", type="string", example="video"),
  *                                 @OA\Property(property="file_path", type="string", example="events/1/video/video.mp4"),
@@ -158,8 +171,10 @@ namespace App\Documentation\Swagger\EventCreation;
  *                     @OA\Property(
  *                         property="social_media",
  *                         type="array",
+ *
  *                         @OA\Items(
  *                             type="object",
+ *
  *                             @OA\Property(property="event_social_media_id", type="integer", example=1),
  *                             @OA\Property(property="platform", type="string", example="facebook"),
  *                             @OA\Property(property="url", type="string", example="https://facebook.com/eventpage")
@@ -173,8 +188,10 @@ namespace App\Documentation\Swagger\EventCreation;
  *                     @OA\Property(
  *                         property="tickets",
  *                         type="array",
+ *
  *                         @OA\Items(
  *                             type="object",
+ *
  *                             @OA\Property(property="ticket_id", type="integer", example=1),
  *                             @OA\Property(property="ticket_category_id", type="integer", example=1),
  *                             @OA\Property(property="category_name", type="string", example="Early Bird"),
@@ -191,8 +208,10 @@ namespace App\Documentation\Swagger\EventCreation;
  *                         property="ticket_categories",
  *                         type="array",
  *                         description="All ticket categories for this event (for dropdown)",
+ *
  *                         @OA\Items(
  *                             type="object",
+ *
  *                             @OA\Property(property="ticket_category_id", type="integer", example=1),
  *                             @OA\Property(property="category_name", type="string", example="Early Bird")
  *                         )
@@ -227,16 +246,20 @@ namespace App\Documentation\Swagger\EventCreation;
  *                     @OA\Property(
  *                         property="artists",
  *                         type="array",
+ *
  *                         @OA\Items(
  *                             type="object",
+ *
  *                             @OA\Property(property="event_artist_id", type="integer", example=1),
  *                             @OA\Property(property="artist_name", type="string", example="John Doe"),
  *                             @OA\Property(property="artist_image", type="string", nullable=true, example="artists/1/john_doe.jpg"),
  *                             @OA\Property(
  *                                 property="social_media",
  *                                 type="array",
+ *
  *                                 @OA\Items(
  *                                     type="object",
+ *
  *                                     @OA\Property(property="artist_social_media_id", type="integer", example=1),
  *                                     @OA\Property(property="platform", type="string", example="instagram"),
  *                                     @OA\Property(property="url", type="string", example="https://instagram.com/@johndoe")
@@ -264,8 +287,10 @@ namespace App\Documentation\Swagger\EventCreation;
  *                     @OA\Property(
  *                         property="coupons",
  *                         type="array",
+ *
  *                         @OA\Items(
  *                             type="object",
+ *
  *                             @OA\Property(property="coupon_id", type="integer", example=1),
  *                             @OA\Property(property="coupon_code", type="string", example="EARLY20"),
  *                             @OA\Property(property="discount_type", type="string", example="percentage"),
@@ -282,11 +307,14 @@ namespace App\Documentation\Swagger\EventCreation;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=400,
  *         description="Validation error (E001). Request validation failed. event_id is missing or invalid.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -299,6 +327,7 @@ namespace App\Documentation\Swagger\EventCreation;
  *                     @OA\Property(
  *                         property="event_id",
  *                         type="array",
+ *
  *                         @OA\Items(type="string"),
  *                         example={"The event id field is required.", "The selected event id is invalid."}
  *                     )
@@ -306,11 +335,14 @@ namespace App\Documentation\Swagger\EventCreation;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=401,
  *         description="Authentication error (E003). User authentication failed. Token is missing, invalid, or expired.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -320,11 +352,14 @@ namespace App\Documentation\Swagger\EventCreation;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=404,
  *         description="Not found error (E404). Event not found or user does not have permission to view it.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -334,11 +369,14 @@ namespace App\Documentation\Swagger\EventCreation;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=500,
  *         description="Server error (E002). An unexpected error occurred while retrieving event data for editing.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -354,4 +392,3 @@ class GetEventDataForEditing
 {
     // Empty class for swagger-php to parse annotations
 }
-

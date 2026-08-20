@@ -9,11 +9,14 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *     description="Returns the authenticated Super Admin's profile information. Requires valid Sanctum token (token header or Authorization Bearer). Response includes first name, last name, phone number, and profile image path. Email is read-only.",
  *     tags={"Super Admin API"},
  *     security={{"sanctum":{}}},
+ *
  *     @OA\Response(
  *         response=200,
  *         description="Profile retrieved successfully.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=true),
  *             @OA\Property(
  *                 property="data",
@@ -32,11 +35,14 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=401,
  *         description="Authentication required.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",

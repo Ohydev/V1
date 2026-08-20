@@ -7,7 +7,7 @@ namespace App\Documentation\Swagger\CartManagement;
  *     path="/v1/update_cart_item",
  *     summary="Update Cart Item",
  *     description="Allows authenticated End Users to update quantity of items in their shopping cart. This endpoint handles updating cart item quantity with comprehensive validation for ticket availability and max per user limits. If quantity is set to 0, the cart item will be automatically deleted. Protected route - requires authentication via Laravel Sanctum token.
- * 
+ *
  * **Complete Flow:**
  * 1. Authentication check: Middleware (AuthenticateApiToken and AuthenticateUser) verifies Sanctum token and retrieves authenticated user
  * 2. Request validation: Validates required fields (cart_id: required|integer|min:1, quantity: required|integer|min:0)
@@ -65,11 +65,14 @@ namespace App\Documentation\Swagger\CartManagement;
  * - Ownership validation: Cart item must belong to authenticated user (user_id from token) - enforced in query condition",
  *     tags={"End User - Cart Management API"},
  *     security={{"sanctum": {}}},
+ *
  *     @OA\RequestBody(
  *         required=true,
  *         description="Request body containing cart item information to update",
+ *
  *         @OA\JsonContent(
  *             required={"cart_id", "quantity"},
+ *
  *             @OA\Property(
  *                 property="cart_id",
  *                 type="integer",
@@ -84,10 +87,13 @@ namespace App\Documentation\Swagger\CartManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=200,
  *         description="Success - Cart item updated or removed successfully",
+ *
  *         @OA\JsonContent(
+ *
  *             @OA\Property(property="success", type="boolean", example=true),
  *             @OA\Property(
  *                 property="data",
@@ -120,10 +126,13 @@ namespace App\Documentation\Swagger\CartManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=400,
  *         description="Bad Request - Validation error or business logic error",
+ *
  *         @OA\JsonContent(
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -132,6 +141,7 @@ namespace App\Documentation\Swagger\CartManagement;
  *                 @OA\Property(
  *                     property="error_message",
  *                     oneOf={
+ *
  *                         @OA\Schema(type="object", description="Validation errors object (E001)", example={"cart_id": {"The cart id field is required."}, "quantity": {"The quantity must be at least 0."}}),
  *                         @OA\Schema(type="string", description="Business logic error message (E004)", example="Ticket belongs to an unpublished event")
  *                     }
@@ -139,10 +149,13 @@ namespace App\Documentation\Swagger\CartManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=404,
  *         description="Not Found - Cart item not found or ticket not found",
+ *
  *         @OA\JsonContent(
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -152,10 +165,13 @@ namespace App\Documentation\Swagger\CartManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=500,
  *         description="Internal Server Error",
+ *
  *         @OA\JsonContent(
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -171,4 +187,3 @@ class UpdateCartItem
 {
     // Empty class - annotations are in docblock
 }
-

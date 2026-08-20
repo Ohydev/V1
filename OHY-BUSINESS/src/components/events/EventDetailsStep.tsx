@@ -734,7 +734,7 @@ const EventDetailsStep = ({ categories, videoMetadata }: EventDetailsStepProps) 
                       if ('showPicker' in HTMLInputElement.prototype) {
                         try {
                           // Call showPicker() to open the time picker dropdown
-                          (e.currentTarget as any).showPicker();
+                          (e.currentTarget as HTMLInputElement & { showPicker: () => void }).showPicker();
                         } catch (error) {
                           // If showPicker() fails, the input focus should still work
                           // Browser will handle the time picker display
@@ -779,7 +779,7 @@ const EventDetailsStep = ({ categories, videoMetadata }: EventDetailsStepProps) 
                       if ('showPicker' in HTMLInputElement.prototype) {
                         try {
                           // Call showPicker() to open the time picker dropdown
-                          (e.currentTarget as any).showPicker();
+                          (e.currentTarget as HTMLInputElement & { showPicker: () => void }).showPicker();
                         } catch (error) {
                           // If showPicker() fails, the input focus should still work
                           // Browser will handle the time picker display

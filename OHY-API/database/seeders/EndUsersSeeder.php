@@ -2,18 +2,18 @@
 
 namespace Database\Seeders;
 
+use App\Models\OrderModel;
+use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Crypt;
-use Faker\Factory as Faker;
-use App\Models\OrderModel;
 
 class EndUsersSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     * 
+     *
      * Creates 10 end users with complete profiles and purchase history.
      * Each user has:
      * - User profile (name, email, contact, profile image)
@@ -26,19 +26,19 @@ class EndUsersSeeder extends Seeder
     {
         // Initialize Faker instance for generating realistic data
         $faker = Faker::create();
-        
+
         // Get all published events (for ticket purchases)
         $publishedEvents = DB::table('events')
             ->where('is_published', true)
             ->where('is_draft', false)
             ->pluck('event_id')
             ->toArray();
-        
+
         // Get all tickets from published events
         $availableTickets = DB::table('tickets')
             ->whereIn('event_id', $publishedEvents)
             ->get();
-        
+
         // Get all active coupons (for applying to orders)
         $activeCoupons = DB::table('coupons')
             ->where('start_date', '<=', now()->format('Y-m-d'))
@@ -48,10 +48,10 @@ class EndUsersSeeder extends Seeder
             })
             ->whereColumn('times_used', '<', 'max_times_applicable')
             ->get();
-        
+
         // Get countries for billing addresses
         $countries = DB::table('countries')->where('is_deleted', 0)->pluck('country_id')->toArray();
-        
+
         // Create 10 end users
         for ($userIndex = 1; $userIndex <= 10; $userIndex++) {
             // Step 1: Create user record
@@ -64,33 +64,33 @@ class EndUsersSeeder extends Seeder
                 'created_at' => now(), // Account creation timestamp
                 'updated_at' => now(), // Last update timestamp
             ]);
-            
+
             // Update profile image path now that we have user_id
             DB::table('users')
                 ->where('user_id', $userId)
                 ->update([
-                    'profile_image' => "users/{$userId}/profile_image_" . time() . ".jpg", // Profile image path
+                    'profile_image' => "users/{$userId}/profile_image_".time().'.jpg', // Profile image path
                 ]);
-            
+
             // Step 2: Create orders (random 2-4 orders per user)
             $orderCount = $faker->numberBetween(2, 4);
             $userOrders = [];
-            
+
             for ($orderIndex = 1; $orderIndex <= $orderCount; $orderIndex++) {
                 // Select random tickets for this order (1-3 different ticket types)
                 $ticketsForOrder = $availableTickets->random($faker->numberBetween(1, 3));
-                
+
                 // Calculate order totals
                 $subtotal = 0;
                 $orderTicketsData = [];
-                
+
                 foreach ($ticketsForOrder as $ticket) {
                     $quantity = $faker->numberBetween(1, 5); // Random quantity 1-5
                     $unitPrice = $ticket->price; // Snapshot of ticket price
                     $totalPrice = $unitPrice * $quantity; // Total for this line item
-                    
+
                     $subtotal += $totalPrice; // Add to order subtotal
-                    
+
                     // Store order ticket data for later insertion
                     $orderTicketsData[] = [
                         'ticket' => $ticket,
@@ -99,16 +99,16 @@ class EndUsersSeeder extends Seeder
                         'total_price' => $totalPrice,
                     ];
                 }
-                
+
                 // Randomly apply coupon (30% chance)
                 $couponId = null;
                 $couponDiscount = null;
                 $appliedCoupon = null;
-                
+
                 if ($faker->boolean(30) && $activeCoupons->isNotEmpty()) {
                     $appliedCoupon = $activeCoupons->random();
                     $couponId = $appliedCoupon->coupon_id;
-                    
+
                     // Calculate discount based on coupon type
                     if ($appliedCoupon->discount_type === 'percentage') {
                         $discount = ($subtotal * $appliedCoupon->discount_percent) / 100;
@@ -121,7 +121,7 @@ class EndUsersSeeder extends Seeder
                         $couponDiscount = $appliedCoupon->flat_discount_amount;
                     }
                 }
-                
+
                 // Calculate total amount
                 $totalAmount = $subtotal;
                 if ($couponDiscount) {
@@ -129,10 +129,10 @@ class EndUsersSeeder extends Seeder
                 }
                 // Generate unique order number in ohy-ddmmyyyy-XXX format
                 $orderNumber = OrderModel::generateDailyOrderNumber();
-                
+
                 // Get random country for billing address
                 $billingCountryId = $faker->randomElement($countries);
-                
+
                 // Create order record
                 $orderId = DB::table('orders')->insertGetId([
                     'order_number' => $orderNumber, // Unique order number
@@ -157,14 +157,14 @@ class EndUsersSeeder extends Seeder
                     'created_at' => now(), // Order creation timestamp
                     'updated_at' => now(), // Last update timestamp
                 ]);
-                
+
                 // Store order ID for later reference
                 $userOrders[] = $orderId;
-                
+
                 // Step 3: Create order_tickets for this order
                 foreach ($orderTicketsData as $orderTicketData) {
                     $ticket = $orderTicketData['ticket'];
-                    
+
                     // Insert order ticket record
                     DB::table('order_tickets')->insert([
                         'order_id' => $orderId, // Associated order
@@ -175,14 +175,14 @@ class EndUsersSeeder extends Seeder
                         'created_at' => now(), // Creation timestamp
                         'updated_at' => now(), // Last update timestamp
                     ]);
-                    
+
                     // Step 4: Update ticket sold_quantity
                     // Increment sold_quantity atomically to prevent over-selling
                     DB::table('tickets')
                         ->where('ticket_id', $ticket->ticket_id)
                         ->increment('sold_quantity', $orderTicketData['quantity']);
                 }
-                
+
                 // Step 5: Update coupon times_used if coupon was applied
                 if ($appliedCoupon) {
                     DB::table('coupons')
@@ -190,26 +190,26 @@ class EndUsersSeeder extends Seeder
                         ->increment('times_used');
                 }
             }
-            
+
             // Step 6: Create cart items (for some users - 40% chance)
             if ($faker->boolean(40)) {
                 // Select random tickets from published events
                 $cartTickets = $availableTickets->random($faker->numberBetween(1, 3));
-                
+
                 foreach ($cartTickets as $ticket) {
                     // Check if ticket is still available (not sold out)
                     $ticketInfo = DB::table('tickets')->where('ticket_id', $ticket->ticket_id)->first();
                     $available = $ticketInfo->total_available - $ticketInfo->sold_quantity;
-                    
+
                     if ($available > 0) {
                         $cartQuantity = $faker->numberBetween(1, min(3, $available)); // Max 3 or available quantity
-                        
+
                         // Check if cart item already exists for this user and ticket
                         $existingCart = DB::table('carts')
                             ->where('user_id', $userId)
                             ->where('ticket_id', $ticket->ticket_id)
                             ->first();
-                        
+
                         if ($existingCart) {
                             // Update quantity if cart item exists
                             DB::table('carts')
@@ -234,4 +234,3 @@ class EndUsersSeeder extends Seeder
         }
     }
 }
-

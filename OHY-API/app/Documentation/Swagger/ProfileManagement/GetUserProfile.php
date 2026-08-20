@@ -7,7 +7,7 @@ namespace App\Documentation\Swagger\ProfileManagement;
  *     path="/v1/get_user_profile",
  *     summary="Get User Profile",
  *     description="Retrieves the profile information for the authenticated End User, including full name, email, contact number, and profile image. This endpoint retrieves the authenticated user's profile data from the database and returns it in a formatted response. Protected route - requires authentication via Laravel Sanctum token.
- * 
+ *
  * **Complete Flow:**
  * 1. Authentication check: Middleware (AuthenticateApiToken and AuthenticateUser) verifies Sanctum token and retrieves authenticated user
  * 2. User retrieval: Gets authenticated user from request object (set by middleware)
@@ -19,26 +19,29 @@ namespace App\Documentation\Swagger\ProfileManagement;
  *    - profile_image: File path to profile picture (nullable, may be null)
  * 4. Response formatting: Excludes sensitive fields (password, remember_token) from response
  * 5. Success response: Returns formatted user profile data
- * 
+ *
  * **Security Considerations:**
  * - Requires valid Sanctum token in request header (Authorization: Bearer {token} or token: {token})
  * - Only authenticated user can access their own profile
  * - Password and other sensitive fields are excluded from response
- * 
+ *
  * **Data Relationships:**
  * - User profile data is retrieved directly from users table
  * - No related data is loaded (simple profile retrieval)
- * 
+ *
  * **Error Scenarios:**
  * - If authentication fails: Middleware returns 401 error (not handled in controller)
  * - If server error occurs: Returns 500 error with error code E002",
  *     tags={"End User - Profile Management API"},
  *     security={{"sanctum": {}}},
+ *
  *     @OA\Response(
  *         response=200,
  *         description="User profile retrieved successfully",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=true),
  *             @OA\Property(
  *                 property="data",
@@ -57,11 +60,14 @@ namespace App\Documentation\Swagger\ProfileManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=500,
  *         description="Server error occurred",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -77,4 +83,3 @@ class GetUserProfile
 {
     // Empty class - annotations are in docblock
 }
-

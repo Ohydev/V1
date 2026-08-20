@@ -2,19 +2,17 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Carbon;
-use App\Models\SuperAdminModel;
-use App\Models\EventModel;
-use App\Models\TicketModel;
-use App\Models\OrderModel;
-use App\Models\HostUserModel;
 use App\Models\EventCategoryModel;
+use App\Models\EventModel;
+use App\Models\HostUserModel;
+use App\Models\OrderModel;
+use App\Models\SuperAdminModel;
+use App\Models\TicketModel;
 use App\Models\VenueModel;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Carbon;
 use Laravel\Sanctum\Sanctum;
+use Tests\TestCase;
 
 class SuperAdminDashboardTest extends TestCase
 {
@@ -100,4 +98,3 @@ class SuperAdminDashboardTest extends TestCase
         Carbon::setTestNow();
     }
 }
-

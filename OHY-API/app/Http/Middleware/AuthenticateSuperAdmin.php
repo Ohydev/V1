@@ -2,19 +2,17 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\SuperAdminModel;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use App\Models\SuperAdminModel;
 
 class AuthenticateSuperAdmin
 {
     /**
      * Handle an incoming request.
-     * 
-     * @param \Illuminate\Http\Request $request
-     * @param \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response) $next
-     * @return Response
+     *
+     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
     public function handle(Request $request, Closure $next): Response
     {
@@ -34,7 +32,7 @@ class AuthenticateSuperAdmin
         }
 
         // Verify authenticated model is a SuperAdminModel instance
-        if (!($user instanceof SuperAdminModel)) {
+        if (! ($user instanceof SuperAdminModel)) {
             // Return authorization error when user is not super admin
             return response()->json([
                 'success' => false,
@@ -49,4 +47,3 @@ class AuthenticateSuperAdmin
         return $next($request);
     }
 }
-

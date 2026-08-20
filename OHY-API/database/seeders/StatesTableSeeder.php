@@ -74,4 +74,3 @@ class StatesTableSeeder extends Seeder
         }
     }
 }
-

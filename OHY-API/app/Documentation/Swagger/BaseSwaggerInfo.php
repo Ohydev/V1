@@ -7,6 +7,7 @@ namespace App\Documentation\Swagger;
  *     title="OHY Events API",
  *     version="1.0.0",
  *     description="Comprehensive API documentation for OHY Events platform. This API enables Event Hosts to create, manage, and track events, as well as manage their profiles and view analytics. All authenticated endpoints require a Laravel Sanctum token in the request header.",
+ *
  *     @OA\Contact(
  *         email="support@ohyevents.com"
  *     )
@@ -29,4 +30,3 @@ class BaseSwaggerInfo
 {
     // Base Swagger information and security schemes
 }
-

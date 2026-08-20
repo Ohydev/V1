@@ -2,11 +2,11 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\SuperAdminModel;
-use Laravel\Sanctum\PersonalAccessToken;
 use Carbon\Carbon;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Sanctum\PersonalAccessToken;
+use Tests\TestCase;
 
 class SuperAdminLoginTest extends TestCase
 {
@@ -109,4 +109,3 @@ class SuperAdminLoginTest extends TestCase
         Carbon::setTestNow(); // Clear test now
     }
 }
-

@@ -50,11 +50,14 @@ namespace App\Documentation\Swagger\EventCreation;
  * - Server errors (500): E002 error code for unexpected server-side exceptions",
  *     tags={"Event Creation Management API"},
  *     security={{"sanctum": {}}},
+ *
  *     @OA\Response(
  *         response=200,
  *         description="Master data retrieved successfully. Returns all master data organized by category for the 7-step event creation wizard.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=true),
  *             @OA\Property(
  *                 property="data",
@@ -64,8 +67,10 @@ namespace App\Documentation\Swagger\EventCreation;
  *                     property="event_categories",
  *                     type="array",
  *                     description="Array of event categories sorted alphabetically by category_name. Used in Step 1 for category selection dropdown.",
+ *
  *                     @OA\Items(
  *                         type="object",
+ *
  *                         @OA\Property(property="event_category_id", type="integer", description="Unique identifier for the event category", example=1),
  *                         @OA\Property(property="category_name", type="string", description="Category name (e.g., 'Technology', 'Music', 'Sports')", example="Technology")
  *                     ),
@@ -75,8 +80,10 @@ namespace App\Documentation\Swagger\EventCreation;
  *                     property="countries",
  *                     type="array",
  *                     description="Array of active countries sorted alphabetically by name. Used in Step 3 for venue country selection dropdown. Only countries with is_deleted = 0 are included.",
+ *
  *                     @OA\Items(
  *                         type="object",
+ *
  *                         @OA\Property(property="country_id", type="integer", description="Unique identifier for the country", example=1),
  *                         @OA\Property(property="name", type="string", description="Common country name (e.g., 'United States')", example="United States"),
  *                         @OA\Property(property="nicename", type="string", description="User-friendly country name (e.g., 'United States of America')", example="United States of America"),
@@ -89,8 +96,10 @@ namespace App\Documentation\Swagger\EventCreation;
  *                     property="ticket_types",
  *                     type="array",
  *                     description="Array of ticket type ENUM values with human-readable labels. Used in Step 2 for ticket type selection dropdown. Values are hardcoded from database schema.",
+ *
  *                     @OA\Items(
  *                         type="object",
+ *
  *                         @OA\Property(property="value", type="string", description="ENUM value from database (snake_case)", example="single_entry"),
  *                         @OA\Property(property="label", type="string", description="Human-readable label (Title Case)", example="Single Entry")
  *                     ),
@@ -100,8 +109,10 @@ namespace App\Documentation\Swagger\EventCreation;
  *                     property="social_media_platforms",
  *                     type="array",
  *                     description="Array of all social media platforms including Spotify. Used in Step 4 for artist social media links. All platforms are included (Facebook, Instagram, TikTok, LinkedIn, Snapchat, X/Twitter, YouTube, Spotify).",
+ *
  *                     @OA\Items(
  *                         type="object",
+ *
  *                         @OA\Property(property="value", type="string", description="ENUM value from database (snake_case)", example="facebook"),
  *                         @OA\Property(property="label", type="string", description="Human-readable label (Title Case)", example="Facebook")
  *                     ),
@@ -111,8 +122,10 @@ namespace App\Documentation\Swagger\EventCreation;
  *                     property="event_social_media_platforms",
  *                     type="array",
  *                     description="Array of social media platforms without Spotify. Used in Step 1 for event social media links. Spotify is excluded because events cannot have Spotify links (only artists can).",
+ *
  *                     @OA\Items(
  *                         type="object",
+ *
  *                         @OA\Property(property="value", type="string", description="ENUM value from database (snake_case)", example="facebook"),
  *                         @OA\Property(property="label", type="string", description="Human-readable label (Title Case)", example="Facebook")
  *                     ),
@@ -122,8 +135,10 @@ namespace App\Documentation\Swagger\EventCreation;
  *                     property="discount_types",
  *                     type="array",
  *                     description="Array of discount type ENUM values with human-readable labels. Used in Step 6 for coupon creation. Values are hardcoded from database schema.",
+ *
  *                     @OA\Items(
  *                         type="object",
+ *
  *                         @OA\Property(property="value", type="string", description="ENUM value from database (snake_case)", example="percentage"),
  *                         @OA\Property(property="label", type="string", description="Human-readable label (Title Case)", example="Percentage Discount")
  *                     ),
@@ -132,11 +147,14 @@ namespace App\Documentation\Swagger\EventCreation;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=401,
  *         description="Authentication error (E003). User authentication failed. Token is missing, invalid, or expired.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -146,11 +164,14 @@ namespace App\Documentation\Swagger\EventCreation;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=500,
  *         description="Server error (E002). An unexpected error occurred while retrieving master data.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -166,4 +187,3 @@ class GetEventCreationMasterData
 {
     // Empty class for swagger-php to parse annotations
 }
-

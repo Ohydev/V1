@@ -439,7 +439,7 @@ const ViewEvent = () => {
     // Calculate start page (centered around current page)
     let startPage = Math.max(1, attendeesCurrentPage - Math.floor(maxVisiblePages / 2));
     // Calculate end page
-    let endPage = Math.min(attendeesPagination.total_pages, startPage + maxVisiblePages - 1);
+    const endPage = Math.min(attendeesPagination.total_pages, startPage + maxVisiblePages - 1);
     // Adjust start page if we don't have enough pages
     if (endPage - startPage + 1 < maxVisiblePages) {
       startPage = Math.max(1, endPage - maxVisiblePages + 1);

@@ -9,39 +9,50 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *     description="Lists all published events across the platform (drafts excluded) with the same structure as the Event Host events list. Includes status counts for Live/Ongoing, Upcoming, Completed tabs, search, status filter, and pagination metadata.",
  *     tags={"Super Admin API"},
  *     security={{"sanctum":{}}},
+ *
  *     @OA\Parameter(
  *         name="page",
  *         in="query",
  *         required=false,
+ *
  *         @OA\Schema(type="integer", minimum=1),
  *         description="Page number (default 1)"
  *     ),
+ *
  *     @OA\Parameter(
  *         name="per_page",
  *         in="query",
  *         required=false,
+ *
  *         @OA\Schema(type="integer", minimum=1, maximum=100),
  *         description="Number of events per page (default 10)"
  *     ),
+ *
  *     @OA\Parameter(
  *         name="status",
  *         in="query",
  *         required=false,
+ *
  *         @OA\Schema(type="string", enum={"live","upcoming","completed"}),
  *         description="Filter by event status tab (Live/Ongoing, Upcoming, Completed)"
  *     ),
+ *
  *     @OA\Parameter(
  *         name="search",
  *         in="query",
  *         required=false,
+ *
  *         @OA\Schema(type="string"),
  *         description="Search term for event title or description"
  *     ),
+ *
  *     @OA\Response(
  *         response=200,
  *         description="Events retrieved successfully.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=true),
  *             @OA\Property(
  *                 property="data",
@@ -57,8 +68,10 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *                 @OA\Property(
  *                     property="events",
  *                     type="array",
+ *
  *                     @OA\Items(
  *                         type="object",
+ *
  *                         @OA\Property(property="event_id", type="integer", example=42),
  *                         @OA\Property(property="event_title", type="string", example="International Auto & Mobility Expo 2025"),
  *                         @OA\Property(property="description", type="string", example="<p>Event description...</p>"),
@@ -86,11 +99,14 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=400,
  *         description="Validation error (E001).",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -100,11 +116,14 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=401,
  *         description="Authentication error (E003).",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -114,11 +133,14 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=500,
  *         description="Server error (E002).",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -134,4 +156,3 @@ class GetSuperAdminEventsList
 {
     // Swagger documentation for Super Admin events list
 }
-

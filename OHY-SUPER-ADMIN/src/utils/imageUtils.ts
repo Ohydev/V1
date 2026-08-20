@@ -117,8 +117,8 @@ export const compressImage = async (
   await imageLoadPromise;
 
   // Calculate initial dimensions
-  let width = img.width;
-  let height = img.height;
+  const width = img.width;
+  const height = img.height;
   // Target dimensions (start with original, will reduce if needed)
   let targetWidth = width;
   let targetHeight = height;

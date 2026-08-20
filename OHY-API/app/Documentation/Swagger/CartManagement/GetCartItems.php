@@ -7,7 +7,7 @@ namespace App\Documentation\Swagger\CartManagement;
  *     path="/v1/get_cart_items",
  *     summary="Get Cart Items",
  *     description="Retrieves all items in the authenticated End User's shopping cart with complete event and ticket details, including event thumbnail, venue information, and calculated subtotal. This endpoint returns all cart items for the authenticated user with nested event data, venue details, and formatted pricing. Protected route - requires authentication via Laravel Sanctum token.
- * 
+ *
  * **Complete Flow:**
  * 1. Authentication check: Middleware (AuthenticateApiToken and AuthenticateUser) verifies Sanctum token and retrieves authenticated user
  * 2. User retrieval: Gets authenticated user from request (set by middleware)
@@ -72,10 +72,13 @@ namespace App\Documentation\Swagger\CartManagement;
  * - Ownership validation: Users can only view their own cart items",
  *     tags={"End User - Cart Management API"},
  *     security={{"sanctum": {}}},
+ *
  *     @OA\Response(
  *         response=200,
  *         description="Success - Cart items retrieved successfully",
+ *
  *         @OA\JsonContent(
+ *
  *             @OA\Property(property="success", type="boolean", example=true),
  *             @OA\Property(
  *                 property="data",
@@ -85,8 +88,10 @@ namespace App\Documentation\Swagger\CartManagement;
  *                     property="cart_items",
  *                     type="array",
  *                     description="Array of cart items with complete event and ticket details",
+ *
  *                     @OA\Items(
  *                         type="object",
+ *
  *                         @OA\Property(property="cart_id", type="integer", description="Cart item ID", example=1),
  *                         @OA\Property(property="ticket_id", type="integer", description="Ticket ID", example=1),
  *                         @OA\Property(property="quantity", type="integer", description="Quantity in cart", example=2),
@@ -122,10 +127,13 @@ namespace App\Documentation\Swagger\CartManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=500,
  *         description="Internal Server Error",
+ *
  *         @OA\JsonContent(
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -141,4 +149,3 @@ class GetCartItems
 {
     // Empty class - annotations are in docblock
 }
-

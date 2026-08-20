@@ -75,13 +75,17 @@ namespace App\Documentation\Swagger\EventCreation\EventDetailsManagement;
  * - Server errors (500): E002 error code for unexpected server-side exceptions",
  *     tags={"Event Creation Management API - Event Details Management API"},
  *     security={{"sanctum": {}}},
+ *
  *     @OA\RequestBody(
  *         required=true,
+ *
  *         @OA\MediaType(
  *             mediaType="multipart/form-data",
+ *
  *             @OA\Schema(
  *                 type="object",
  *                 required={"event_title", "description", "event_category_id", "start_date", "end_date", "start_time", "end_time"},
+ *
  *                 @OA\Property(
  *                     property="event_id",
  *                     type="integer",
@@ -159,16 +163,20 @@ namespace App\Documentation\Swagger\EventCreation\EventDetailsManagement;
  *                     property="event_flyer",
  *                     type="array",
  *                     nullable=true,
+ *
  *                     @OA\Items(type="string", format="binary"),
  *                     description="Event flyer image files. Optional field. Multiple files allowed (array). Each file must be an image in one of the following formats: JPEG, PNG, JPG, GIF. Maximum file size per file: 5MB (5120 KB). If provided when updating, all old flyers are automatically deleted. Files stored in storage/public/events/{event_id}/flyer/{filename}. Validation rule: 'nullable|array' for array, 'image|mimes:jpeg,png,jpg,gif|max:5120' for each file"
  *                 ),
+ *
  *                 @OA\Property(
  *                     property="event_video",
  *                     type="array",
  *                     nullable=true,
+ *
  *                     @OA\Items(type="string", format="binary"),
  *                     description="Event video files. Optional field. Multiple files allowed (array). Each file must be a video in one of the following formats: MP4, AVI, MOV, WMV, FLV. Maximum file size per file: 50MB (51200 KB). If provided when updating, all old videos are automatically deleted. Files stored in storage/public/events/{event_id}/video/{filename}. Validation rule: 'nullable|array' for array, 'mimes:mp4,avi,mov,wmv,flv|max:51200' for each file"
  *                 ),
+ *
  *                 @OA\Property(
  *                     property="facebook_url",
  *                     type="string",
@@ -235,11 +243,14 @@ namespace App\Documentation\Swagger\EventCreation\EventDetailsManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=200,
  *         description="Event Step 1 saved successfully. Returns event data with formatted dates and times, and is_new_event flag.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=true),
  *             @OA\Property(
  *                 property="data",
@@ -264,11 +275,14 @@ namespace App\Documentation\Swagger\EventCreation\EventDetailsManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=400,
  *         description="Validation error (E001) or Business logic error (E004). Request validation failed or event is published.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -277,28 +291,36 @@ namespace App\Documentation\Swagger\EventCreation\EventDetailsManagement;
  *                 @OA\Property(
  *                     property="error_message",
  *                     oneOf={
+ *
  *                         @OA\Schema(
  *                             type="object",
  *                             description="Validation error messages object when field validation fails",
+ *
  *                             @OA\Property(
  *                                 property="event_title",
  *                                 type="array",
+ *
  *                                 @OA\Items(type="string"),
  *                                 example={"The event title field is required."}
  *                             ),
+ *
  *                             @OA\Property(
  *                                 property="start_date",
  *                                 type="array",
+ *
  *                                 @OA\Items(type="string"),
  *                                 example={"The start date must be a date after or equal to today."}
  *                             ),
+ *
  *                             @OA\Property(
  *                                 property="event_thumbnail",
  *                                 type="array",
+ *
  *                                 @OA\Items(type="string"),
  *                                 example={"The event thumbnail must be an image.", "The event thumbnail must not be greater than 5120 kilobytes."}
  *                             )
  *                         ),
+ *
  *                         @OA\Schema(
  *                             type="string",
  *                             description="Business logic error message",
@@ -309,11 +331,14 @@ namespace App\Documentation\Swagger\EventCreation\EventDetailsManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=401,
  *         description="Authentication error (E003). User authentication failed. Token is missing, invalid, or expired.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -323,11 +348,14 @@ namespace App\Documentation\Swagger\EventCreation\EventDetailsManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=404,
  *         description="Not found error (E404). Event not found or doesn't belong to authenticated user.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -337,11 +365,14 @@ namespace App\Documentation\Swagger\EventCreation\EventDetailsManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=500,
  *         description="Internal server error (E002). An unexpected error occurred during event save. This could be due to database connection issues, file storage failures, transaction failures, or other server-side exceptions.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -357,4 +388,3 @@ class SaveEventStep1
 {
     // Save Event Step 1 API documentation
 }
-

@@ -85,39 +85,50 @@ namespace App\Documentation\Swagger\EventManagement;
  * - Server errors (500): E002 error code for unexpected server-side exceptions",
  *     tags={"Event Management API"},
  *     security={{"sanctum": {}}},
+ *
  *     @OA\Parameter(
  *         name="status",
  *         in="query",
  *         required=false,
  *         description="Status filter to filter events by status. Valid values: 'live', 'upcoming', 'completed', 'drafts'. If not provided, returns all events for the host user.",
+ *
  *         @OA\Schema(type="string", enum={"live", "upcoming", "completed", "drafts"}, example="live")
  *     ),
+ *
  *     @OA\Parameter(
  *         name="search",
  *         in="query",
  *         required=false,
  *         description="Search query to search across event titles and descriptions. Case-insensitive partial matching. Maximum 255 characters.",
+ *
  *         @OA\Schema(type="string", maxLength=255, example="tech conference")
  *     ),
+ *
  *     @OA\Parameter(
  *         name="page",
  *         in="query",
  *         required=false,
  *         description="Page number for pagination. Minimum 1. Default is 1.",
+ *
  *         @OA\Schema(type="integer", minimum=1, example=1)
  *     ),
+ *
  *     @OA\Parameter(
  *         name="per_page",
  *         in="query",
  *         required=false,
  *         description="Number of events per page. Minimum 1, maximum 100. Default is 30.",
+ *
  *         @OA\Schema(type="integer", minimum=1, maximum=100, example=30)
  *     ),
+ *
  *     @OA\Response(
  *         response=200,
  *         description="Events retrieved successfully. Returns paginated list of events with comprehensive information including status, revenue, attendees, ticket pricing, and thumbnails.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=true),
  *             @OA\Property(
  *                 property="data",
@@ -127,8 +138,10 @@ namespace App\Documentation\Swagger\EventManagement;
  *                     property="events",
  *                     type="array",
  *                     description="Array of events sorted by start_date DESC, start_time DESC (newest first)",
+ *
  *                     @OA\Items(
  *                         type="object",
+ *
  *                         @OA\Property(property="event_id", type="integer", example=1),
  *                         @OA\Property(property="event_title", type="string", example="Tech Conference 2025"),
  *                         @OA\Property(property="description", type="string", description="Event description with rich text formatting", example="<p>Join us for an exciting tech conference...</p>"),
@@ -181,11 +194,14 @@ namespace App\Documentation\Swagger\EventManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=400,
  *         description="Validation error (E001). Request validation failed. Query parameters are invalid.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -198,12 +214,15 @@ namespace App\Documentation\Swagger\EventManagement;
  *                     @OA\Property(
  *                         property="status",
  *                         type="array",
+ *
  *                         @OA\Items(type="string"),
  *                         example={"The selected status is invalid."}
  *                     ),
+ *
  *                     @OA\Property(
  *                         property="per_page",
  *                         type="array",
+ *
  *                         @OA\Items(type="string"),
  *                         example={"The per page must not be greater than 100."}
  *                     )
@@ -211,11 +230,14 @@ namespace App\Documentation\Swagger\EventManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=401,
  *         description="Authentication error (E003). User authentication failed. Token is missing, invalid, or expired.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -225,11 +247,14 @@ namespace App\Documentation\Swagger\EventManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=500,
  *         description="Server error (E002). An unexpected error occurred while retrieving events list.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -245,4 +270,3 @@ class GetEventsList
 {
     // Empty class for swagger-php to parse annotations
 }
-

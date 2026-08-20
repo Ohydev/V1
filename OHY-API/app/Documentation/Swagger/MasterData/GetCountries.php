@@ -7,7 +7,7 @@ namespace App\Documentation\Swagger\MasterData;
  *     path="/v1/get_countries",
  *     summary="Get Countries Master Data",
  *     description="Retrieves all active countries from the countries table. This is a public master data API that does not require authentication. Used for dropdowns in forms across the platform (profile, venue, checkout). Countries are filtered to return only active records (is_deleted = 0) and sorted alphabetically by name for better user experience.
- * 
+ *
  * **Complete Flow:**
  * 1. No authentication check: This is a public route, no authentication required
  * 2. Initialize CountryModel: Creates CountryModel instance to perform database operations
@@ -25,40 +25,43 @@ namespace App\Documentation\Swagger\MasterData;
  * 6. Sorting: Sorts countries array alphabetically by name field using usort() function for better UX
  * 7. Response formatting: Prepares success response with formatted countries array
  * 8. Success response: Returns JSON response with success indicator, message, and countries array
- * 
+ *
  * **Business Logic:**
  * - Filtering: Only active countries are returned (is_deleted = 0). Soft-deleted countries are excluded from results
  * - Sorting: Countries are sorted alphabetically by name field using strcmp() function for consistent ordering
  * - Data transformation: All country fields are extracted from database records and formatted into response array
  * - No pagination: All active countries are returned in a single response (master data is typically manageable in size)
- * 
+ *
  * **Database Operations:**
  * - Query: Uses CountryModel::get_countries_list() method to query countries table
  * - Filter: Applies is_deleted = 0 condition to exclude soft-deleted records
  * - No eager loading: Simple query, no relationships to load
- * 
+ *
  * **Usage Scenarios:**
  * This API is used for country selection dropdowns in various forms across the platform:
  * - Event Host profile: Business address country selection (Business Information tab)
  * - Event venue: Venue country selection (Step 3: Venue Details)
  * - End User checkout: Billing address country selection (Checkout page)
  * - Order processing: Country information stored with orders for billing address
- * 
+ *
  * **Data Source:**
  * - Master data table: countries
  * - Pre-populated with all world countries
  * - Standard ISO country codes (ISO 3166-1 alpha-2 for iso, alpha-3 for iso3)
  * - Typically static data (can be extended but rarely changes)
  * - Phone codes: International dialing codes for phone number formatting/validation
- * 
+ *
  * **Error Scenarios:**
  * - Server Error (500): Returns E002 error code if database connection fails, query fails, or any exception occurs during processing",
  *     tags={"Master Data API"},
+ *
  *     @OA\Response(
  *         response=200,
  *         description="Countries retrieved successfully",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=true),
  *             @OA\Property(
  *                 property="data",
@@ -68,9 +71,11 @@ namespace App\Documentation\Swagger\MasterData;
  *                     property="countries",
  *                     type="array",
  *                     description="Array of all active countries, sorted alphabetically by name",
+ *
  *                     @OA\Items(
  *                         type="object",
  *                         description="Country information object",
+ *
  *                         @OA\Property(property="country_id", type="integer", example=1, description="Country's unique identifier"),
  *                         @OA\Property(property="iso", type="string", example="US", description="Two-letter ISO country code (ISO 3166-1 alpha-2). Examples: 'US' for United States, 'GB' for United Kingdom, 'IN' for India"),
  *                         @OA\Property(property="name", type="string", example="United States", description="Common country name. Examples: 'United States', 'United Kingdom', 'India'"),
@@ -84,11 +89,14 @@ namespace App\Documentation\Swagger\MasterData;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=500,
  *         description="Server error occurred",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -104,4 +112,3 @@ class GetCountries
 {
     // Empty class - annotations are in docblock
 }
-

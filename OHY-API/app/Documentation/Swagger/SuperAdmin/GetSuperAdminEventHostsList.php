@@ -9,6 +9,7 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *     description="Returns a paginated list of event hosts with business info, aggregates, and last login metadata. Filters include search, account_type, business profile flag, date range, and status. All date parsing/formatting uses Carbon per Cursor rules.",
  *     tags={"Super Admin API"},
  *     security={{"sanctum": {}}},
+ *
  *     @OA\Parameter(name="search", in="query", required=false, @OA\Schema(type="string", maxLength=255), description="Search across host first name, last name, email, and phone number."),
  *     @OA\Parameter(name="account_type", in="query", required=false, @OA\Schema(type="string", enum={"business","personal"}), description="Filter by host account type."),
  *     @OA\Parameter(name="has_business_profile", in="query", required=false, @OA\Schema(type="boolean"), description="Set true to return hosts linked with a business profile, false for hosts without business_id."),
@@ -20,11 +21,14 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *     @OA\Parameter(name="zipcode", in="query", required=false, @OA\Schema(type="string", maxLength=20), description="Filter event hosts by host_users.zipcode."),
  *     @OA\Parameter(name="page", in="query", required=false, @OA\Schema(type="integer", minimum=1, example=1), description="Pagination page number (default 1)."),
  *     @OA\Parameter(name="per_page", in="query", required=false, @OA\Schema(type="integer", minimum=1, maximum=100, example=10), description="Number of hosts per page (default 10, max 100)."),
+ *
  *     @OA\Response(
  *         response=200,
  *         description="Hosts retrieved successfully.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=true),
  *             @OA\Property(
  *                 property="data",
@@ -33,8 +37,10 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *                 @OA\Property(
  *                     property="hosts",
  *                     type="array",
+ *
  *                     @OA\Items(
  *                         type="object",
+ *
  *                         @OA\Property(property="host_user_id", type="integer", example=21),
  *                         @OA\Property(property="first_name", type="string", example="Avery"),
  *                         @OA\Property(property="last_name", type="string", example="Sanders"),
@@ -77,11 +83,14 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=400,
  *         description="Validation error (E001).",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -91,11 +100,14 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=401,
  *         description="Authentication error (E003).",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -105,11 +117,14 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=500,
  *         description="Server error (E002).",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -125,4 +140,3 @@ class GetSuperAdminEventHostsList
 {
     // Empty class for swagger-php annotations
 }
-

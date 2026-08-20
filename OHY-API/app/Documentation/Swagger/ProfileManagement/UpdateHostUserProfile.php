@@ -45,13 +45,17 @@ namespace App\Documentation\Swagger\ProfileManagement;
  * - Server errors (500): E002 error code for unexpected server-side exceptions",
  *     tags={"Event Host Profile Management API"},
  *     security={{"sanctum": {}}},
+ *
  *     @OA\RequestBody(
  *         required=true,
+ *
  *         @OA\MediaType(
  *             mediaType="multipart/form-data",
+ *
  *             @OA\Schema(
  *                 type="object",
  *                 required={"first_name", "last_name"},
+ *
  *                 @OA\Property(
  *                     property="first_name",
  *                     type="string",
@@ -100,17 +104,21 @@ namespace App\Documentation\Swagger\ProfileManagement;
  *                 )
  *             )
  *         ),
+ *
  *         @OA\MediaType(
  *             mediaType="application/json",
+ *
  *             @OA\Schema(
  *                 type="object",
  *                 required={"first_name", "last_name"},
+ *
  *                 @OA\Property(property="first_name", type="string", maxLength=255, example="John"),
  *                 @OA\Property(property="last_name", type="string", maxLength=255, example="Doe"),
  *                 @OA\Property(property="phone_number", type="string", nullable=true, maxLength=255, example="+1234567890"),
  *                 @OA\Property(property="website", type="string", format="uri", nullable=true, maxLength=255, example="https://www.example.com"),
  *                 @OA\Property(property="location", type="string", nullable=true, maxLength=255, example="New York, NY")
  *             ),
+ *
  *             @OA\Examples(
  *                 example="WithOptionalFields",
  *                 summary="Update Profile with Optional Fields",
@@ -123,11 +131,14 @@ namespace App\Documentation\Swagger\ProfileManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=200,
  *         description="Profile updated successfully. Returns updated user information with all profile fields.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=true),
  *             @OA\Property(
  *                 property="data",
@@ -148,11 +159,14 @@ namespace App\Documentation\Swagger\ProfileManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=400,
  *         description="Validation error (E001). Request validation failed. Returns detailed error messages for each field that failed validation.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -165,18 +179,23 @@ namespace App\Documentation\Swagger\ProfileManagement;
  *                     @OA\Property(
  *                         property="first_name",
  *                         type="array",
+ *
  *                         @OA\Items(type="string"),
  *                         example={"The first name field is required.", "The first name must not be greater than 255 characters."}
  *                     ),
+ *
  *                     @OA\Property(
  *                         property="website",
  *                         type="array",
+ *
  *                         @OA\Items(type="string"),
  *                         example={"The website must be a valid URL."}
  *                     ),
+ *
  *                     @OA\Property(
  *                         property="profile_image",
  *                         type="array",
+ *
  *                         @OA\Items(type="string"),
  *                         example={"The profile image must be an image.", "The profile image must not be greater than 2048 kilobytes."}
  *                     )
@@ -184,11 +203,14 @@ namespace App\Documentation\Swagger\ProfileManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=401,
  *         description="Authentication error (E003). User authentication failed. Token is missing, invalid, or expired.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -198,11 +220,14 @@ namespace App\Documentation\Swagger\ProfileManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=404,
  *         description="Not found error (E404). User not found in database.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -212,11 +237,14 @@ namespace App\Documentation\Swagger\ProfileManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=500,
  *         description="Internal server error (E002). An unexpected error occurred during profile update. This could be due to database connection issues, file storage failures, or other server-side exceptions.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -232,4 +260,3 @@ class UpdateHostUserProfile
 {
     // Update Host User Profile API documentation
 }
-

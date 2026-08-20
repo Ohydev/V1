@@ -8,7 +8,7 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     * 
+     *
      * Adds is_email_verification_complete column to users table to track email verification status.
      */
     public function up(): void
@@ -21,7 +21,7 @@ return new class extends Migration
 
     /**
      * Reverse the migrations.
-     * 
+     *
      * Removes is_email_verification_complete column from users table.
      */
     public function down(): void

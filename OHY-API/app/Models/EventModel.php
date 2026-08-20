@@ -4,18 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\SuperAdminModel;
 
 class EventModel extends Model
 {
     use HasFactory;
-    
+
     // Define table name for this model
     protected $table = 'events';
-    
+
     // Define primary key column name
     protected $primaryKey = 'event_id';
-    
+
     // Define fillable fields that can be mass-assigned
     protected $fillable = [
         'host_user_id', // Foreign key to host_users table (Event creator/owner)
@@ -37,17 +36,17 @@ class EventModel extends Model
         'featured_by_super_admin_id', // Foreign key to super_admins table (tracks which admin featured it)
         'featured_at', // Timestamp when the event was featured
     ];
-    
+
     // Define hidden fields that should not be included in JSON responses
     protected $hidden = [
         // No hidden fields for event model
     ];
-    
+
     /**
      * Get the attributes that should be cast.
-     * 
+     *
      * Defines how attributes should be cast when accessed.
-     * 
+     *
      * @return array<string, string>
      */
     protected function casts(): array
@@ -65,10 +64,10 @@ class EventModel extends Model
             'featured_at' => 'datetime', // Cast featured_at to datetime
         ];
     }
-    
+
     /**
      * Relationship: Event belongs to a host user
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function hostUser()
@@ -78,10 +77,10 @@ class EventModel extends Model
         // Owner key: host_user_id in host_users table
         return $this->belongsTo(HostUserModel::class, 'host_user_id', 'host_user_id');
     }
-    
+
     /**
      * Relationship: Event belongs to an event category
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function eventCategory()
@@ -91,10 +90,10 @@ class EventModel extends Model
         // Owner key: event_category_id in event_categories table
         return $this->belongsTo(EventCategoryModel::class, 'event_category_id', 'event_category_id');
     }
-    
+
     /**
      * Relationship: Event has one venue
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function venue()
@@ -104,10 +103,10 @@ class EventModel extends Model
         // Local key: event_id in events table
         return $this->hasOne(VenueModel::class, 'event_id', 'event_id');
     }
-    
+
     /**
      * Relationship: Event has one terms and conditions document
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function termsConditions()
@@ -117,10 +116,10 @@ class EventModel extends Model
         // Local key: event_id in events table
         return $this->hasOne(EventTermsConditionModel::class, 'event_id', 'event_id');
     }
-    
+
     /**
      * Relationship: Event has many media files
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function media()
@@ -130,10 +129,10 @@ class EventModel extends Model
         // Local key: event_id in events table
         return $this->hasMany(EventMediaModel::class, 'event_id', 'event_id');
     }
-    
+
     /**
      * Relationship: Event has many social media links
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function socialMedia()
@@ -143,10 +142,10 @@ class EventModel extends Model
         // Local key: event_id in events table
         return $this->hasMany(EventSocialMediaModel::class, 'event_id', 'event_id');
     }
-    
+
     /**
      * Relationship: Event has many ticket categories
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function ticketCategories()
@@ -156,10 +155,10 @@ class EventModel extends Model
         // Local key: event_id in events table
         return $this->hasMany(TicketCategoryModel::class, 'event_id', 'event_id');
     }
-    
+
     /**
      * Relationship: Event has many tickets
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function tickets()
@@ -169,10 +168,10 @@ class EventModel extends Model
         // Local key: event_id in events table
         return $this->hasMany(TicketModel::class, 'event_id', 'event_id');
     }
-    
+
     /**
      * Relationship: Event has many artists
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function artists()
@@ -182,10 +181,10 @@ class EventModel extends Model
         // Local key: event_id in events table
         return $this->hasMany(EventArtistModel::class, 'event_id', 'event_id');
     }
-    
+
     /**
      * Relationship: Event has many coupons
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function coupons()
@@ -195,10 +194,10 @@ class EventModel extends Model
         // Local key: event_id in events table
         return $this->hasMany(CouponModel::class, 'event_id', 'event_id');
     }
-    
+
     /**
      * Relationship: Event belongs to a super admin (who hid it)
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function hiddenBySuperAdmin()
@@ -208,10 +207,10 @@ class EventModel extends Model
         // Owner key: super_admin_id in super_admins table
         return $this->belongsTo(SuperAdminModel::class, 'hidden_by_super_admin_id', 'super_admin_id');
     }
-    
+
     /**
      * Relationship: Event belongs to a super admin (who featured it)
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function featuredBySuperAdmin()
@@ -221,93 +220,99 @@ class EventModel extends Model
         // Owner key: super_admin_id in super_admins table
         return $this->belongsTo(SuperAdminModel::class, 'featured_by_super_admin_id', 'super_admin_id');
     }
-    
+
     /**
      * Get single event record by query conditions
-     * 
-     * @param array $queryCondition Associative array of conditions (e.g., ['event_id' => 1])
+     *
+     * @param  array  $queryCondition  Associative array of conditions (e.g., ['event_id' => 1])
      * @return object|null Event record or null if not found
      */
     public function get_event($queryCondition)
     {
         // Query database using Eloquent where clause with provided conditions
         $result = EventModel::where($queryCondition)->first();
+
         return $result;
     }
-    
+
     /**
      * Get multiple event records by query conditions
-     * 
-     * @param array $queryCondition Associative array of conditions
+     *
+     * @param  array  $queryCondition  Associative array of conditions
      * @return \Illuminate\Database\Eloquent\Collection Collection of event records
      */
     public function get_events_list($queryCondition)
     {
         // Query database to get collection of records matching conditions
         $result = EventModel::where($queryCondition)->get();
+
         return $result;
     }
-    
+
     /**
      * Create new event record
-     * 
-     * @param array $data Associative array of data to insert
+     *
+     * @param  array  $data  Associative array of data to insert
      * @return \Illuminate\Database\Eloquent\Model Created event record
      */
     public function create_event($data)
     {
         // Create new record using Eloquent create method
         $result = EventModel::create($data);
+
         return $result;
     }
-    
+
     /**
      * Update event record by query conditions
-     * 
-     * @param array $queryCondition Associative array of conditions to find record(s)
-     * @param array $editData Associative array of data to update
+     *
+     * @param  array  $queryCondition  Associative array of conditions to find record(s)
+     * @param  array  $editData  Associative array of data to update
      * @return int Number of affected rows
      */
     public function update_event_data($queryCondition, $editData)
     {
         // Update records matching query conditions
         $result = EventModel::where($queryCondition)->update($editData);
+
         return $result;
     }
-    
+
     /**
      * Delete event record by query conditions
-     * 
-     * @param array $queryCondition Associative array of conditions to find record(s)
+     *
+     * @param  array  $queryCondition  Associative array of conditions to find record(s)
      * @return int Number of affected rows
      */
     public function delete_event($queryCondition)
     {
         // Delete records matching query conditions
         $result = EventModel::where($queryCondition)->delete();
+
         return $result;
     }
-    
+
     /**
      * Check if event record exists by query conditions
-     * 
-     * @param array $queryCondition Associative array of conditions
+     *
+     * @param  array  $queryCondition  Associative array of conditions
      * @return bool True if record exists, false otherwise
      */
     public function check_event_exists($queryCondition)
     {
         // Check if any record exists matching the conditions
         $result = EventModel::where($queryCondition)->exists();
+
         return $result;
     }
-    
+
     /**
      * Get count of active/live events for the host user
-     * 
+     *
      * Active events are events where current date/time is between start and end date/time,
      * and the event is published (is_published = true, is_draft = false).
-     * 
-     * @param int $hostUserId Host user ID to filter events
+     *
+     * @param  int  $hostUserId  Host user ID to filter events
      * @return int Count of active events
      */
     public function get_active_events_count($hostUserId)
@@ -318,16 +323,17 @@ class EventModel extends Model
             ->where('is_published', true) // Must be published
             ->whereRaw("NOW() BETWEEN CONCAT(start_date, ' ', start_time) AND CONCAT(end_date, ' ', end_time)") // Current time between start and end
             ->count(); // Count matching records
+
         return $result;
     }
-    
+
     /**
      * Get count of completed events for the host user
-     * 
+     *
      * Completed events are events where end date/time has passed,
      * and the event is published (is_published = true, is_draft = false).
-     * 
-     * @param int $hostUserId Host user ID to filter events
+     *
+     * @param  int  $hostUserId  Host user ID to filter events
      * @return int Count of completed events
      */
     public function get_completed_events_count($hostUserId)
@@ -338,17 +344,18 @@ class EventModel extends Model
             ->where('is_published', true) // Must be published
             ->whereRaw("CONCAT(end_date, ' ', end_time) < NOW()") // End time has passed
             ->count(); // Count matching records
+
         return $result;
     }
-    
+
     /**
      * Get most recent events for the host user with essential relationships
-     * 
+     *
      * Retrieves the most recent events ordered by creation date, with relationships
      * loaded for efficient data access (category, venue, tickets, media).
-     * 
-     * @param int $hostUserId Host user ID to filter events
-     * @param int $limit Number of events to return (default: 3)
+     *
+     * @param  int  $hostUserId  Host user ID to filter events
+     * @param  int  $limit  Number of events to return (default: 3)
      * @return \Illuminate\Database\Eloquent\Collection Collection of event records with relationships loaded
      */
     public function get_recent_events($hostUserId, $limit = 3)
@@ -359,6 +366,7 @@ class EventModel extends Model
             ->orderBy('created_at', 'DESC') // Order by creation date descending (most recent first)
             ->limit($limit) // Limit to specified number of records
             ->get(); // Get collection of records
+
         return $result;
     }
 
@@ -369,18 +377,18 @@ class EventModel extends Model
      * with optional search, category filter, location filter, and date range filter.
      * Results are paginated and sorted by start_date.
      *
-     * @param array $queryParams Associative array containing:
-     *   - 'search' (optional): Search term for title/description
-     *   - 'category_id' (optional): Filter by event category
-     *   - 'location' (optional): Filter by location (venue city/state)
-     *   - 'start_date' (optional): Filter events starting from this date
-     *   - 'end_date' (optional): Filter events ending before this date
-     *   - 'page' (optional): Page number for pagination (default: 1)
+     * @param  array  $queryParams  Associative array containing:
+     *                              - 'search' (optional): Search term for title/description
+     *                              - 'category_id' (optional): Filter by event category
+     *                              - 'location' (optional): Filter by location (venue city/state)
+     *                              - 'start_date' (optional): Filter events starting from this date
+     *                              - 'end_date' (optional): Filter events ending before this date
+     *                              - 'page' (optional): Page number for pagination (default: 1)
      * @return array Associative array containing:
-     *   - 'events': Collection of event records
-     *   - 'total_records': Total number of records
-     *   - 'current_page': Current page number
-     *   - 'total_pages': Total number of pages
+     *               - 'events': Collection of event records
+     *               - 'total_records': Total number of records
+     *               - 'current_page': Current page number
+     *               - 'total_pages': Total number of pages
      */
     public function get_public_events_list($queryParams)
     {
@@ -390,38 +398,38 @@ class EventModel extends Model
             ->where('is_draft', false) // Exclude draft events
             ->where('is_hidden_by_admin', false); // Exclude events hidden by admin
         // Apply search filter if search term is provided
-        if (!empty($queryParams['search'])) {
+        if (! empty($queryParams['search'])) {
             // Search in event title and description using LIKE queries
             $searchTerm = $queryParams['search'];
-            $query->where(function($q) use ($searchTerm) {
+            $query->where(function ($q) use ($searchTerm) {
                 // Search in event title
-                $q->where('event_title', 'LIKE', '%' . $searchTerm . '%')
+                $q->where('event_title', 'LIKE', '%'.$searchTerm.'%')
                     // Or search in description
-                    ->orWhere('description', 'LIKE', '%' . $searchTerm . '%');
+                    ->orWhere('description', 'LIKE', '%'.$searchTerm.'%');
             });
         }
         // Apply category filter if category_id is provided
-        if (!empty($queryParams['category_id'])) {
+        if (! empty($queryParams['category_id'])) {
             // Filter by event category ID
             $query->where('event_category_id', $queryParams['category_id']);
         }
         // Apply location filter if location is provided
-        if (!empty($queryParams['location'])) {
+        if (! empty($queryParams['location'])) {
             // Join with venues table to search in city and state_province
             $locationTerm = $queryParams['location'];
-            $query->whereHas('venue', function($q) use ($locationTerm) {
+            $query->whereHas('venue', function ($q) use ($locationTerm) {
                 // Search in venue city or state_province
-                $q->where('city', 'LIKE', '%' . $locationTerm . '%')
-                    ->orWhere('state_province', 'LIKE', '%' . $locationTerm . '%');
+                $q->where('city', 'LIKE', '%'.$locationTerm.'%')
+                    ->orWhere('state_province', 'LIKE', '%'.$locationTerm.'%');
             });
         }
         // Apply start date filter if start_date is provided
-        if (!empty($queryParams['start_date'])) {
+        if (! empty($queryParams['start_date'])) {
             // Filter events where start_date is greater than or equal to provided date
             $query->where('start_date', '>=', $queryParams['start_date']);
         }
         // Apply end date filter if end_date is provided
-        if (!empty($queryParams['end_date'])) {
+        if (! empty($queryParams['end_date'])) {
             // Filter events where end_date is less than or equal to provided date
             $query->where('end_date', '<=', $queryParams['end_date']);
         }
@@ -441,19 +449,21 @@ class EventModel extends Model
         $query->orderBy('start_date', 'asc')
             ->orderBy('start_time', 'asc'); // Secondary sort by start_time
         // Get page number (default: 1)
-        $page = isset($queryParams['page']) ? (int)$queryParams['page'] : 1;
+        $page = isset($queryParams['page']) ? (int) $queryParams['page'] : 1;
         // Paginate results (30 events per page)
         $perPage = 15;
         $paginatedResults = $query->paginate($perPage, ['*'], 'page', $page);
         // Prepare return data
-        $result = array(
+        $result = [
             'events' => $paginatedResults->items(), // Collection of event records
             'total_records' => $paginatedResults->total(), // Total number of records
             'current_page' => $paginatedResults->currentPage(), // Current page number
             'total_pages' => $paginatedResults->lastPage(), // Total number of pages
-        );
+        ];
+
         return $result;
     }
+
     /**
      * Get public event details with all relationships
      *
@@ -461,7 +471,7 @@ class EventModel extends Model
      * with all related data including media, artists, venue, tickets, terms, and social media.
      * Returns null if event not found or not published.
      *
-     * @param int $eventId Event ID to retrieve
+     * @param  int  $eventId  Event ID to retrieve
      * @return object|null Event record with all relationships or null if not found/not published
      */
     public function get_public_event_details($eventId)
@@ -483,6 +493,7 @@ class EventModel extends Model
         ]);
         // Get single event record or null if not found
         $result = $query->first();
+
         return $result;
     }
 }

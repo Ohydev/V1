@@ -8,7 +8,7 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     * 
+     *
      * Removes platform_fee column from orders table.
      * Platform fee is now calculated on-the-fly during settlement based on net amount after Stripe fees.
      */
@@ -21,7 +21,7 @@ return new class extends Migration
 
     /**
      * Reverse the migrations.
-     * 
+     *
      * Restores platform_fee column to orders table.
      */
     public function down(): void

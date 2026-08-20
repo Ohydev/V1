@@ -8,7 +8,7 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     * 
+     *
      * Creates the wishlists table to store wishlist items for logged-in End Users.
      * Allows users to save events they're interested in for later viewing.
      */
@@ -18,21 +18,21 @@ return new class extends Migration
         Schema::create('wishlists', function (Blueprint $table) {
             // Set storage engine to InnoDB for transaction support and foreign keys
             $table->engine = 'InnoDB';
-            
+
             // Primary key: Unique identifier for each wishlist item
             $table->id('wishlist_id');
-            
+
             // User ID: Foreign key to users table (End User who owns the wishlist), required
             // Links wishlist to logged-in user
             $table->unsignedBigInteger('user_id');
-            
+
             // Event ID: Foreign key to events table (Event in wishlist), required
             // References the event being added to wishlist
             $table->unsignedBigInteger('event_id');
-            
+
             // Timestamps: Laravel standard created_at and updated_at fields
             $table->timestamps();
-            
+
             // Foreign key constraint: user_id references users.user_id
             // onDelete cascade: If user is deleted, delete all associated wishlist items
             $table->foreign('user_id')
@@ -40,7 +40,7 @@ return new class extends Migration
                 ->on('users')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
-            
+
             // Foreign key constraint: event_id references events.event_id
             // onDelete cascade: If event is deleted, delete all associated wishlist items
             $table->foreign('event_id')
@@ -48,13 +48,13 @@ return new class extends Migration
                 ->on('events')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
-            
+
             // Index on user_id for user's wishlist queries
             $table->index('user_id');
-            
+
             // Index on event_id for foreign key queries
             $table->index('event_id');
-            
+
             // Unique constraint on (user_id, event_id) to prevent duplicate wishlist items
             // If same event is added multiple times, prevent duplicate records
             $table->unique(['user_id', 'event_id']);
@@ -63,7 +63,7 @@ return new class extends Migration
 
     /**
      * Reverse the migrations.
-     * 
+     *
      * Drops the wishlists table if migration is rolled back.
      */
     public function down(): void

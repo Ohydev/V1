@@ -24,6 +24,11 @@ export default tseslint.config(
         { allowConstantExport: true },
       ],
       "@typescript-eslint/no-unused-vars": "off",
+      // TODO: the API layer (src/api/**) has ~47 untyped `any` request/response
+      // shapes that need real types written against the actual Laravel API
+      // contracts, not a blind find-and-replace. Tracked as a warning so it's
+      // visible in CI without blocking builds until that work is done.
+      "@typescript-eslint/no-explicit-any": "warn",
     },
   }
 );

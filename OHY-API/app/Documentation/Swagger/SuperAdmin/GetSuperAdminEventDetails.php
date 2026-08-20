@@ -9,18 +9,23 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *     description="Returns full event details (all 7 steps) for any published event. Response matches the Event Host get_event_details structure so the frontend component can be reused.",
  *     tags={"Super Admin API"},
  *     security={{"sanctum":{}}},
+ *
  *     @OA\Parameter(
  *         name="event_id",
  *         in="query",
  *         required=true,
+ *
  *         @OA\Schema(type="integer"),
  *         description="Event ID to retrieve"
  *     ),
+ *
  *     @OA\Response(
  *         response=200,
  *         description="Event details retrieved successfully.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=true),
  *             @OA\Property(
  *                 property="data",
@@ -53,11 +58,14 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=400,
  *         description="Validation error (E001).",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -67,11 +75,14 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=404,
  *         description="Event not found (E404).",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -81,11 +92,14 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=500,
  *         description="Server error (E002).",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -101,4 +115,3 @@ class GetSuperAdminEventDetails
 {
     // Swagger docs for Super Admin event details endpoint
 }
-

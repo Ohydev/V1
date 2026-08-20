@@ -7,7 +7,7 @@ namespace App\Documentation\Swagger\CartManagement;
  *     path="/v1/get_checkout_summary",
  *     summary="Get Checkout Summary",
  *     description="Retrieves complete checkout summary for a specific event including all cart items, calculated subtotal, optional coupon discount, service fee, and total amount. This endpoint retrieves all cart items for the authenticated user that belong to tickets of the specified event, calculates subtotal, optionally validates and applies coupon discount if coupon_id is provided, and returns complete checkout summary. Protected route - requires authentication via Laravel Sanctum token.
- * 
+ *
  * **Complete Flow:**
  * 1. Authentication check: Middleware (AuthenticateApiToken and AuthenticateUser) verifies Sanctum token and retrieves authenticated user
  * 2. Request validation: Validates query parameters (event_id: required|integer|min:1, coupon_id: nullable|integer|min:1)
@@ -93,24 +93,31 @@ namespace App\Documentation\Swagger\CartManagement;
  * - Ownership validation: Users can only view checkout summary for their own cart items",
  *     tags={"End User - Cart Management API"},
  *     security={{"sanctum": {}}},
+ *
  *     @OA\Parameter(
  *         name="event_id",
  *         in="query",
  *         required=true,
  *         description="Event ID to retrieve checkout summary for. Must be an integer, minimum 1. Only cart items for tickets belonging to this event will be included in the summary. Validation rule: 'required|integer|min:1'",
+ *
  *         @OA\Schema(type="integer", example=1)
  *     ),
+ *
  *     @OA\Parameter(
  *         name="coupon_id",
  *         in="query",
  *         required=false,
  *         description="Optional coupon ID to apply to checkout summary. Must be an integer, minimum 1 if provided. If provided, coupon will be validated and discount will be calculated and included in summary. Coupon must belong to the specified event. Validation rule: 'nullable|integer|min:1'",
+ *
  *         @OA\Schema(type="integer", example=1)
  *     ),
+ *
  *     @OA\Response(
  *         response=200,
  *         description="Success - Checkout summary retrieved successfully",
+ *
  *         @OA\JsonContent(
+ *
  *             @OA\Property(property="success", type="boolean", example=true),
  *             @OA\Property(
  *                 property="data",
@@ -121,8 +128,10 @@ namespace App\Documentation\Swagger\CartManagement;
  *                     property="cart_items",
  *                     type="array",
  *                     description="Array of formatted cart items for this event",
+ *
  *                     @OA\Items(
  *                         type="object",
+ *
  *                         @OA\Property(property="cart_id", type="integer", description="Cart item ID", example=1),
  *                         @OA\Property(property="ticket_id", type="integer", description="Ticket ID", example=1),
  *                         @OA\Property(property="quantity", type="integer", description="Quantity in cart", example=2),
@@ -153,10 +162,13 @@ namespace App\Documentation\Swagger\CartManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=400,
  *         description="Bad Request - Validation error or business logic error",
+ *
  *         @OA\JsonContent(
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -165,6 +177,7 @@ namespace App\Documentation\Swagger\CartManagement;
  *                 @OA\Property(
  *                     property="error_message",
  *                     oneOf={
+ *
  *                         @OA\Schema(type="object", description="Validation errors object (E001)", example={"event_id": {"The event id field is required."}, "coupon_id": {"The coupon id must be an integer."}}),
  *                         @OA\Schema(type="string", description="Business logic error message (E004)", example="Coupon does not belong to this event")
  *                     }
@@ -172,10 +185,13 @@ namespace App\Documentation\Swagger\CartManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=404,
  *         description="Not Found - No cart items found for event or coupon not found",
+ *
  *         @OA\JsonContent(
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -185,10 +201,13 @@ namespace App\Documentation\Swagger\CartManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=500,
  *         description="Internal Server Error",
+ *
  *         @OA\JsonContent(
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -204,4 +223,3 @@ class GetCheckoutSummary
 {
     // Empty class - annotations are in docblock
 }
-

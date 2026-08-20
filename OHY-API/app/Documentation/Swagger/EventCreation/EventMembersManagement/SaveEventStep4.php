@@ -80,13 +80,17 @@ namespace App\Documentation\Swagger\EventCreation\EventMembersManagement;
  * - Server errors (500): E002 error code for unexpected server-side exceptions",
  *     tags={"Event Creation Management API - Event Members Management API"},
  *     security={{"sanctum": {}}},
+ *
  *     @OA\RequestBody(
  *         required=true,
+ *
  *         @OA\MediaType(
  *             mediaType="multipart/form-data",
+ *
  *             @OA\Schema(
  *                 type="object",
  *                 required={"event_id", "artists"},
+ *
  *                 @OA\Property(
  *                     property="event_id",
  *                     type="integer",
@@ -98,9 +102,11 @@ namespace App\Documentation\Swagger\EventCreation\EventMembersManagement;
  *                     type="array",
  *                     minItems=0,
  *                     description="Array of artist objects. Required field. Can be empty array (deletes all artists). Each artist object represents one artist/speaker. All existing artists are deleted and replaced with artists in this array. Validation rule: 'required|array|min:0'",
+ *
  *                     @OA\Items(
  *                         type="object",
  *                         required={"artist_name"},
+ *
  *                         @OA\Property(
  *                             property="artist_name",
  *                             type="string",
@@ -120,9 +126,11 @@ namespace App\Documentation\Swagger\EventCreation\EventMembersManagement;
  *                             type="array",
  *                             nullable=true,
  *                             description="Array of social media links for this artist. Optional field. Can be set to null or empty array. Each social media link requires platform and url.",
+ *
  *                             @OA\Items(
  *                                 type="object",
  *                                 required={"platform", "url"},
+ *
  *                                 @OA\Property(
  *                                     property="platform",
  *                                     type="string",
@@ -162,11 +170,14 @@ namespace App\Documentation\Swagger\EventCreation\EventMembersManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=200,
  *         description="Event Step 4 saved successfully. Returns all created artists with their social media links.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=true),
  *             @OA\Property(
  *                 property="data",
@@ -176,8 +187,10 @@ namespace App\Documentation\Swagger\EventCreation\EventMembersManagement;
  *                     property="artists",
  *                     type="array",
  *                     description="Array of all created artists with their social media links",
+ *
  *                     @OA\Items(
  *                         type="object",
+ *
  *                         @OA\Property(property="event_artist_id", type="integer", example=1),
  *                         @OA\Property(property="event_id", type="integer", example=1),
  *                         @OA\Property(property="artist_name", type="string", example="John Doe"),
@@ -186,8 +199,10 @@ namespace App\Documentation\Swagger\EventCreation\EventMembersManagement;
  *                             property="social_media",
  *                             type="array",
  *                             description="Array of social media links for this artist",
+ *
  *                             @OA\Items(
  *                                 type="object",
+ *
  *                                 @OA\Property(property="artist_social_media_id", type="integer", example=1),
  *                                 @OA\Property(property="event_artist_id", type="integer", example=1),
  *                                 @OA\Property(property="platform", type="string", enum={"facebook", "instagram", "tiktok", "linkedin", "snapchat", "twitter", "youtube", "spotify"}, example="instagram"),
@@ -201,11 +216,14 @@ namespace App\Documentation\Swagger\EventCreation\EventMembersManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=400,
  *         description="Validation error (E001) or Business logic error (E004). Request validation failed or event is published.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -214,28 +232,36 @@ namespace App\Documentation\Swagger\EventCreation\EventMembersManagement;
  *                 @OA\Property(
  *                     property="error_message",
  *                     oneOf={
+ *
  *                         @OA\Schema(
  *                             type="object",
  *                             description="Validation error messages object when field validation fails",
+ *
  *                             @OA\Property(
  *                                 property="artists.0.artist_name",
  *                                 type="array",
+ *
  *                                 @OA\Items(type="string"),
  *                                 example={"The artists.0.artist name field is required."}
  *                             ),
+ *
  *                             @OA\Property(
  *                                 property="artists.0.social_media.0.platform",
  *                                 type="array",
+ *
  *                                 @OA\Items(type="string"),
  *                                 example={"The artists.0.social media.0.platform must be one of the following: facebook, instagram, tiktok, linkedin, snapchat, twitter, youtube, spotify."}
  *                             ),
+ *
  *                             @OA\Property(
  *                                 property="artists.0.artist_image",
  *                                 type="array",
+ *
  *                                 @OA\Items(type="string"),
  *                                 example={"The artists.0.artist image must be an image.", "The artists.0.artist image must not be greater than 3072 kilobytes."}
  *                             )
  *                         ),
+ *
  *                         @OA\Schema(
  *                             type="string",
  *                             description="Business logic error message",
@@ -246,11 +272,14 @@ namespace App\Documentation\Swagger\EventCreation\EventMembersManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=401,
  *         description="Authentication error (E003). User authentication failed. Token is missing, invalid, or expired.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -260,11 +289,14 @@ namespace App\Documentation\Swagger\EventCreation\EventMembersManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=404,
  *         description="Not found error (E404). Event not found or doesn't belong to authenticated user.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -274,11 +306,14 @@ namespace App\Documentation\Swagger\EventCreation\EventMembersManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=500,
  *         description="Internal server error (E002). An unexpected error occurred while saving event Step 4. This could be due to database connection issues, file storage failures, transaction failures, or other server-side exceptions.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -294,4 +329,3 @@ class SaveEventStep4
 {
     // Save Event Step 4 API documentation
 }
-

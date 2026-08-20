@@ -53,13 +53,17 @@ namespace App\Documentation\Swagger\ProfileManagement;
  * - Server errors (500): E002 error code for unexpected server-side exceptions",
  *     tags={"Event Host Profile Management API"},
  *     security={{"sanctum": {}}},
+ *
  *     @OA\RequestBody(
  *         required=true,
+ *
  *         @OA\MediaType(
  *             mediaType="application/json",
+ *
  *             @OA\Schema(
  *                 type="object",
  *                 required={"current_password", "new_password", "confirm_new_password"},
+ *
  *                 @OA\Property(
  *                     property="current_password",
  *                     type="string",
@@ -92,6 +96,7 @@ namespace App\Documentation\Swagger\ProfileManagement;
  *                     description="Password confirmation field. Required field. Must exactly match the 'new_password' field. Validation rule: 'required|same:new_password'"
  *                 )
  *             ),
+ *
  *             @OA\Examples(
  *                 example="PasswordUpdate",
  *                 summary="Password Update Example",
@@ -99,11 +104,14 @@ namespace App\Documentation\Swagger\ProfileManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=200,
  *         description="Password updated successfully. Returns success message only (no sensitive data).",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=true),
  *             @OA\Property(
  *                 property="data",
@@ -112,11 +120,14 @@ namespace App\Documentation\Swagger\ProfileManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=400,
  *         description="Validation error (E001). Request validation failed. Returns detailed error messages for password requirements or confirmation mismatch.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -129,12 +140,15 @@ namespace App\Documentation\Swagger\ProfileManagement;
  *                     @OA\Property(
  *                         property="new_password",
  *                         type="array",
+ *
  *                         @OA\Items(type="string"),
  *                         example={"The new password must be at least 8 characters long and contain both letters and numbers.", "The new password field is required."}
  *                     ),
+ *
  *                     @OA\Property(
  *                         property="confirm_new_password",
  *                         type="array",
+ *
  *                         @OA\Items(type="string"),
  *                         example={"The confirm new password field must match new password."}
  *                     )
@@ -142,11 +156,14 @@ namespace App\Documentation\Swagger\ProfileManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=401,
  *         description="Authentication error (E003). User authentication failed or current password is incorrect. Same error message used for both scenarios to prevent user enumeration.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -156,11 +173,14 @@ namespace App\Documentation\Swagger\ProfileManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=404,
  *         description="Not found error (E404). User not found in database.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -170,11 +190,14 @@ namespace App\Documentation\Swagger\ProfileManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=500,
  *         description="Internal server error (E002). An unexpected error occurred during password update. This could be due to database connection issues, hashing failures, or other server-side exceptions.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -190,4 +213,3 @@ class UpdateHostUserPassword
 {
     // Update Host User Password API documentation
 }
-

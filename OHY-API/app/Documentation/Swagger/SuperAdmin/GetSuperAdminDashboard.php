@@ -9,11 +9,14 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *     description="Returns global dashboard metrics (active events, completed events, total revenue) and the three most recent events across the entire platform. Response structure matches the Event Host dashboard format, allowing the same frontend component to be reused.",
  *     tags={"Super Admin API"},
  *     security={{"sanctum":{}}},
+ *
  *     @OA\Response(
  *         response=200,
  *         description="Dashboard data retrieved successfully.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=true),
  *             @OA\Property(
  *                 property="data",
@@ -29,8 +32,10 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *                 @OA\Property(
  *                     property="recent_events",
  *                     type="array",
+ *
  *                     @OA\Items(
  *                         type="object",
+ *
  *                         @OA\Property(property="event_id", type="integer", example=42),
  *                         @OA\Property(property="event_title", type="string", example="Sunset Music Fest"),
  *                         @OA\Property(property="status", type="string", example="live"),
@@ -47,11 +52,14 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=401,
  *         description="Authentication error (E003). Missing or invalid token.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -61,11 +69,14 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=500,
  *         description="Server error (E002).",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -81,4 +92,3 @@ class GetSuperAdminDashboard
 {
     // Swagger documentation for Super Admin dashboard API
 }
-

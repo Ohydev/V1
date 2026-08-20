@@ -8,7 +8,7 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     * 
+     *
      * Adds stripe_fee column to orders table to store Stripe processing fees.
      */
     public function up(): void
@@ -22,7 +22,7 @@ return new class extends Migration
 
     /**
      * Reverse the migrations.
-     * 
+     *
      * Removes stripe_fee column from orders table.
      */
     public function down(): void

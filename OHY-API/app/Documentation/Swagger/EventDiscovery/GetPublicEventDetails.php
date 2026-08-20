@@ -63,18 +63,23 @@ namespace App\Documentation\Swagger\EventDiscovery;
  * - Not Found (404): E404 error code if the event_id does not correspond to an existing or published event
  * - Server errors (500): E002 error code for unexpected server-side exceptions (e.g., database issues)",
  *     tags={"End User - Event Discovery API"},
+ *
  *     @OA\Parameter(
  *         name="event_id",
  *         in="query",
  *         required=true,
  *         description="Event ID to retrieve. Must be an integer with minimum value of 1. Required field. Validation rule: 'required|integer|min:1'",
+ *
  *         @OA\Schema(type="integer", minimum=1, example=1)
  *     ),
+ *
  *     @OA\Response(
  *         response=200,
  *         description="Event details retrieved successfully. Returns complete event information with all related data.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=true, description="Indicates successful operation"),
  *             @OA\Property(
  *                 property="data",
@@ -128,8 +133,10 @@ namespace App\Documentation\Swagger\EventDiscovery;
  *                             property="flyers",
  *                             type="array",
  *                             description="Array of flyer images.",
+ *
  *                             @OA\Items(
  *                                 type="object",
+ *
  *                                 @OA\Property(property="event_media_id", type="integer", example=3, description="Media ID"),
  *                                 @OA\Property(property="file_path", type="string", example="events/1/flyer/flyer1.jpg", description="Flyer file path"),
  *                                 @OA\Property(property="file_name", type="string", example="flyer1.jpg", description="Original filename"),
@@ -140,8 +147,10 @@ namespace App\Documentation\Swagger\EventDiscovery;
  *                             property="videos",
  *                             type="array",
  *                             description="Array of video files.",
+ *
  *                             @OA\Items(
  *                                 type="object",
+ *
  *                                 @OA\Property(property="event_media_id", type="integer", example=4, description="Media ID"),
  *                                 @OA\Property(property="file_path", type="string", example="events/1/video/video1.mp4", description="Video file path"),
  *                                 @OA\Property(property="file_name", type="string", example="video1.mp4", description="Original filename"),
@@ -154,8 +163,10 @@ namespace App\Documentation\Swagger\EventDiscovery;
  *                         property="artists",
  *                         type="array",
  *                         description="Array of artists performing at the event.",
+ *
  *                         @OA\Items(
  *                             type="object",
+ *
  *                             @OA\Property(property="event_artist_id", type="integer", example=1, description="Artist ID"),
  *                             @OA\Property(property="artist_name", type="string", example="DJ Coolio", description="Artist's name"),
  *                             @OA\Property(property="artist_image", type="string", nullable=true, example="artists/1/image.jpg", description="Artist's image file path. Null if not available."),
@@ -163,8 +174,10 @@ namespace App\Documentation\Swagger\EventDiscovery;
  *                                 property="social_media",
  *                                 type="array",
  *                                 description="Array of social media links for the artist.",
+ *
  *                                 @OA\Items(
  *                                     type="object",
+ *
  *                                     @OA\Property(property="platform", type="string", example="Instagram", description="Social media platform name"),
  *                                     @OA\Property(property="url", type="string", example="https://instagram.com/djcoolio", description="Full URL to the social media profile")
  *                                 )
@@ -205,8 +218,10 @@ namespace App\Documentation\Swagger\EventDiscovery;
  *                         property="social_media",
  *                         type="array",
  *                         description="Array of social media links for the event.",
+ *
  *                         @OA\Items(
  *                             type="object",
+ *
  *                             @OA\Property(property="platform", type="string", example="Facebook", description="Social media platform name"),
  *                             @OA\Property(property="url", type="string", example="https://facebook.com/musicfest", description="Full URL to the event's social media page")
  *                         )
@@ -215,8 +230,10 @@ namespace App\Documentation\Swagger\EventDiscovery;
  *                         property="tickets",
  *                         type="array",
  *                         description="Array of ticket types available for the event.",
+ *
  *                         @OA\Items(
  *                             type="object",
+ *
  *                             @OA\Property(property="ticket_id", type="integer", example=1, description="Ticket ID"),
  *                             @OA\Property(
  *                                 property="ticket_category",
@@ -240,11 +257,14 @@ namespace App\Documentation\Swagger\EventDiscovery;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=400,
  *         description="Validation error (E001). Request validation failed. Returns detailed error messages for each field that failed validation.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false, description="Indicates failed operation"),
  *             @OA\Property(
  *                 property="error",
@@ -257,6 +277,7 @@ namespace App\Documentation\Swagger\EventDiscovery;
  *                     @OA\Property(
  *                         property="event_id",
  *                         type="array",
+ *
  *                         @OA\Items(type="string"),
  *                         example={"The event id field is required.", "The event id must be an integer."}
  *                     )
@@ -264,11 +285,14 @@ namespace App\Documentation\Swagger\EventDiscovery;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=404,
  *         description="Not found error (E404). Event not found or not published. This occurs if the provided event_id does not exist or corresponds to an event that is not publicly available.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false, description="Indicates failed operation"),
  *             @OA\Property(
  *                 property="error",
@@ -278,11 +302,14 @@ namespace App\Documentation\Swagger\EventDiscovery;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=500,
  *         description="Internal server error (E002). An unexpected error occurred during event details retrieval. This could be due to database connection issues or other server-side exceptions.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false, description="Indicates failed operation"),
  *             @OA\Property(
  *                 property="error",
@@ -298,4 +325,3 @@ class GetPublicEventDetails
 {
     // Empty class - annotations are in docblock
 }
-

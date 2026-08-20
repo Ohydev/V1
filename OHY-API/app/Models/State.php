@@ -14,4 +14,3 @@ class State extends Model
         'name',
     ];
 }
-

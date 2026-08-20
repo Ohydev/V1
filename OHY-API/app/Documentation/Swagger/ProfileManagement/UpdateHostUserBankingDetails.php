@@ -44,12 +44,16 @@ namespace App\Documentation\Swagger\ProfileManagement;
  * - Server errors (500): E002 error code for unexpected server-side exceptions",
  *     tags={"Event Host Profile Management API"},
  *     security={{"sanctum": {}}},
+ *
  *     @OA\RequestBody(
  *         required=true,
+ *
  *         @OA\MediaType(
  *             mediaType="application/json",
+ *
  *             @OA\Schema(
  *                 type="object",
+ *
  *                 @OA\Property(
  *                     property="account_holder_name",
  *                     type="string",
@@ -92,6 +96,7 @@ namespace App\Documentation\Swagger\ProfileManagement;
  *                     description="PayPal email address for alternative payment method. Optional field. Must be valid email format if provided. Can be set to null to clear the field. Maximum 255 characters. Validation rule: 'nullable|email|max:255'. At least one field must be provided."
  *                 )
  *             ),
+ *
  *             @OA\Examples(
  *                 example="CompleteBankingInfo",
  *                 summary="Complete Banking Information",
@@ -109,11 +114,14 @@ namespace App\Documentation\Swagger\ProfileManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=200,
  *         description="Banking details updated successfully. Returns banking information (account_number is NOT included for security).",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=true),
  *             @OA\Property(
  *                 property="data",
@@ -131,11 +139,14 @@ namespace App\Documentation\Swagger\ProfileManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=400,
  *         description="Validation error (E001). Request validation failed. Returns detailed error messages, including 'No banking details provided to update' if no fields are provided.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -144,16 +155,20 @@ namespace App\Documentation\Swagger\ProfileManagement;
  *                 @OA\Property(
  *                     property="error_message",
  *                     oneOf={
+ *
  *                         @OA\Schema(
  *                             type="object",
  *                             description="Validation error messages object when field validation fails",
+ *
  *                             @OA\Property(
  *                                 property="paypal_email",
  *                                 type="array",
+ *
  *                                 @OA\Items(type="string"),
  *                                 example={"The paypal email must be a valid email address."}
  *                             )
  *                         ),
+ *
  *                         @OA\Schema(
  *                             type="string",
  *                             description="Error message when no fields are provided",
@@ -164,11 +179,14 @@ namespace App\Documentation\Swagger\ProfileManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=401,
  *         description="Authentication error (E003). User authentication failed. Token is missing, invalid, or expired.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -178,11 +196,14 @@ namespace App\Documentation\Swagger\ProfileManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=404,
  *         description="Not found error (E404). User not found in database.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -192,11 +213,14 @@ namespace App\Documentation\Swagger\ProfileManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=500,
  *         description="Internal server error (E002). An unexpected error occurred during banking details update. This could be due to database connection issues, encryption failures, or other server-side exceptions.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -212,4 +236,3 @@ class UpdateHostUserBankingDetails
 {
     // Update Host User Banking Details API documentation
 }
-

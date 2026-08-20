@@ -8,7 +8,7 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     * 
+     *
      * Adds stripe_account_id column to host_users table to store Stripe Connected Account ID
      * for Express accounts. This field is nullable to support existing records and unique
      * to ensure one Stripe account per host user.
@@ -24,7 +24,7 @@ return new class extends Migration
 
     /**
      * Reverse the migrations.
-     * 
+     *
      * Removes stripe_account_id column from host_users table.
      */
     public function down(): void
@@ -32,7 +32,7 @@ return new class extends Migration
         Schema::table('host_users', function (Blueprint $table) {
             // Drop unique constraint (which includes the index)
             $table->dropUnique(['stripe_account_id']);
-            
+
             // Drop column
             $table->dropColumn('stripe_account_id');
         });

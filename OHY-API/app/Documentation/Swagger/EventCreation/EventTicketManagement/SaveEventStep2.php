@@ -16,7 +16,7 @@ namespace App\Documentation\Swagger\EventCreation\EventTicketManagement;
  * 5. Category ownership verification: Verifies all ticket_category_id values belong to the event
  * 6. Database transaction begins: All database operations are wrapped in a transaction
  * 7. Sold tickets check: Checks if any existing tickets have sold_quantity > 0
- * 8. **Replace All Pattern**: 
+ * 8. **Replace All Pattern**:
  *    - Deletes all existing tickets for the event (safe because no tickets sold)
  *    - Creates all new tickets from the tickets array
  *    - sold_quantity initialized to 0 for all new tickets
@@ -62,13 +62,17 @@ namespace App\Documentation\Swagger\EventCreation\EventTicketManagement;
  * - Server errors (500): E002 error code for unexpected server-side exceptions",
  *     tags={"Event Creation Management API - Event Ticket Management API"},
  *     security={{"sanctum": {}}},
+ *
  *     @OA\RequestBody(
  *         required=true,
+ *
  *         @OA\MediaType(
  *             mediaType="application/json",
+ *
  *             @OA\Schema(
  *                 type="object",
  *                 required={"event_id", "tickets"},
+ *
  *                 @OA\Property(
  *                     property="event_id",
  *                     type="integer",
@@ -80,9 +84,11 @@ namespace App\Documentation\Swagger\EventCreation\EventTicketManagement;
  *                     type="array",
  *                     minItems=0,
  *                     description="Array of ticket objects. Required field. Can be empty array (deletes all tickets). Each ticket object represents one ticket type. All existing tickets are deleted and replaced with tickets in this array. Validation rule: 'required|array|min:0'",
+ *
  *                     @OA\Items(
  *                         type="object",
  *                         required={"ticket_category_id", "ticket_type", "price", "total_available", "max_per_user"},
+ *
  *                         @OA\Property(
  *                             property="ticket_category_id",
  *                             type="integer",
@@ -153,6 +159,7 @@ namespace App\Documentation\Swagger\EventCreation\EventTicketManagement;
  *                     }
  *                 )
  *             ),
+ *
  *             @OA\Examples(
  *                 example="MultipleTickets",
  *                 summary="Multiple Tickets Example",
@@ -170,11 +177,14 @@ namespace App\Documentation\Swagger\EventCreation\EventTicketManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=200,
  *         description="Event Step 2 saved successfully. Returns all created tickets with complete details including category_name and calculated available_quantity.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=true),
  *             @OA\Property(
  *                 property="data",
@@ -184,8 +194,10 @@ namespace App\Documentation\Swagger\EventCreation\EventTicketManagement;
  *                     property="tickets",
  *                     type="array",
  *                     description="Array of all created tickets with complete details",
+ *
  *                     @OA\Items(
  *                         type="object",
+ *
  *                         @OA\Property(property="ticket_id", type="integer", example=1),
  *                         @OA\Property(property="event_id", type="integer", example=1),
  *                         @OA\Property(property="ticket_category_id", type="integer", example=1),
@@ -204,11 +216,14 @@ namespace App\Documentation\Swagger\EventCreation\EventTicketManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=400,
  *         description="Validation error (E001) or Business logic error (E004). Request validation failed, event is published, tickets have been sold, or categories don't belong to event.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -217,22 +232,28 @@ namespace App\Documentation\Swagger\EventCreation\EventTicketManagement;
  *                 @OA\Property(
  *                     property="error_message",
  *                     oneOf={
+ *
  *                         @OA\Schema(
  *                             type="object",
  *                             description="Validation error messages object when field validation fails",
+ *
  *                             @OA\Property(
  *                                 property="tickets.0.ticket_category_id",
  *                                 type="array",
+ *
  *                                 @OA\Items(type="string"),
  *                                 example={"The tickets.0.ticket category id field is required.", "The selected tickets.0.ticket category id is invalid."}
  *                             ),
+ *
  *                             @OA\Property(
  *                                 property="tickets.0.price",
  *                                 type="array",
+ *
  *                                 @OA\Items(type="string"),
  *                                 example={"The tickets.0.price must be a number.", "The tickets.0.price must be at least 0."}
  *                             )
  *                         ),
+ *
  *                         @OA\Schema(
  *                             type="string",
  *                             description="Business logic error message",
@@ -253,11 +274,14 @@ namespace App\Documentation\Swagger\EventCreation\EventTicketManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=401,
  *         description="Authentication error (E003). User authentication failed. Token is missing, invalid, or expired.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -267,11 +291,14 @@ namespace App\Documentation\Swagger\EventCreation\EventTicketManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=404,
  *         description="Not found error (E404). Event not found or doesn't belong to authenticated user.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -281,11 +308,14 @@ namespace App\Documentation\Swagger\EventCreation\EventTicketManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=500,
  *         description="Internal server error (E002). An unexpected error occurred while saving event Step 2. This could be due to database connection issues, transaction failures, or other server-side exceptions.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -301,4 +331,3 @@ class SaveEventStep2
 {
     // Save Event Step 2 API documentation
 }
-

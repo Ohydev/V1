@@ -7,19 +7,19 @@ namespace App\Documentation\Swagger\CartManagement;
  *     path="/v1/get_available_coupons",
  *     summary="Get Available Coupons",
  *     description="Retrieves all available coupons for specified events with validation for date range and usage limits. This endpoint queries coupons for the provided event IDs, validates each coupon for validity (date range and usage limits), and returns them with active/expired status. Protected route - requires authentication via Laravel Sanctum token.
- * 
+ *
  * **Complete Flow:**
  * 1. Authentication check: Middleware (AuthenticateApiToken and AuthenticateUser) verifies Sanctum token and retrieves authenticated user
  * 2. Request validation: Validates required query parameter event_ids (required|array|min:1, each element: required|integer|min:1)
  * 3. Current date retrieval: Gets current date in Y-m-d format (e.g., '2025-12-15') for validation purposes
  * 4. Database query: Queries coupons table for all coupons matching provided event_ids using whereIn query (CouponModel::whereIn('event_id', $eventIds))
  * 5. Coupon validation loop: Iterates through each coupon to validate and format:
- *    - Date range validation: 
+ *    - Date range validation:
  *      - If end_date exists: Checks if current_date >= start_date AND current_date <= end_date
  *      - If end_date is null: Checks if current_date >= start_date
  *    - Usage limit validation: Checks if times_used < max_times_applicable
  *    - Status determination: Sets status to 'active' if both validations pass, 'expired' otherwise
- *    - Discount display formatting: 
+ *    - Discount display formatting:
  *      - For percentage type: Formats as 'XX% OFF' (e.g., '20% OFF') using number_format with 0 decimal places
  *      - For flat type: Formats as '$XX.XX OFF' (e.g., '$50.00 OFF') using number_format with 2 decimal places
  *    - Usage display formatting: Formats as 'Used: X/Y' (e.g., 'Used: 45/100')
@@ -67,23 +67,29 @@ namespace App\Documentation\Swagger\CartManagement;
  * - User context: Authenticated user retrieved from token for potential future use",
  *     tags={"End User - Cart Management API"},
  *     security={{"sanctum": {}}},
+ *
  *     @OA\Parameter(
  *         name="event_ids",
  *         in="query",
  *         required=true,
  *         description="Array of event IDs to retrieve coupons for. Must be an array with at least 1 element. Each element must be an integer, minimum 1. Can retrieve coupons for multiple events in a single request. Validation rule: 'required|array|min:1', each element: 'required|integer|min:1'. Example: ?event_ids[]=1&event_ids[]=2",
+ *
  *         @OA\Schema(
  *             type="array",
+ *
  *             @OA\Items(type="integer", example=1),
  *             minItems=1
  *         ),
  *         style="form",
  *         explode=true
  *     ),
+ *
  *     @OA\Response(
  *         response=200,
  *         description="Success - Available coupons retrieved successfully",
+ *
  *         @OA\JsonContent(
+ *
  *             @OA\Property(property="success", type="boolean", example=true),
  *             @OA\Property(
  *                 property="data",
@@ -93,8 +99,10 @@ namespace App\Documentation\Swagger\CartManagement;
  *                     property="coupons",
  *                     type="array",
  *                     description="Array of formatted coupons with validation status",
+ *
  *                     @OA\Items(
  *                         type="object",
+ *
  *                         @OA\Property(property="coupon_id", type="integer", description="Coupon ID", example=1),
  *                         @OA\Property(property="event_id", type="integer", description="Event ID", example=1),
  *                         @OA\Property(property="coupon_code", type="string", description="Coupon code (e.g., 'EARLY20')", example="EARLY20"),
@@ -115,10 +123,13 @@ namespace App\Documentation\Swagger\CartManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=400,
  *         description="Bad Request - Validation error",
+ *
  *         @OA\JsonContent(
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -133,10 +144,13 @@ namespace App\Documentation\Swagger\CartManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=500,
  *         description="Internal Server Error",
+ *
  *         @OA\JsonContent(
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -152,4 +166,3 @@ class GetAvailableCoupons
 {
     // Empty class - annotations are in docblock
 }
-

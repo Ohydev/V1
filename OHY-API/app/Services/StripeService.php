@@ -2,18 +2,17 @@
 
 namespace App\Services;
 
-use Stripe\StripeClient;
-use Stripe\Exception\ApiErrorException;
-use Stripe\Exception\SignatureVerificationException;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\DB;
-use App\Models\OrderModel;
-use App\Models\OrderTicketModel;
 use App\Models\CartModel;
-use App\Models\TicketModel;
 use App\Models\CouponModel;
 use App\Models\EventModel;
-use App\Services\BrevoEmailService;
+use App\Models\OrderModel;
+use App\Models\OrderTicketModel;
+use App\Models\TicketModel;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Stripe\Exception\ApiErrorException;
+use Stripe\Exception\SignatureVerificationException;
+use Stripe\StripeClient;
 
 class StripeService
 {
@@ -30,19 +29,20 @@ class StripeService
     public function __construct()
     {
         $secretKey = config('services.stripe.secret');
-        
+
         if (empty($secretKey)) {
             throw new \Exception('Stripe secret key is not configured. Please set STRIPE_SECRET in your .env file.');
         }
-        
+
         $this->stripe = new StripeClient($secretKey);
     }
 
     /**
      * Create Stripe Express Connected Account for a host
      *
-     * @param array $hostUserData Host user data (email, first_name, last_name, etc.)
+     * @param  array  $hostUserData  Host user data (email, first_name, last_name, etc.)
      * @return \Stripe\Account Stripe Account object with id (stripe_account_id)
+     *
      * @throws \Stripe\Exception\ApiErrorException
      */
     public function createConnectedAccount(array $hostUserData)
@@ -96,10 +96,11 @@ class StripeService
     /**
      * Generate onboarding link for host to complete Stripe Express setup
      *
-     * @param string $stripeAccountId The Connected Account ID
-     * @param string $returnUrl URL to redirect after onboarding completion
-     * @param string $refreshUrl URL to redirect if link expires
+     * @param  string  $stripeAccountId  The Connected Account ID
+     * @param  string  $returnUrl  URL to redirect after onboarding completion
+     * @param  string  $refreshUrl  URL to redirect if link expires
      * @return \Stripe\AccountLink AccountLink object with url property
+     *
      * @throws \Stripe\Exception\ApiErrorException
      */
     public function createAccountLink(string $stripeAccountId, string $returnUrl, string $refreshUrl)
@@ -134,8 +135,9 @@ class StripeService
     /**
      * Check if host account is ready for payouts
      *
-     * @param string $stripeAccountId The Connected Account ID
+     * @param  string  $stripeAccountId  The Connected Account ID
      * @return array Account status information (charges_enabled, payouts_enabled, details_submitted)
+     *
      * @throws \Stripe\Exception\ApiErrorException
      */
     public function getAccountStatus(string $stripeAccountId)
@@ -172,13 +174,14 @@ class StripeService
     /**
      * Check if host has completed KYC/onboarding
      *
-     * @param string $stripeAccountId The Connected Account ID
+     * @param  string  $stripeAccountId  The Connected Account ID
      * @return bool True if charges_enabled and payouts_enabled are both true
      */
     public function isKycCompleted(string $stripeAccountId): bool
     {
         try {
             $status = $this->getAccountStatus($stripeAccountId);
+
             return $status['charges_enabled'] === true && $status['payouts_enabled'] === true;
         } catch (\Exception $e) {
             Log::error('Failed to check KYC completion status', [
@@ -186,6 +189,7 @@ class StripeService
                 'error_message' => $e->getMessage(),
                 'account_id' => $stripeAccountId,
             ]);
+
             return false;
         }
     }
@@ -193,8 +197,9 @@ class StripeService
     /**
      * Create Stripe Checkout Session for visitor payment
      *
-     * @param array $orderData Order data with line_items, customer_email, metadata, success_url, cancel_url
+     * @param  array  $orderData  Order data with line_items, customer_email, metadata, success_url, cancel_url
      * @return \Stripe\Checkout\Session CheckoutSession object with id and url
+     *
      * @throws \Stripe\Exception\ApiErrorException
      */
     public function createCheckoutSession(array $orderData)
@@ -247,11 +252,12 @@ class StripeService
     /**
      * Create Stripe Transfer to host's Connected Account
      *
-     * @param string $stripeAccountId Host's Connected Account ID
-     * @param int $amount Amount in cents (integer)
-     * @param string $currency Currency code (default: 'usd')
-     * @param array $metadata Transfer metadata (order_ids, settlement_id, etc.)
+     * @param  string  $stripeAccountId  Host's Connected Account ID
+     * @param  int  $amount  Amount in cents (integer)
+     * @param  string  $currency  Currency code (default: 'usd')
+     * @param  array  $metadata  Transfer metadata (order_ids, settlement_id, etc.)
      * @return \Stripe\Transfer Transfer object with id
+     *
      * @throws \Stripe\Exception\ApiErrorException
      */
     public function createTransfer(string $stripeAccountId, int $amount, string $currency = 'usd', array $metadata = [])
@@ -264,7 +270,7 @@ class StripeService
             ];
 
             // Add metadata if provided
-            if (!empty($metadata)) {
+            if (! empty($metadata)) {
                 $transferData['metadata'] = $metadata;
             }
 
@@ -298,8 +304,8 @@ class StripeService
      * Get Stripe payment fee from PaymentIntent
      *
      * Retrieves the actual Stripe processing fee charged for a payment.
-     * 
-     * @param string $paymentIntentId Stripe Payment Intent ID
+     *
+     * @param  string  $paymentIntentId  Stripe Payment Intent ID
      * @return float|null Stripe fee amount in dollars, or null if retrieval fails
      */
     public function getPaymentFee(string $paymentIntentId): ?float
@@ -314,6 +320,7 @@ class StripeService
                     'method' => __METHOD__,
                     'payment_intent_id' => $paymentIntentId,
                 ]);
+
                 return null;
             }
 
@@ -327,12 +334,13 @@ class StripeService
                     'payment_intent_id' => $paymentIntentId,
                     'charge_id' => $charge->id ?? null,
                 ]);
+
                 return null;
             }
 
             // Retrieve Balance Transaction to get fee details
-            $balanceTransactionId = is_string($charge->balance_transaction) 
-                ? $charge->balance_transaction 
+            $balanceTransactionId = is_string($charge->balance_transaction)
+                ? $charge->balance_transaction
                 : $charge->balance_transaction->id;
 
             $balanceTransaction = $this->stripe->balanceTransactions->retrieve($balanceTransactionId);
@@ -359,6 +367,7 @@ class StripeService
                 'stripe_error' => $e->getJsonBody(),
                 'payment_intent_id' => $paymentIntentId,
             ]);
+
             return null;
         } catch (\Exception $e) {
             Log::error('Error retrieving Stripe payment fee', [
@@ -367,6 +376,7 @@ class StripeService
                 'error_message' => $e->getMessage(),
                 'payment_intent_id' => $paymentIntentId,
             ]);
+
             return null;
         }
     }
@@ -374,17 +384,18 @@ class StripeService
     /**
      * Verify webhook request authenticity
      *
-     * @param string $payload Raw request body (string)
-     * @param string $signature Stripe-Signature header value
-     * @param string|null $secret Webhook secret from config (optional, uses config if not provided)
+     * @param  string  $payload  Raw request body (string)
+     * @param  string  $signature  Stripe-Signature header value
+     * @param  string|null  $secret  Webhook secret from config (optional, uses config if not provided)
      * @return \Stripe\Event Stripe Event object if valid
+     *
      * @throws \Stripe\Exception\SignatureVerificationException
      */
     public function verifyWebhookSignature(string $payload, string $signature, ?string $secret = null)
     {
         try {
             $webhookSecret = $secret ?? config('services.stripe.webhook_secret');
-            
+
             if (empty($webhookSecret)) {
                 throw new \Exception('Stripe webhook secret is not configured. Please set STRIPE_WEBHOOK_SECRET in your .env file.');
             }
@@ -418,7 +429,7 @@ class StripeService
     /**
      * Process webhook events and route to appropriate handlers
      *
-     * @param \Stripe\Event $event Stripe Event object
+     * @param  \Stripe\Event  $event  Stripe Event object
      * @return bool Boolean indicating success
      */
     public function handleWebhookEvent($event): bool
@@ -436,31 +447,32 @@ class StripeService
             switch ($eventType) {
                 case 'checkout.session.completed':
                     return $this->handleCheckoutSessionCompleted($eventData);
-                
+
                 case 'checkout.session.async_payment_succeeded':
                     return $this->handleCheckoutSessionAsyncPaymentSucceeded($eventData);
-                
+
                 case 'checkout.session.async_payment_failed':
                     return $this->handleCheckoutSessionAsyncPaymentFailed($eventData);
-                
+
                 case 'account.updated':
                     return $this->handleAccountUpdated($eventData);
-                
+
                 case 'transfer.created':
                     return $this->handleTransferCreated($eventData);
-                
+
                 case 'transfer.paid':
                     return $this->handleTransferPaid($eventData);
-                
+
                 case 'payment_intent.payment_failed':
                     return $this->handlePaymentIntentPaymentFailed($eventData);
-                
+
                 default:
                     Log::info('Unhandled Stripe webhook event type', [
                         'method' => __METHOD__,
                         'event_id' => $event->id,
                         'event_type' => $eventType,
                     ]);
+
                     return true; // Return true for unhandled events (not an error)
             }
         } catch (\Exception $e) {
@@ -471,6 +483,7 @@ class StripeService
                 'event_id' => $event->id ?? null,
                 'event_type' => $event->type ?? null,
             ]);
+
             return false;
         }
     }
@@ -479,8 +492,7 @@ class StripeService
      * Handle checkout.session.completed event
      * Mark order as paid, create order tickets, update inventory, clear cart
      *
-     * @param object $session Checkout Session object
-     * @return bool
+     * @param  object  $session  Checkout Session object
      */
     private function handleCheckoutSessionCompleted($session): bool
     {
@@ -503,6 +515,7 @@ class StripeService
                     'session_id' => $sessionId,
                     'payment_status' => $paymentStatus,
                 ]);
+
                 return false;
             }
 
@@ -514,6 +527,7 @@ class StripeService
                 'error' => $e->getMessage(),
                 'session_id' => $session->id ?? null,
             ]);
+
             return false;
         }
     }
@@ -522,8 +536,7 @@ class StripeService
      * Handle checkout.session.async_payment_succeeded event
      * Mark order as paid (for async payment methods)
      *
-     * @param object $session Checkout Session object
-     * @return bool
+     * @param  object  $session  Checkout Session object
      */
     private function handleCheckoutSessionAsyncPaymentSucceeded($session): bool
     {
@@ -545,6 +558,7 @@ class StripeService
                 'error' => $e->getMessage(),
                 'session_id' => $session->id ?? null,
             ]);
+
             return false;
         }
     }
@@ -553,8 +567,7 @@ class StripeService
      * Handle checkout.session.async_payment_failed event
      * Mark order as failed
      *
-     * @param object $session Checkout Session object
-     * @return bool
+     * @param  object  $session  Checkout Session object
      */
     private function handleCheckoutSessionAsyncPaymentFailed($session): bool
     {
@@ -570,7 +583,7 @@ class StripeService
             ]);
 
             // Find order by stripe_checkout_session_id
-            $orderModel = new OrderModel();
+            $orderModel = new OrderModel;
             $order = $orderModel->get_order(['stripe_checkout_session_id' => $sessionId]);
 
             if (empty($order)) {
@@ -586,6 +599,7 @@ class StripeService
                     'session_id' => $sessionId,
                     'metadata' => $metadata,
                 ]);
+
                 return false;
             }
 
@@ -607,6 +621,7 @@ class StripeService
                 'error' => $e->getMessage(),
                 'session_id' => $session->id ?? null,
             ]);
+
             return false;
         }
     }
@@ -615,8 +630,7 @@ class StripeService
      * Handle account.updated event
      * Update host onboarding status
      *
-     * @param object $account Account object
-     * @return bool
+     * @param  object  $account  Account object
      */
     private function handleAccountUpdated($account): bool
     {
@@ -638,8 +652,7 @@ class StripeService
      * Handle transfer.created event
      * Log transfer creation
      *
-     * @param object $transfer Transfer object
-     * @return bool
+     * @param  object  $transfer  Transfer object
      */
     private function handleTransferCreated($transfer): bool
     {
@@ -661,8 +674,7 @@ class StripeService
      * Handle transfer.paid event
      * Mark orders as settled
      *
-     * @param object $transfer Transfer object
-     * @return bool
+     * @param  object  $transfer  Transfer object
      */
     private function handleTransferPaid($transfer): bool
     {
@@ -684,8 +696,7 @@ class StripeService
      * Process successful payment - shared logic for checkout.session.completed and async_payment_succeeded
      * Creates order tickets, updates inventory, clears cart, and marks order as paid
      *
-     * @param object $session Checkout Session object
-     * @return bool
+     * @param  object  $session  Checkout Session object
      */
     private function processSuccessfulPayment($session): bool
     {
@@ -695,11 +706,11 @@ class StripeService
             $paymentIntentId = $session->payment_intent ?? null;
 
             // Initialize models
-            $orderModel = new OrderModel();
-            $orderTicketModel = new OrderTicketModel();
-            $cartModel = new CartModel();
-            $ticketModel = new TicketModel();
-            $couponModel = new CouponModel();
+            $orderModel = new OrderModel;
+            $orderTicketModel = new OrderTicketModel;
+            $cartModel = new CartModel;
+            $ticketModel = new TicketModel;
+            $couponModel = new CouponModel;
 
             // Find order by stripe_checkout_session_id (primary method)
             $order = $orderModel->get_order(['stripe_checkout_session_id' => $sessionId]);
@@ -715,6 +726,7 @@ class StripeService
                     'session_id' => $sessionId,
                     'metadata' => $metadata,
                 ]);
+
                 return false;
             }
 
@@ -725,6 +737,7 @@ class StripeService
                     'order_id' => $order->order_id,
                     'session_id' => $sessionId,
                 ]);
+
                 return true; // Return true since order is already processed
             }
 
@@ -736,6 +749,7 @@ class StripeService
                     'order_status' => $order->order_status,
                     'session_id' => $sessionId,
                 ]);
+
                 return false;
             }
 
@@ -750,13 +764,14 @@ class StripeService
                     'session_id' => $sessionId,
                     'metadata' => $metadata,
                 ]);
+
                 return false;
             }
 
             // Query cart items for user and event
             $cartItems = CartModel::with(['ticket'])
                 ->where('user_id', $userId)
-                ->whereHas('ticket', function($query) use ($eventId) {
+                ->whereHas('ticket', function ($query) use ($eventId) {
                     $query->where('event_id', $eventId);
                 })
                 ->get();
@@ -769,6 +784,7 @@ class StripeService
                     'event_id' => $eventId,
                     'session_id' => $sessionId,
                 ]);
+
                 return false;
             }
 
@@ -786,21 +802,22 @@ class StripeService
                             'cart_id' => $cartItem->cart_id,
                             'ticket_id' => $cartItem->ticket_id,
                         ]);
+
                         continue; // Skip this cart item
                     }
 
                     $quantity = $cartItem->quantity;
-                    $unitPrice = (float)$ticket->price;
+                    $unitPrice = (float) $ticket->price;
                     $totalPrice = $quantity * $unitPrice;
 
                     // Create order ticket record
-                    $orderTicketData = array(
+                    $orderTicketData = [
                         'order_id' => $order->order_id,
                         'ticket_id' => $ticket->ticket_id,
                         'quantity' => $quantity,
                         'unit_price' => round($unitPrice, 2),
                         'total_price' => round($totalPrice, 2),
-                    );
+                    ];
 
                     $orderTicketModel->create_order_ticket($orderTicketData);
 
@@ -816,12 +833,12 @@ class StripeService
                 ];
 
                 // Store payment_intent_id if available
-                if (!empty($paymentIntentId)) {
+                if (! empty($paymentIntentId)) {
                     $updateData['stripe_payment_intent_id'] = $paymentIntentId;
-                    
+
                     // Retrieve and store Stripe fee
                     $stripeFee = $this->getPaymentFee($paymentIntentId);
-                    
+
                     if ($stripeFee !== null) {
                         // Store actual Stripe fee retrieved from API
                         $updateData['stripe_fee'] = $stripeFee;
@@ -830,7 +847,7 @@ class StripeService
                         // Standard Stripe fee: 2.9% + $0.30
                         $estimatedFee = ($order->total_amount * 0.029) + 0.30;
                         $updateData['stripe_fee'] = round($estimatedFee, 2);
-                        
+
                         Log::warning('Failed to retrieve Stripe fee from API, using estimated fee', [
                             'method' => __METHOD__,
                             'order_id' => $order->order_id,
@@ -842,7 +859,7 @@ class StripeService
                     // If no payment_intent_id, calculate estimated fee
                     $estimatedFee = ($order->total_amount * 0.029) + 0.30;
                     $updateData['stripe_fee'] = round($estimatedFee, 2);
-                    
+
                     Log::warning('No payment_intent_id available, using estimated Stripe fee', [
                         'method' => __METHOD__,
                         'order_id' => $order->order_id,
@@ -855,13 +872,13 @@ class StripeService
 
                 // Clear cart items for this event
                 CartModel::where('user_id', $userId)
-                    ->whereHas('ticket', function($query) use ($eventId) {
+                    ->whereHas('ticket', function ($query) use ($eventId) {
                         $query->where('event_id', $eventId);
                     })
                     ->delete();
 
                 // Update coupon times_used if coupon was applied
-                if (!empty($order->coupon_id)) {
+                if (! empty($order->coupon_id)) {
                     CouponModel::where('coupon_id', $order->coupon_id)
                         ->increment('times_used');
                 }
@@ -871,10 +888,10 @@ class StripeService
 
                 // Reload order with event relationship for email
                 $order = $orderModel->get_order(['order_id' => $order->order_id]);
-                
+
                 // Get event information from first order ticket
                 $eventTitle = 'Event';
-                if (!empty($eventId)) {
+                if (! empty($eventId)) {
                     $event = EventModel::find($eventId);
                     if ($event) {
                         $eventTitle = $event->event_title;
@@ -883,7 +900,7 @@ class StripeService
 
                 // Send ticket purchase confirmation email (non-blocking - don't fail payment if email fails)
                 try {
-                    $brevoEmailService = new BrevoEmailService();
+                    $brevoEmailService = new BrevoEmailService;
                     $emailResult = $brevoEmailService->sendTicketPurchaseConfirmationEmail(
                         $order->email,
                         $order->order_number,
@@ -891,13 +908,13 @@ class StripeService
                         $order->total_amount,
                         $order->full_name
                     );
-                    
-                    if (!$emailResult['success']) {
+
+                    if (! $emailResult['success']) {
                         Log::warning('Failed to send ticket purchase confirmation email', [
                             'method' => __METHOD__,
                             'order_id' => $order->order_id,
                             'email' => $order->email,
-                            'error' => $emailResult['error'] ?? 'Unknown error'
+                            'error' => $emailResult['error'] ?? 'Unknown error',
                         ]);
                     }
                 } catch (\Exception $emailException) {
@@ -906,7 +923,7 @@ class StripeService
                         'method' => __METHOD__,
                         'order_id' => $order->order_id,
                         'email' => $order->email,
-                        'error' => $emailException->getMessage()
+                        'error' => $emailException->getMessage(),
                     ]);
                 }
 
@@ -930,6 +947,7 @@ class StripeService
                 'trace' => $e->getTraceAsString(),
                 'session_id' => $session->id ?? null,
             ]);
+
             return false;
         }
     }
@@ -938,8 +956,7 @@ class StripeService
      * Handle payment_intent.payment_failed event
      * Mark order as failed
      *
-     * @param object $paymentIntent Payment Intent object
-     * @return bool
+     * @param  object  $paymentIntent  Payment Intent object
      */
     private function handlePaymentIntentPaymentFailed($paymentIntent): bool
     {
@@ -954,7 +971,7 @@ class StripeService
             ]);
 
             // Initialize order model
-            $orderModel = new OrderModel();
+            $orderModel = new OrderModel;
 
             // Try to find order by payment_intent_id
             $order = $orderModel->get_order(['stripe_payment_intent_id' => $paymentIntentId]);
@@ -970,6 +987,7 @@ class StripeService
                     'payment_intent_id' => $paymentIntentId,
                     'metadata' => $metadata,
                 ]);
+
                 return false;
             }
 
@@ -991,8 +1009,8 @@ class StripeService
                 'error' => $e->getMessage(),
                 'payment_intent_id' => $paymentIntent->id ?? null,
             ]);
+
             return false;
         }
     }
 }
-

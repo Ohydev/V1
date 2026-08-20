@@ -83,60 +83,77 @@ namespace App\Documentation\Swagger\AttendeesManagement;
  * - Server errors (500): E002 error code for unexpected server-side exceptions",
  *     tags={"Attendees Management API"},
  *     security={{"sanctum": {}}},
+ *
  *     @OA\Parameter(
  *         name="search",
  *         in="query",
  *         required=false,
  *         description="Search query to search across attendee name, email, and contact number. Case-insensitive partial matching. Maximum 255 characters.",
+ *
  *         @OA\Schema(type="string", maxLength=255, example="john")
  *     ),
+ *
  *     @OA\Parameter(
  *         name="start_date",
  *         in="query",
  *         required=false,
  *         description="Start date for date range filter (last transaction date). Format: d-m-Y (e.g., '01-12-2025'). Inclusive start date.",
+ *
  *         @OA\Schema(type="string", format="date", pattern="^\\d{2}-\\d{2}-\\d{4}$", example="01-12-2025")
  *     ),
+ *
  *     @OA\Parameter(
  *         name="end_date",
  *         in="query",
  *         required=false,
  *         description="End date for date range filter (last transaction date). Format: d-m-Y (e.g., '31-12-2025'). Inclusive end date (includes end of day 23:59:59).",
+ *
  *         @OA\Schema(type="string", format="date", pattern="^\\d{2}-\\d{2}-\\d{4}$", example="31-12-2025")
  *     ),
+ *
  *     @OA\Parameter(
  *         name="events_filter",
  *         in="query",
  *         required=false,
  *         description="Free text search on event titles to filter attendees who have purchased tickets for matching events. Case-insensitive partial matching. Maximum 255 characters.",
+ *
  *         @OA\Schema(type="string", maxLength=255, example="tech conference")
  *     ),
+ *
  *     @OA\Parameter(
  *         name="sort_by",
  *         in="query",
  *         required=false,
  *         description="Sort option for attendees list. Valid values: 'last_txn_date' (default), 'total_spend', 'total_txns'. Default is 'last_txn_date'.",
+ *
  *         @OA\Schema(type="string", enum={"last_txn_date", "total_spend", "total_txns"}, example="last_txn_date")
  *     ),
+ *
  *     @OA\Parameter(
  *         name="page",
  *         in="query",
  *         required=false,
  *         description="Page number for pagination. Minimum 1. Default is 1.",
+ *
  *         @OA\Schema(type="integer", minimum=1, example=1)
  *     ),
+ *
  *     @OA\Parameter(
  *         name="per_page",
  *         in="query",
  *         required=false,
  *         description="Number of attendees per page. Minimum 1, maximum 100. Default is 10.",
+ *
  *         @OA\Schema(type="integer", minimum=1, maximum=100, example=10)
  *     ),
+ *
  *     @OA\Response(
  *         response=200,
  *         description="Attendees retrieved successfully. Returns paginated list of attendees with events information, total transactions, total spend, and last transaction date.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=true),
  *             @OA\Property(
  *                 property="data",
@@ -146,8 +163,10 @@ namespace App\Documentation\Swagger\AttendeesManagement;
  *                     property="attendees",
  *                     type="array",
  *                     description="Array of attendees sorted by selected sort option",
+ *
  *                     @OA\Items(
  *                         type="object",
+ *
  *                         @OA\Property(property="user_id", type="integer", example=1),
  *                         @OA\Property(property="name", type="string", example="John Doe"),
  *                         @OA\Property(property="email", type="string", example="john.doe@example.com"),
@@ -159,8 +178,10 @@ namespace App\Documentation\Swagger\AttendeesManagement;
  *                             property="events",
  *                             type="array",
  *                             description="List of events attended by this attendee",
+ *
  *                             @OA\Items(
  *                                 type="object",
+ *
  *                                 @OA\Property(property="event_id", type="integer", example=1),
  *                                 @OA\Property(property="event_title", type="string", example="Tech Conference 2025"),
  *                                 @OA\Property(property="tickets_purchased", type="integer", example=2, description="Number of tickets purchased for this event"),
@@ -183,11 +204,14 @@ namespace App\Documentation\Swagger\AttendeesManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=400,
  *         description="Validation error (E001). Request validation failed. Query parameters are invalid or date formats are incorrect.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -200,12 +224,15 @@ namespace App\Documentation\Swagger\AttendeesManagement;
  *                     @OA\Property(
  *                         property="start_date",
  *                         type="array",
+ *
  *                         @OA\Items(type="string"),
  *                         example={"The start date does not match the format d-m-Y."}
  *                     ),
+ *
  *                     @OA\Property(
  *                         property="sort_by",
  *                         type="array",
+ *
  *                         @OA\Items(type="string"),
  *                         example={"The selected sort by is invalid."}
  *                     )
@@ -213,11 +240,14 @@ namespace App\Documentation\Swagger\AttendeesManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=401,
  *         description="Authentication error (E003). User authentication failed. Token is missing, invalid, or expired.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -227,11 +257,14 @@ namespace App\Documentation\Swagger\AttendeesManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=500,
  *         description="Server error (E002). An unexpected error occurred while retrieving attendees list.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -247,4 +280,3 @@ class GetAttendeesList
 {
     // Empty class for swagger-php to parse annotations
 }
-

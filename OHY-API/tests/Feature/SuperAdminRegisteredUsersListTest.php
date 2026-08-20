@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Models\OrderModel;
 use App\Models\SuperAdminModel;
 use App\Models\UserModel;
-use App\Models\OrderModel;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
@@ -122,4 +122,3 @@ class SuperAdminRegisteredUsersListTest extends TestCase
         $response->assertJsonPath('data.users.0.full_name', 'High Spender');
     }
 }
-

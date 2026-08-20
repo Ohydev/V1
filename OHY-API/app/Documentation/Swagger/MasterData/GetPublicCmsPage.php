@@ -8,18 +8,23 @@ namespace App\Documentation\Swagger\MasterData;
  *     summary="Get Public CMS Page by Slug",
  *     description="Retrieves a single active CMS page by its slug for public viewing. This is a public API that does not require authentication. Returns complete page data (title, content, slug) only if the page is active (is_active = true). If the page is inactive or does not exist, returns a 404 error. Used when users click on CMS links in the footer to view the full page content.",
  *     tags={"Master Data API"},
+ *
  *     @OA\Parameter(
  *         name="slug",
  *         in="path",
  *         required=true,
  *         description="URL-friendly slug identifier of the CMS page (e.g., 'terms-and-conditions', 'privacy-policy')",
+ *
  *         @OA\Schema(type="string", example="terms-and-conditions")
  *     ),
+ *
  *     @OA\Response(
  *         response=200,
  *         description="CMS page retrieved successfully",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=true),
  *             @OA\Property(
  *                 property="data",
@@ -36,11 +41,14 @@ namespace App\Documentation\Swagger\MasterData;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=404,
  *         description="CMS page not found or inactive",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -50,11 +58,14 @@ namespace App\Documentation\Swagger\MasterData;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=500,
  *         description="Server error occurred",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -70,4 +81,3 @@ class GetPublicCmsPage
 {
     // Empty class - annotations are in docblock
 }
-

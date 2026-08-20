@@ -8,7 +8,7 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     * 
+     *
      * Adds columns to track when events are hidden by super admin.
      * Hidden events are excluded from public listings but remain visible to event hosts.
      */
@@ -38,7 +38,7 @@ return new class extends Migration
 
     /**
      * Reverse the migrations.
-     * 
+     *
      * Removes the hide metadata columns from events table.
      */
     public function down(): void

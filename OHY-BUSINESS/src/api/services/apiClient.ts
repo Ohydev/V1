@@ -66,7 +66,7 @@ apiClient.interceptors.response.use(
 export const makeRequest = async <T>(
   endpoint: string,
   method: AxiosRequestConfig["method"] = "GET",
-  data?: any,
+  data?: unknown,
   headers?: AxiosRequestConfig["headers"],
   responseType?: AxiosRequestConfig["responseType"],
   signal?: AbortSignal

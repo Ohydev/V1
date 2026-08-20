@@ -67,7 +67,7 @@ const validatePhoneNumber = (phone: string | undefined): boolean => {
     return true;
   }
   // Remove all spaces, dashes, dots, parentheses, and plus signs for validation
-  const cleanedPhone = phone.replace(/[\s\-\.\(\)\+]/g, "");
+  const cleanedPhone = phone.replace(/[\s\-.()+]/g, "");
   // US phone number patterns:
   // - 10 digits: area code (3 digits, first digit 2-9) + exchange (3 digits, first digit 2-9) + number (4 digits)
   // - Can have country code 1 at the start (11 digits total)

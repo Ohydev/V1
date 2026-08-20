@@ -7,7 +7,7 @@ namespace App\Documentation\Swagger\OrderManagement;
  *     path="/v1/get_order_details",
  *     summary="Get Order Details",
  *     description="Retrieves complete detailed information for a specific order including order information, complete event details with all relationships (category, media, venue, artists, social media, terms), order tickets, payment information, billing address, and applied coupon. This endpoint verifies that the order belongs to the authenticated user before returning details. Protected route - requires authentication via Laravel Sanctum token.
- * 
+ *
  * **Complete Flow:**
  * 1. Authentication check: Middleware (AuthenticateApiToken and AuthenticateUser) verifies Sanctum token and retrieves authenticated user
  * 2. Request validation: Validates required query parameter (order_id: required|integer|min:1)
@@ -91,17 +91,22 @@ namespace App\Documentation\Swagger\OrderManagement;
  * - Ownership validation: Users can only view their own order details",
  *     tags={"End User - Order Management API"},
  *     security={{"sanctum": {}}},
+ *
  *     @OA\Parameter(
  *         name="order_id",
  *         in="query",
  *         required=true,
  *         description="Order ID to retrieve details for. Must be an integer, minimum 1, and must belong to the authenticated user. Validation rule: 'required|integer|min:1'",
+ *
  *         @OA\Schema(type="integer", example=1)
  *     ),
+ *
  *     @OA\Response(
  *         response=200,
  *         description="Success - Order details retrieved successfully",
+ *
  *         @OA\JsonContent(
+ *
  *             @OA\Property(property="success", type="boolean", example=true),
  *             @OA\Property(
  *                 property="data",
@@ -175,8 +180,10 @@ namespace App\Documentation\Swagger\OrderManagement;
  *                             property="artists",
  *                             type="array",
  *                             description="Event artists/speakers",
+ *
  *                             @OA\Items(
  *                                 type="object",
+ *
  *                                 @OA\Property(property="event_artist_id", type="integer", example=1),
  *                                 @OA\Property(property="artist_name", type="string", example="John Doe"),
  *                                 @OA\Property(property="artist_image", type="string", nullable=true, example="artists/1/artist.jpg"),
@@ -184,8 +191,10 @@ namespace App\Documentation\Swagger\OrderManagement;
  *                                     property="social_media",
  *                                     type="array",
  *                                     description="Artist social media links",
+ *
  *                                     @OA\Items(
  *                                         type="object",
+ *
  *                                         @OA\Property(property="platform", type="string", example="instagram"),
  *                                         @OA\Property(property="url", type="string", example="https://instagram.com/johndoe")
  *                                     )
@@ -196,8 +205,10 @@ namespace App\Documentation\Swagger\OrderManagement;
  *                             property="social_media",
  *                             type="array",
  *                             description="Event social media links",
+ *
  *                             @OA\Items(
  *                                 type="object",
+ *
  *                                 @OA\Property(property="platform", type="string", example="facebook"),
  *                                 @OA\Property(property="url", type="string", example="https://facebook.com/event")
  *                             )
@@ -214,8 +225,10 @@ namespace App\Documentation\Swagger\OrderManagement;
  *                         property="order_tickets",
  *                         type="array",
  *                         description="Array of order tickets purchased",
+ *
  *                         @OA\Items(
  *                             type="object",
+ *
  *                             @OA\Property(property="order_ticket_id", type="integer", description="Order ticket ID", example=1),
  *                             @OA\Property(property="ticket_id", type="integer", description="Ticket ID", example=1),
  *                             @OA\Property(property="ticket_category", type="string", nullable=true, description="Ticket category name", example="Early Bird"),
@@ -266,10 +279,13 @@ namespace App\Documentation\Swagger\OrderManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=400,
  *         description="Bad Request - Validation error",
+ *
  *         @OA\JsonContent(
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -284,10 +300,13 @@ namespace App\Documentation\Swagger\OrderManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=404,
  *         description="Not Found - Order not found or doesn't belong to user",
+ *
  *         @OA\JsonContent(
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -297,10 +316,13 @@ namespace App\Documentation\Swagger\OrderManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=500,
  *         description="Internal Server Error",
+ *
  *         @OA\JsonContent(
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -316,4 +338,3 @@ class GetOrderDetails
 {
     // Empty class - annotations are in docblock
 }
-

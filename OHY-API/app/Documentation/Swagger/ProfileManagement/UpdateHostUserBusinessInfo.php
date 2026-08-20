@@ -51,13 +51,17 @@ namespace App\Documentation\Swagger\ProfileManagement;
  * - Server errors (500): E002 error code for unexpected server-side exceptions",
  *     tags={"Event Host Profile Management API"},
  *     security={{"sanctum": {}}},
+ *
  *     @OA\RequestBody(
  *         required=true,
+ *
  *         @OA\MediaType(
  *             mediaType="application/json",
+ *
  *             @OA\Schema(
  *                 type="object",
  *                 required={"business_name"},
+ *
  *                 @OA\Property(
  *                     property="business_name",
  *                     type="string",
@@ -137,6 +141,7 @@ namespace App\Documentation\Swagger\ProfileManagement;
  *                     description="Country ID reference. Optional field. Must exist in countries table if provided. Can be set to null to clear the field. Validation rule: 'nullable|integer|exists:countries,country_id'. If provided, country relationship is loaded and country information (country_id, name) is included in response."
  *                 )
  *             ),
+ *
  *             @OA\Examples(
  *                 example="CompleteBusinessInfo",
  *                 summary="Complete Business Information",
@@ -149,11 +154,14 @@ namespace App\Documentation\Swagger\ProfileManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=200,
  *         description="Business information updated successfully. Returns business information with all fields and optional country object.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=true),
  *             @OA\Property(
  *                 property="data",
@@ -186,11 +194,14 @@ namespace App\Documentation\Swagger\ProfileManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=400,
  *         description="Validation error (E001). Request validation failed. Returns detailed error messages for each field that failed validation.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -203,12 +214,15 @@ namespace App\Documentation\Swagger\ProfileManagement;
  *                     @OA\Property(
  *                         property="business_name",
  *                         type="array",
+ *
  *                         @OA\Items(type="string"),
  *                         example={"The business name field is required.", "The business name must not be greater than 255 characters."}
  *                     ),
+ *
  *                     @OA\Property(
  *                         property="business_country_id",
  *                         type="array",
+ *
  *                         @OA\Items(type="string"),
  *                         example={"The selected business country id is invalid."}
  *                     )
@@ -216,11 +230,14 @@ namespace App\Documentation\Swagger\ProfileManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=401,
  *         description="Authentication error (E003). User authentication failed. Token is missing, invalid, or expired.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -230,11 +247,14 @@ namespace App\Documentation\Swagger\ProfileManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=404,
  *         description="Not found error (E404). User or business not found in database.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -244,11 +264,14 @@ namespace App\Documentation\Swagger\ProfileManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=500,
  *         description="Internal server error (E002). An unexpected error occurred during business information update. This could be due to database connection issues, transaction failures, or other server-side exceptions.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -264,4 +287,3 @@ class UpdateHostUserBusinessInfo
 {
     // Update Host User Business Information API documentation
 }
-

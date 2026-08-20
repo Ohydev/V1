@@ -7,7 +7,7 @@ namespace App\Documentation\Swagger\Authentication;
  *     path="/v1/host_user_login",
  *     summary="Host User Login",
  *     description="Authenticates Host User using email and password, generates Laravel Sanctum authentication token, and returns complete user information including business details if applicable. Supports Remember Me functionality for extended session management.
- * 
+ *
  * **Authentication Flow:**
  * 1. Request validation: Validates email format and password presence
  * 2. User lookup: Queries host_users table by email address to find the user record
@@ -23,7 +23,7 @@ namespace App\Documentation\Swagger\Authentication;
  *    - Token abilities: all permissions
  * 9. Business information retrieval: If user is linked to a business (business_id is not null), queries businesses table and includes business details in response
  * 10. Response preparation: Returns success response with user_info object, token, and success message
- * 
+ *
  * **Remember Me Functionality:**
  * The API accepts remember_me in multiple formats for flexibility:
  * - Boolean true: Token expires in 30 days
@@ -31,7 +31,7 @@ namespace App\Documentation\Swagger\Authentication;
  * - String 1: Token expires in 30 days
  * - Integer 1: Token expires in 30 days
  * - Any other value or not provided: Token expires in 1 hour
- * 
+ *
  * **Token Usage:**
  * - Token must be included in subsequent authenticated API requests
  * - Token can be sent in either format:
@@ -39,24 +39,28 @@ namespace App\Documentation\Swagger\Authentication;
  *   - Header: Authorization: Bearer {token_value}
  * - Token expiration is enforced by Laravel Sanctum
  * - Expired tokens will result in 401 Unauthorized responses
- * 
+ *
  * **Business Information Inclusion:**
  * - Business information is only included in the response if the user is linked to a business (business_id is not null)
  * - Business object contains: `business_name` and `account_type` (either 'business' or 'personal')
  * - If user is not linked to a business, the `business` property is not included in the response
- * 
+ *
  * **Error Handling:**
  * - Validation errors (400): E001 error code for invalid email format or missing required fields
  * - Authentication errors (401): E003 error code for user not found or incorrect password (same message for security)
  * - Server errors (500): E002 error code for unexpected server-side exceptions",
  *     tags={"Authentication API"},
+ *
  *     @OA\RequestBody(
  *         required=true,
+ *
  *         @OA\MediaType(
  *             mediaType="application/json",
+ *
  *             @OA\Schema(
  *                 type="object",
  *                 required={"email", "password"},
+ *
  *                 @OA\Property(
  *                     property="email",
  *                     type="string",
@@ -77,10 +81,11 @@ namespace App\Documentation\Swagger\Authentication;
  *                     nullable=true,
  *                     example="true",
  *                     description="Remember Me option for extended session management. Accepts multiple formats: Boolean true, String true, String 1, Integer 1 (all result in 30-day token expiration). Any other value, false, or not provided results in 1-hour token expiration.
- * 
+ *
  * The API processes this field flexibly to handle different client implementations. Validation rule: 'nullable'"
  *                 )
  *             ),
+ *
  *             @OA\Examples(
  *                 example="WithRememberMe",
  *                 summary="Login with Remember Me (Boolean)",
@@ -122,11 +127,14 @@ namespace App\Documentation\Swagger\Authentication;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=200,
  *         description="Login successful. User authenticated and token generated. Returns complete user information and authentication token.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=true, description="Indicates successful authentication"),
  *             @OA\Property(
  *                 property="data",
@@ -159,11 +167,14 @@ namespace App\Documentation\Swagger\Authentication;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=400,
  *         description="Validation error (E001). Request validation failed. Email format or required field validation failed.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false, description="Indicates failed operation"),
  *             @OA\Property(
  *                 property="error",
@@ -176,13 +187,16 @@ namespace App\Documentation\Swagger\Authentication;
  *                     @OA\Property(
  *                         property="email",
  *                         type="array",
+ *
  *                         @OA\Items(type="string"),
  *                         example={"The email field is required.", "The email must be a valid email address."},
  *                         description="Error messages for email field validation failures"
  *                     ),
+ *
  *                     @OA\Property(
  *                         property="password",
  *                         type="array",
+ *
  *                         @OA\Items(type="string"),
  *                         example={"The password field is required."},
  *                         description="Error messages for password field validation failures"
@@ -191,11 +205,14 @@ namespace App\Documentation\Swagger\Authentication;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=401,
  *         description="Authentication error (E003). User authentication failed. This error is returned for both 'user not found' and 'incorrect password' scenarios to prevent user enumeration attacks. The same error message is used for security purposes.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false, description="Indicates failed authentication"),
  *             @OA\Property(
  *                 property="error",
@@ -205,11 +222,14 @@ namespace App\Documentation\Swagger\Authentication;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=403,
  *         description="Blocked host error (E004). Returned when the requested host account is blocked by a Super Admin. The response includes the stored block reason if available, otherwise a generic message instructing the host to contact support.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false, description="Indicates failed login due to block status"),
  *             @OA\Property(
  *                 property="error",
@@ -219,11 +239,14 @@ namespace App\Documentation\Swagger\Authentication;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=500,
  *         description="Internal server error (E002). An unexpected error occurred during authentication. This could be due to database connection issues, token generation failures, or other server-side exceptions.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false, description="Indicates failed operation"),
  *             @OA\Property(
  *                 property="error",

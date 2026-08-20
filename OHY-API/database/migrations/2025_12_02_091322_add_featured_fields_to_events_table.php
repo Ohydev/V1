@@ -8,7 +8,7 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     * 
+     *
      * Adds columns to track when events are marked as featured by super admin.
      * Featured events appear in a separate section on the End User homepage.
      */
@@ -36,7 +36,7 @@ return new class extends Migration
 
     /**
      * Reverse the migrations.
-     * 
+     *
      * Removes the featured metadata columns from events table.
      */
     public function down(): void

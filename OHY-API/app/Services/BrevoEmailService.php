@@ -2,11 +2,11 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Http;
 use App\Mail\OtpEmail;
 use App\Mail\RegistrationOtpEmail;
 use App\Mail\TicketPurchaseConfirmationEmail;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class BrevoEmailService
 {
@@ -17,7 +17,7 @@ class BrevoEmailService
 
     /**
      * Get Brevo API key from configuration
-     * 
+     *
      * @return string Brevo API key
      */
     private function getApiKey()
@@ -27,7 +27,7 @@ class BrevoEmailService
 
     /**
      * Get sender email from configuration
-     * 
+     *
      * @return string Sender email address
      */
     private function getSenderEmail()
@@ -37,7 +37,7 @@ class BrevoEmailService
 
     /**
      * Get sender name from configuration
-     * 
+     *
      * @return string Sender name
      */
     private function getSenderName()
@@ -47,10 +47,10 @@ class BrevoEmailService
 
     /**
      * Send email via Brevo HTTP API (HTTPS - port 443, not blocked by cPanel)
-     * 
-     * @param string $to Recipient email address
-     * @param string $subject Email subject
-     * @param string $htmlContent HTML email content
+     *
+     * @param  string  $to  Recipient email address
+     * @param  string  $subject  Email subject
+     * @param  string  $htmlContent  HTML email content
      * @return array Returns array with 'success' boolean and optional 'error' message
      */
     private function sendEmailViaApi($to, $subject, $htmlContent)
@@ -63,35 +63,35 @@ class BrevoEmailService
 
             // Validate API credentials are configured
             if (empty($apiKey) || empty($senderEmail)) {
-                Log::error('BrevoEmailService: API credentials not configured', array(
-                    'api_key_set' => !empty($apiKey),
-                    'sender_email_set' => !empty($senderEmail)
-                ));
+                Log::error('BrevoEmailService: API credentials not configured', [
+                    'api_key_set' => ! empty($apiKey),
+                    'sender_email_set' => ! empty($senderEmail),
+                ]);
 
-                return array(
+                return [
                     'success' => false,
-                    'error' => 'Email service configuration error. Please contact support.'
-                );
+                    'error' => 'Email service configuration error. Please contact support.',
+                ];
             }
 
             // Prepare API request payload according to Brevo API v3 specification
             // Extract name from email address (part before @) as fallback if no name provided
             $recipientName = explode('@', $to)[0];
-            
-            $payload = array(
-                'sender' => array(
+
+            $payload = [
+                'sender' => [
                     'name' => $senderName,
-                    'email' => $senderEmail
-                ),
-                'to' => array(
-                    array(
+                    'email' => $senderEmail,
+                ],
+                'to' => [
+                    [
                         'email' => $to,
-                        'name' => $recipientName
-                    )
-                ),
+                        'name' => $recipientName,
+                    ],
+                ],
                 'subject' => $subject,
-                'htmlContent' => $htmlContent
-            );
+                'htmlContent' => $htmlContent,
+            ];
 
             // Send HTTP POST request to Brevo API using Laravel HTTP client (uses HTTPS port 443)
             // Note: Laravel Http facade response object has status(), json(), and body() methods
@@ -99,7 +99,7 @@ class BrevoEmailService
                 ->withHeaders([
                     'api-key' => $apiKey,
                     'Content-Type' => 'application/json',
-                    'Accept' => 'application/json'
+                    'Accept' => 'application/json',
                 ])
                 ->timeout(30)
                 ->post($this->brevoApiUrl, $payload);
@@ -120,51 +120,51 @@ class BrevoEmailService
                 $responseData = $response->json();
 
                 // Log successful email send
-                Log::info('BrevoEmailService: Email sent successfully via API', array(
+                Log::info('BrevoEmailService: Email sent successfully via API', [
                     'email' => $to,
                     'subject' => $subject,
                     'status' => $statusCode,
-                    'response' => $responseData
-                ));
+                    'response' => $responseData,
+                ]);
 
-                return array(
-                    'success' => true
-                );
+                return [
+                    'success' => true,
+                ];
             } else {
                 // Get response body as string (Laravel Http response has body() method)
                 $responseBody = $response->body();
 
                 // Log API error response
-                Log::error('BrevoEmailService: API request failed', array(
+                Log::error('BrevoEmailService: API request failed', [
                     'email' => $to,
                     'status' => $statusCode,
-                    'response' => $responseBody
-                ));
+                    'response' => $responseBody,
+                ]);
 
-                return array(
+                return [
                     'success' => false,
-                    'error' => 'An error occurred while sending email. Please try again later.'
-                );
+                    'error' => 'An error occurred while sending email. Please try again later.',
+                ];
             }
         } catch (\Exception $e) {
             // Log exception details
-            Log::error('BrevoEmailService: Exception occurred while sending email via API', array(
+            Log::error('BrevoEmailService: Exception occurred while sending email via API', [
                 'email' => $to,
                 'message' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ));
+                'trace' => $e->getTraceAsString(),
+            ]);
 
-            return array(
+            return [
                 'success' => false,
-                'error' => 'An error occurred while sending email. Please try again later.'
-            );
+                'error' => 'An error occurred while sending email. Please try again later.',
+            ];
         }
     }
 
     /**
      * Extract HTML content from Mailable class
-     * 
-     * @param object $mailable Mailable instance
+     *
+     * @param  object  $mailable  Mailable instance
      * @return string HTML email content
      */
     private function extractHtmlContent($mailable)
@@ -180,8 +180,8 @@ class BrevoEmailService
 
     /**
      * Extract subject from Mailable class
-     * 
-     * @param object $mailable Mailable instance
+     *
+     * @param  object  $mailable  Mailable instance
      * @return string Email subject
      */
     private function extractSubject($mailable)
@@ -197,10 +197,10 @@ class BrevoEmailService
 
     /**
      * Send OTP email via Brevo HTTP API
-     * 
-     * @param string $email Recipient email address
-     * @param string $otpCode 6-digit OTP code (plain text, will be sent as-is)
-     * @param string $userType User type ('user' or 'host')
+     *
+     * @param  string  $email  Recipient email address
+     * @param  string  $otpCode  6-digit OTP code (plain text, will be sent as-is)
+     * @param  string  $userType  User type ('user' or 'host')
      * @return array Returns array with 'success' boolean and optional 'error' message
      */
     public function sendOtpEmail($email, $otpCode, $userType = 'user')
@@ -220,25 +220,25 @@ class BrevoEmailService
             return $this->sendEmailViaApi($email, $subject, $htmlContent);
         } catch (\Exception $e) {
             // Log exception
-            Log::error('BrevoEmailService: Exception occurred while sending OTP email', array(
+            Log::error('BrevoEmailService: Exception occurred while sending OTP email', [
                 'email' => $email,
                 'message' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ));
+                'trace' => $e->getTraceAsString(),
+            ]);
 
-            return array(
+            return [
                 'success' => false,
-                'error' => 'An error occurred while sending email. Please try again later.'
-            );
+                'error' => 'An error occurred while sending email. Please try again later.',
+            ];
         }
     }
 
     /**
      * Send registration OTP email via Brevo HTTP API
-     * 
-     * @param string $email Recipient email address
-     * @param string $otpCode 6-digit OTP code (plain text, will be sent as-is)
-     * @param string $userType User type ('user' or 'host')
+     *
+     * @param  string  $email  Recipient email address
+     * @param  string  $otpCode  6-digit OTP code (plain text, will be sent as-is)
+     * @param  string  $userType  User type ('user' or 'host')
      * @return array Returns array with 'success' boolean and optional 'error' message
      */
     public function sendRegistrationOtpEmail($email, $otpCode, $userType = 'user')
@@ -258,27 +258,27 @@ class BrevoEmailService
             return $this->sendEmailViaApi($email, $subject, $htmlContent);
         } catch (\Exception $e) {
             // Log exception
-            Log::error('BrevoEmailService: Exception occurred while sending registration OTP email', array(
+            Log::error('BrevoEmailService: Exception occurred while sending registration OTP email', [
                 'email' => $email,
                 'message' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ));
+                'trace' => $e->getTraceAsString(),
+            ]);
 
-            return array(
+            return [
                 'success' => false,
-                'error' => 'An error occurred while sending email. Please try again later.'
-            );
+                'error' => 'An error occurred while sending email. Please try again later.',
+            ];
         }
     }
 
     /**
      * Send ticket purchase confirmation email via Brevo HTTP API
-     * 
-     * @param string $email Recipient email address
-     * @param string $orderNumber Order number
-     * @param string $eventTitle Event title
-     * @param float $totalAmount Total amount paid
-     * @param string $fullName Full name of purchaser
+     *
+     * @param  string  $email  Recipient email address
+     * @param  string  $orderNumber  Order number
+     * @param  string  $eventTitle  Event title
+     * @param  float  $totalAmount  Total amount paid
+     * @param  string  $fullName  Full name of purchaser
      * @return array Returns array with 'success' boolean and optional 'error' message
      */
     public function sendTicketPurchaseConfirmationEmail($email, $orderNumber, $eventTitle, $totalAmount, $fullName)
@@ -295,16 +295,16 @@ class BrevoEmailService
             return $this->sendEmailViaApi($email, $subject, $htmlContent);
         } catch (\Exception $e) {
             // Log exception
-            Log::error('BrevoEmailService: Exception occurred while sending ticket purchase confirmation email', array(
+            Log::error('BrevoEmailService: Exception occurred while sending ticket purchase confirmation email', [
                 'email' => $email,
                 'message' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ));
+                'trace' => $e->getTraceAsString(),
+            ]);
 
-            return array(
+            return [
                 'success' => false,
-                'error' => 'An error occurred while sending email. Please try again later.'
-            );
+                'error' => 'An error occurred while sending email. Please try again later.',
+            ];
         }
     }
 }

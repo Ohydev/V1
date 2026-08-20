@@ -9,6 +9,7 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *     description="Returns a paginated list of all attendees (end users who purchased tickets) across the entire platform. Mirrors the Event Host attendees API format but removes host scoping and introduces optional filters for host_user_id and event_id. All date parsing and formatting is performed via Carbon as mandated by Cursor rules.",
  *     tags={"Super Admin API"},
  *     security={{"sanctum": {}}},
+ *
  *     @OA\Parameter(name="search", in="query", required=false, @OA\Schema(type="string", maxLength=255), description="Case-insensitive search across attendee name, email, and contact number."),
  *     @OA\Parameter(name="start_date", in="query", required=false, @OA\Schema(type="string", format="date", example="01-11-2025"), description="Filter attendees whose last transaction is on/after this date (format d-m-Y). Carbon startOfDay is applied."),
  *     @OA\Parameter(name="end_date", in="query", required=false, @OA\Schema(type="string", format="date", example="30-11-2025"), description="Filter attendees whose last transaction is on/before this date (format d-m-Y). Carbon endOfDay is applied."),
@@ -18,11 +19,14 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *     @OA\Parameter(name="sort_by", in="query", required=false, @OA\Schema(type="string", enum={"last_txn_date","total_spend","total_txns"}), description="Sorting option. Defaults to last_txn_date."),
  *     @OA\Parameter(name="page", in="query", required=false, @OA\Schema(type="integer", minimum=1, example=1), description="Pagination page number (default 1)."),
  *     @OA\Parameter(name="per_page", in="query", required=false, @OA\Schema(type="integer", minimum=1, maximum=100, example=10), description="Number of attendees per page (default 10, max 100)."),
+ *
  *     @OA\Response(
  *         response=200,
  *         description="Attendees retrieved successfully.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=true),
  *             @OA\Property(
  *                 property="data",
@@ -31,8 +35,10 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *                 @OA\Property(
  *                     property="attendees",
  *                     type="array",
+ *
  *                     @OA\Items(
  *                         type="object",
+ *
  *                         @OA\Property(property="user_id", type="integer", example=101),
  *                         @OA\Property(property="name", type="string", example="Alicia Stewart"),
  *                         @OA\Property(property="email", type="string", example="alicia@example.com"),
@@ -43,8 +49,10 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *                         @OA\Property(
  *                             property="events",
  *                             type="array",
+ *
  *                             @OA\Items(
  *                                 type="object",
+ *
  *                                 @OA\Property(property="event_id", type="integer", example=55),
  *                                 @OA\Property(property="event_title", type="string", example="Future of Tech Summit"),
  *                                 @OA\Property(property="tickets_purchased", type="integer", example=3),
@@ -67,11 +75,14 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=400,
  *         description="Validation error (E001).",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -81,11 +92,14 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=401,
  *         description="Authentication error (E003).",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -95,11 +109,14 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=500,
  *         description="Server error (E002).",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -115,4 +132,3 @@ class GetSuperAdminAttendeesList
 {
     // Empty class for swagger-php to parse annotations
 }
-

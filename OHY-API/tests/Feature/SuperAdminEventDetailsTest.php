@@ -2,24 +2,24 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
+use App\Models\ArtistSocialMediaModel;
+use App\Models\CountryModel;
+use App\Models\CouponModel;
+use App\Models\EventArtistModel;
+use App\Models\EventCategoryModel;
+use App\Models\EventMediaModel;
+use App\Models\EventModel;
+use App\Models\EventSocialMediaModel;
+use App\Models\EventTermsConditionModel;
+use App\Models\HostUserModel;
+use App\Models\SuperAdminModel;
+use App\Models\TicketCategoryModel;
+use App\Models\TicketModel;
+use App\Models\VenueModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
-use App\Models\SuperAdminModel;
-use App\Models\HostUserModel;
-use App\Models\EventCategoryModel;
-use App\Models\EventModel;
-use App\Models\TicketModel;
-use App\Models\TicketCategoryModel;
-use App\Models\EventMediaModel;
-use App\Models\EventSocialMediaModel;
-use App\Models\VenueModel;
-use App\Models\CountryModel;
-use App\Models\EventArtistModel;
-use App\Models\ArtistSocialMediaModel;
-use App\Models\EventTermsConditionModel;
-use App\Models\CouponModel;
 use Laravel\Sanctum\Sanctum;
+use Tests\TestCase;
 
 class SuperAdminEventDetailsTest extends TestCase
 {
@@ -101,7 +101,7 @@ class SuperAdminEventDetailsTest extends TestCase
 
         Sanctum::actingAs($superAdmin, ['*']);
 
-        $response = $this->getJson('/api/v1/get_super_admin_event_details?event_id=' . $event->event_id);
+        $response = $this->getJson('/api/v1/get_super_admin_event_details?event_id='.$event->event_id);
 
         $response->assertStatus(200)
             ->assertJsonStructure([
@@ -123,4 +123,3 @@ class SuperAdminEventDetailsTest extends TestCase
         Carbon::setTestNow();
     }
 }
-

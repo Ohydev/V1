@@ -48,13 +48,17 @@ namespace App\Documentation\Swagger\EventCreation\TermsConditions;
  * - Server errors (500): E002 error code for unexpected server-side exceptions",
  *     tags={"Event Creation Management API - Terms & Conditions API"},
  *     security={{"sanctum": {}}},
+ *
  *     @OA\RequestBody(
  *         required=true,
+ *
  *         @OA\MediaType(
  *             mediaType="application/json",
+ *
  *             @OA\Schema(
  *                 type="object",
  *                 required={"event_id", "terms_content"},
+ *
  *                 @OA\Property(
  *                     property="event_id",
  *                     type="integer",
@@ -68,6 +72,7 @@ namespace App\Documentation\Swagger\EventCreation\TermsConditions;
  *                     description="Terms and conditions content in rich text format. Required field. Supports HTML/JSON formatting to preserve styling (bold, italic, bullet points, etc.). Formatting is preserved exactly as entered. Stored as TEXT field in database (can handle large content). Validation rule: 'required|string'"
  *                 )
  *             ),
+ *
  *             @OA\Examples(
  *                 example="RichTextTerms",
  *                 summary="Rich Text Terms Example",
@@ -80,11 +85,14 @@ namespace App\Documentation\Swagger\EventCreation\TermsConditions;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=200,
  *         description="Event Step 5 saved successfully. Returns terms data with rich text content.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=true),
  *             @OA\Property(
  *                 property="data",
@@ -100,11 +108,14 @@ namespace App\Documentation\Swagger\EventCreation\TermsConditions;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=400,
  *         description="Validation error (E001) or Business logic error (E004). Request validation failed or event is published.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -113,16 +124,20 @@ namespace App\Documentation\Swagger\EventCreation\TermsConditions;
  *                 @OA\Property(
  *                     property="error_message",
  *                     oneOf={
+ *
  *                         @OA\Schema(
  *                             type="object",
  *                             description="Validation error messages object when field validation fails",
+ *
  *                             @OA\Property(
  *                                 property="terms_content",
  *                                 type="array",
+ *
  *                                 @OA\Items(type="string"),
  *                                 example={"The terms content field is required."}
  *                             )
  *                         ),
+ *
  *                         @OA\Schema(
  *                             type="string",
  *                             description="Business logic error message",
@@ -133,11 +148,14 @@ namespace App\Documentation\Swagger\EventCreation\TermsConditions;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=401,
  *         description="Authentication error (E003). User authentication failed. Token is missing, invalid, or expired.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -147,11 +165,14 @@ namespace App\Documentation\Swagger\EventCreation\TermsConditions;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=404,
  *         description="Not found error (E404). Event not found or doesn't belong to authenticated user.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -161,11 +182,14 @@ namespace App\Documentation\Swagger\EventCreation\TermsConditions;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=500,
  *         description="Internal server error (E002). An unexpected error occurred while saving event Step 5. This could be due to database connection issues, transaction failures, or other server-side exceptions.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -181,4 +205,3 @@ class SaveEventStep5
 {
     // Save Event Step 5 API documentation
 }
-

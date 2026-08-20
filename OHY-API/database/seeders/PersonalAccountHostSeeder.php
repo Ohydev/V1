@@ -2,17 +2,17 @@
 
 namespace Database\Seeders;
 
+use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Crypt;
-use Faker\Factory as Faker;
 
 class PersonalAccountHostSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     * 
+     *
      * Creates a complete Personal account Event Host with full profile:
      * - Account creation (signup)
      * - Personal information
@@ -24,10 +24,10 @@ class PersonalAccountHostSeeder extends Seeder
     {
         // Initialize Faker instance for generating realistic data
         $faker = Faker::create();
-        
+
         // Get a random country ID for business address
         $countryId = DB::table('countries')->where('is_deleted', 0)->inRandomOrder()->value('country_id');
-        
+
         // Step 1: Create host_users record (Personal account signup)
         // Initialize with signup information only
         $hostUserId = DB::table('host_users')->insertGetId([
@@ -40,12 +40,12 @@ class PersonalAccountHostSeeder extends Seeder
             'created_at' => now(), // Account creation timestamp
             'updated_at' => now(), // Last update timestamp
         ]);
-        
+
         // Step 2: Create businesses record
         // Business information added in profile (Business tab)
         // Note: Personal accounts can also have business information
         $businessId = DB::table('businesses')->insertGetId([
-            'business_name' => $faker->company() . ' Events', // Realistic business name
+            'business_name' => $faker->company().' Events', // Realistic business name
             'account_type' => 'personal', // Tracks original signup type (personal)
             'business_type' => $faker->randomElement(['LLC', 'Corporation', 'Sole Proprietorship', 'Partnership']), // Business type
             'industry' => $faker->randomElement(['Events & Entertainment', 'Technology', 'Marketing', 'Hospitality']), // Industry category
@@ -59,32 +59,31 @@ class PersonalAccountHostSeeder extends Seeder
             'created_at' => now(), // Business creation timestamp
             'updated_at' => now(), // Last update timestamp
         ]);
-        
+
         // Step 3: Update host_users with business link and complete profile
         // Link business to host user and add personal/banking information
         DB::table('host_users')->where('host_user_id', $hostUserId)->update([
             // Business linking
             'business_id' => $businessId, // Link to business record
             'is_primary' => true, // User is the business owner
-            
+
             // Personal information (added in profile - Personal Information tab)
-            'profile_image' => "host_users/{$hostUserId}/profile_image_" . time() . ".jpg", // Profile image path
+            'profile_image' => "host_users/{$hostUserId}/profile_image_".time().'.jpg', // Profile image path
             'phone_number' => $faker->phoneNumber(), // Contact phone number
             'website' => $faker->url(), // Personal/business website URL
-            'location' => $faker->city() . ', ' . $faker->state(), // Location information
-            
+            'location' => $faker->city().', '.$faker->state(), // Location information
+
             // Banking information (added in profile - Banking tab)
             'account_holder_name' => $faker->name(), // Bank account holder name
             'bank_name' => $faker->randomElement(['Chase Bank', 'Bank of America', 'Wells Fargo', 'Citibank']), // Bank name
             'account_number' => Crypt::encrypt($faker->numerify('##########')), // Encrypted bank account number (must be decryptable)
             'routing_number' => $faker->numerify('#########'), // Bank routing number
             'paypal_email' => $faker->email(), // Alternative PayPal payment email
-            
+
             // Password change (simulated - update to same password but represents a change)
             'password' => Hash::make('Ohy@123456'), // Updated password (simulating password change)
-            
+
             'updated_at' => now(), // Update timestamp after profile completion
         ]);
     }
 }
-

@@ -1444,8 +1444,9 @@ const CreateEvent = () => {
       if (errorResponse?.error) {
         // Check error code and handle accordingly
         const errorCode = errorResponse.error.error_code;
-        const actionRequired = (errorResponse.error as any).action_required;
-        const onboardingUrlFromError = (errorResponse.error as any).onboarding_url;
+        const errorDetails = errorResponse.error as { action_required?: string; onboarding_url?: string };
+        const actionRequired = errorDetails.action_required;
+        const onboardingUrlFromError = errorDetails.onboarding_url;
         
         if (errorCode === 'E004' && actionRequired === 'create_stripe_account') {
           // Open Stripe account creation modal for E004

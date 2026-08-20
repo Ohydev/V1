@@ -8,7 +8,7 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     * 
+     *
      * Adds OTP columns for registration verification to users table.
      */
     public function up(): void
@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             // Flag indicating if OTP process has been initiated for registration
             $table->boolean('is_registration_otp_initiated')->default(false)->after('forgot_password_otp');
-            
+
             // Stores the hashed OTP code for registration verification
             $table->string('registration_otp')->nullable()->after('is_registration_otp_initiated');
         });
@@ -24,7 +24,7 @@ return new class extends Migration
 
     /**
      * Reverse the migrations.
-     * 
+     *
      * Removes OTP columns from users table.
      */
     public function down(): void

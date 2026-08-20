@@ -7,7 +7,7 @@ namespace App\Documentation\Swagger\EventDiscovery;
  *     path="/v1/get_public_events_list",
  *     summary="Get Public Events List",
  *     description="Retrieves a paginated list of published events with optional search, filtering, and pagination capabilities. This is a public endpoint that does not require authentication. Only events that are published (is_published = true, is_draft = false) AND not hidden by admin (is_hidden_by_admin = false) are returned. Hidden events are excluded from public listings but remain visible to event hosts.
- * 
+ *
  * **Complete Flow:**
  * 1. Request validation: Validates all optional query parameters (search, category_id, location, start_date, end_date, page)
  * 2. Query parameter preparation: Prepares query parameters array with default values (page defaults to 1)
@@ -58,53 +58,68 @@ namespace App\Documentation\Swagger\EventDiscovery;
  * - Validation Error (400): Returns E001 error code with detailed validation error messages
  * - Server Error (500): Returns E002 error code if any exception occurs during processing",
  *     tags={"End User - Event Discovery API"},
+ *
  *     @OA\Parameter(
  *         name="search",
  *         in="query",
  *         required=false,
  *         description="Search term for event title and description. Searches using LIKE queries on event_title and description fields. Case-insensitive partial matching. Optional field. Maximum 255 characters. Validation rule: 'nullable|string|max:255'",
+ *
  *         @OA\Schema(type="string", maxLength=255, example="music festival")
  *     ),
+ *
  *     @OA\Parameter(
  *         name="category_id",
  *         in="query",
  *         required=false,
  *         description="Filter events by event category ID. Must be an integer and exist in the 'event_categories' table. Optional field. Validation rule: 'nullable|integer|exists:event_categories,event_category_id'",
+ *
  *         @OA\Schema(type="integer", example=1)
  *     ),
+ *
  *     @OA\Parameter(
  *         name="location",
  *         in="query",
  *         required=false,
  *         description="Filter events by location (venue city or state/province). Searches using LIKE queries on venue city and state_province fields. Case-insensitive partial matching. Optional field. Maximum 255 characters. Validation rule: 'nullable|string|max:255'",
+ *
  *         @OA\Schema(type="string", maxLength=255, example="New York")
  *     ),
+ *
  *     @OA\Parameter(
  *         name="start_date",
  *         in="query",
  *         required=false,
  *         description="Filter events starting from this date. Filters events where start_date >= provided date. Date format: Y-m-d (e.g., '2025-12-15'). Optional field. If both start_date and end_date are provided, end_date must be after or equal to start_date. Validation rule: 'nullable|date'",
+ *
  *         @OA\Schema(type="string", format="date", example="2025-12-15")
  *     ),
+ *
  *     @OA\Parameter(
  *         name="end_date",
  *         in="query",
  *         required=false,
  *         description="Filter events ending before this date. Filters events where end_date <= provided date. Date format: Y-m-d (e.g., '2025-12-31'). Optional field. If both start_date and end_date are provided, end_date must be after or equal to start_date. Validation rule: 'nullable|date|after_or_equal:start_date' (conditional validation)",
+ *
  *         @OA\Schema(type="string", format="date", example="2025-12-31")
  *     ),
+ *
  *     @OA\Parameter(
  *         name="page",
  *         in="query",
  *         required=false,
  *         description="Page number for pagination. Minimum 1. Default is 1. Validation rule: 'nullable|integer|min:1'",
+ *
  *         @OA\Schema(type="integer", minimum=1, example=1)
  *     ),
+ *
  *     @OA\Response(
  *         response=200,
  *         description="Events retrieved successfully. Returns a paginated list of public events with formatted details.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=true, description="Indicates successful operation"),
  *             @OA\Property(
  *                 property="data",
@@ -114,8 +129,10 @@ namespace App\Documentation\Swagger\EventDiscovery;
  *                     property="events",
  *                     type="array",
  *                     description="Array of public events, each with formatted details.",
+ *
  *                     @OA\Items(
  *                         type="object",
+ *
  *                         @OA\Property(property="event_id", type="integer", example=1, description="Unique event identifier"),
  *                         @OA\Property(property="event_title", type="string", example="Music Festival 2025", description="Event title/name"),
  *                         @OA\Property(property="description", type="string", example="A spectacular music festival featuring top artists...", description="Event description (rich text format, formatting preserved)"),
@@ -170,11 +187,14 @@ namespace App\Documentation\Swagger\EventDiscovery;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=400,
  *         description="Validation error (E001). Request validation failed. Returns detailed error messages for each field that failed validation.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false, description="Indicates failed operation"),
  *             @OA\Property(
  *                 property="error",
@@ -187,18 +207,23 @@ namespace App\Documentation\Swagger\EventDiscovery;
  *                     @OA\Property(
  *                         property="category_id",
  *                         type="array",
+ *
  *                         @OA\Items(type="string"),
  *                         example={"The selected category id is invalid."}
  *                     ),
+ *
  *                     @OA\Property(
  *                         property="start_date",
  *                         type="array",
+ *
  *                         @OA\Items(type="string"),
  *                         example={"The start date is not a valid date."}
  *                     ),
+ *
  *                     @OA\Property(
  *                         property="end_date",
  *                         type="array",
+ *
  *                         @OA\Items(type="string"),
  *                         example={"The end date must be a date after or equal to start date."}
  *                     )
@@ -206,11 +231,14 @@ namespace App\Documentation\Swagger\EventDiscovery;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=500,
  *         description="Internal server error (E002). An unexpected error occurred during event retrieval. This could be due to database connection issues or other server-side exceptions.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false, description="Indicates failed operation"),
  *             @OA\Property(
  *                 property="error",
@@ -226,4 +254,3 @@ class GetPublicEventsList
 {
     // Empty class - annotations are in docblock
 }
-

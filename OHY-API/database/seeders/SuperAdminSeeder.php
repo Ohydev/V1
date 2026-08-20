@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\SuperAdminModel;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use App\Models\SuperAdminModel;
 
 class SuperAdminSeeder extends Seeder
 {
@@ -29,4 +29,3 @@ class SuperAdminSeeder extends Seeder
         );
     }
 }
-

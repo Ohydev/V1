@@ -27,8 +27,7 @@ return [
     */
 
     'checkout' => [
-        'success_url' => env('EVENT_FRONTEND_URL', 'http://localhost:8081') . '/order/verifying',
-        'cancel_url' => env('EVENT_FRONTEND_URL', 'http://localhost:8081') . '/order/verifying',
+        'success_url' => env('EVENT_FRONTEND_URL', 'http://localhost:8081').'/order/verifying',
+        'cancel_url' => env('EVENT_FRONTEND_URL', 'http://localhost:8081').'/order/verifying',
     ],
 ];
-

@@ -3,38 +3,37 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\EventCategoryModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use App\Models\EventCategoryModel;
 
 class EventController extends Controller
 {
     /**
      * Get Event Categories - public endpoint for listing all categories
      *
-     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function getEventCategories(Request $request)
     {
         // Initialize response structure
-        $result = array();
+        $result = [];
 
         try {
             // Initialize EventCategoryModel to perform database operations
-            $eventCategoryModel = new EventCategoryModel();
+            $eventCategoryModel = new EventCategoryModel;
 
             // Query all event categories
-            $queryCondition = array(); // No filters for now
+            $queryCondition = []; // No filters for now
             $categories = $eventCategoryModel->get_event_categories_list($queryCondition);
 
             // Format categories array for response
-            $formattedCategories = array();
+            $formattedCategories = [];
             foreach ($categories as $category) {
-                $formattedCategories[] = array(
+                $formattedCategories[] = [
                     'event_category_id' => $category->event_category_id,
                     'category_name' => $category->category_name,
-                );
+                ];
             }
 
             // Sort categories alphabetically for better UX
@@ -43,13 +42,13 @@ class EventController extends Controller
             });
 
             // Build success response
-            $result = array(
+            $result = [
                 'success' => true,
-                'data' => array(
+                'data' => [
                     'message' => 'Event categories retrieved successfully',
                     'categories' => $formattedCategories,
-                ),
-            );
+                ],
+            ];
         } catch (\Exception $e) {
             // Log exception details
             Log::info('Exception in User\EventController::getEventCategories');
@@ -57,16 +56,15 @@ class EventController extends Controller
             Log::info($e);
 
             // Build error response
-            $result = array(
+            $result = [
                 'success' => false,
-                'error' => array(
+                'error' => [
                     'error_code' => 'E002',
                     'error_message' => 'An error occurred while retrieving event categories',
-                ),
-            );
+                ],
+            ];
         }
 
         return response()->json($result);
     }
 }
-

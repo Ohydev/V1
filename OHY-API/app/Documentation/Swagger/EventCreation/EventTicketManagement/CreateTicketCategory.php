@@ -43,13 +43,17 @@ namespace App\Documentation\Swagger\EventCreation\EventTicketManagement;
  * - Server errors (500): E002 error code for unexpected server-side exceptions",
  *     tags={"Event Creation Management API - Event Ticket Management API"},
  *     security={{"sanctum": {}}},
+ *
  *     @OA\RequestBody(
  *         required=true,
+ *
  *         @OA\MediaType(
  *             mediaType="application/json",
+ *
  *             @OA\Schema(
  *                 type="object",
  *                 required={"event_id", "category_name"},
+ *
  *                 @OA\Property(
  *                     property="event_id",
  *                     type="integer",
@@ -64,6 +68,7 @@ namespace App\Documentation\Swagger\EventCreation\EventTicketManagement;
  *                     description="Ticket category name. Required field. Must be a string with maximum 255 characters. Examples: 'Early Bird', 'Regular', 'VIP', 'Premium'. Category name is just a label and doesn't imply any discount or special treatment. Validation rule: 'required|string|max:255'"
  *                 )
  *             ),
+ *
  *             @OA\Examples(
  *                 example="EarlyBird",
  *                 summary="Early Bird Category",
@@ -76,11 +81,14 @@ namespace App\Documentation\Swagger\EventCreation\EventTicketManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=200,
  *         description="Ticket category created successfully. Returns created category with id, event_id, and category_name.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=true),
  *             @OA\Property(
  *                 property="data",
@@ -96,11 +104,14 @@ namespace App\Documentation\Swagger\EventCreation\EventTicketManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=400,
  *         description="Validation error (E001) or Business logic error (E004). Request validation failed or event is published.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -109,22 +120,28 @@ namespace App\Documentation\Swagger\EventCreation\EventTicketManagement;
  *                 @OA\Property(
  *                     property="error_message",
  *                     oneOf={
+ *
  *                         @OA\Schema(
  *                             type="object",
  *                             description="Validation error messages object when field validation fails",
+ *
  *                             @OA\Property(
  *                                 property="event_id",
  *                                 type="array",
+ *
  *                                 @OA\Items(type="string"),
  *                                 example={"The event id field is required.", "The selected event id is invalid."}
  *                             ),
+ *
  *                             @OA\Property(
  *                                 property="category_name",
  *                                 type="array",
+ *
  *                                 @OA\Items(type="string"),
  *                                 example={"The category name field is required.", "The category name must not be greater than 255 characters."}
  *                             )
  *                         ),
+ *
  *                         @OA\Schema(
  *                             type="string",
  *                             description="Business logic error message",
@@ -135,11 +152,14 @@ namespace App\Documentation\Swagger\EventCreation\EventTicketManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=401,
  *         description="Authentication error (E003). User authentication failed. Token is missing, invalid, or expired.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -149,11 +169,14 @@ namespace App\Documentation\Swagger\EventCreation\EventTicketManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=404,
  *         description="Not found error (E404). Event not found or doesn't belong to authenticated user.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -163,11 +186,14 @@ namespace App\Documentation\Swagger\EventCreation\EventTicketManagement;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=500,
  *         description="Internal server error (E002). An unexpected error occurred while creating ticket category. This could be due to database connection issues or other server-side exceptions.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -183,4 +209,3 @@ class CreateTicketCategory
 {
     // Create Ticket Category API documentation
 }
-

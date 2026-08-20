@@ -2,23 +2,23 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
+use Laravel\Sanctum\HasApiTokens;
 
 class HostUserModel extends Authenticatable
 {
-    use HasFactory, Notifiable, HasApiTokens;
-    
+    use HasApiTokens, HasFactory, Notifiable;
+
     // Define table name for this model
     protected $table = 'host_users';
-    
+
     // Define primary key column name
     protected $primaryKey = 'host_user_id';
-    
+
     // Define fillable fields that can be mass-assigned
     protected $fillable = [
         'email', // Login email address (Business Email or Personal Email)
@@ -54,7 +54,7 @@ class HostUserModel extends Authenticatable
         'blocked_by_super_admin_id', // Reference to the super admin who performed the block action
         'blocked_at', // Timestamp recording when the host was blocked
     ];
-    
+
     // Define hidden fields that should not be included in JSON responses
     protected $hidden = [
         'password', // Hide password for security
@@ -63,12 +63,12 @@ class HostUserModel extends Authenticatable
         'forgot_password_otp', // Hide OTP code for security (even though hashed)
         'registration_otp', // Hide registration OTP code for security (even though hashed)
     ];
-    
+
     /**
      * Get the attributes that should be cast.
-     * 
+     *
      * Defines how attributes should be cast when accessed.
-     * 
+     *
      * @return array<string, string>
      */
     protected function casts(): array
@@ -81,10 +81,10 @@ class HostUserModel extends Authenticatable
             'dob' => 'date', // Cast dob to date
         ];
     }
-    
+
     /**
      * Relationship: Host user belongs to a business
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function business()
@@ -104,10 +104,10 @@ class HostUserModel extends Authenticatable
     {
         return $this->belongsTo(State::class, 'state_id', 'id');
     }
-    
+
     /**
      * Relationship: Host user has many events
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function events()
@@ -128,93 +128,99 @@ class HostUserModel extends Authenticatable
         // Link the blocking action to the super admin for auditing purposes
         return $this->belongsTo(SuperAdminModel::class, 'blocked_by_super_admin_id', 'super_admin_id');
     }
-    
+
     /**
      * Get single host user record by query conditions
-     * 
-     * @param array $queryCondition Associative array of conditions (e.g., ['email' => 'host@example.com'])
+     *
+     * @param  array  $queryCondition  Associative array of conditions (e.g., ['email' => 'host@example.com'])
      * @return object|null Host user record or null if not found
      */
     public function get_host_user($queryCondition)
     {
         // Query database using Eloquent where clause with provided conditions
         $result = HostUserModel::where($queryCondition)->first();
+
         return $result;
     }
-    
+
     /**
      * Get multiple host user records by query conditions
-     * 
-     * @param array $queryCondition Associative array of conditions
+     *
+     * @param  array  $queryCondition  Associative array of conditions
      * @return \Illuminate\Database\Eloquent\Collection Collection of host user records
      */
     public function get_host_users_list($queryCondition)
     {
         // Query database to get collection of records matching conditions
         $result = HostUserModel::where($queryCondition)->get();
+
         return $result;
     }
-    
+
     /**
      * Create new host user record
-     * 
-     * @param array $data Associative array of data to insert
+     *
+     * @param  array  $data  Associative array of data to insert
      * @return \Illuminate\Database\Eloquent\Model Created host user record
      */
     public function create_host_user($data)
     {
         // Create new record using Eloquent create method
         $result = HostUserModel::create($data);
+
         return $result;
     }
-    
+
     /**
      * Update host user record by query conditions
-     * 
-     * @param array $queryCondition Associative array of conditions to find record(s)
-     * @param array $editData Associative array of data to update
+     *
+     * @param  array  $queryCondition  Associative array of conditions to find record(s)
+     * @param  array  $editData  Associative array of data to update
      * @return int Number of affected rows
      */
     public function update_host_user_data($queryCondition, $editData)
     {
         // Update records matching query conditions
         $result = HostUserModel::where($queryCondition)->update($editData);
+
         return $result;
     }
-    
+
     /**
      * Delete host user record by query conditions
-     * 
-     * @param array $queryCondition Associative array of conditions to find record(s)
+     *
+     * @param  array  $queryCondition  Associative array of conditions to find record(s)
      * @return int Number of affected rows
      */
     public function delete_host_user($queryCondition)
     {
         // Delete records matching query conditions
         $result = HostUserModel::where($queryCondition)->delete();
+
         return $result;
     }
-    
+
     /**
      * Check if host user record exists by query conditions
-     * 
-     * @param array $queryCondition Associative array of conditions
+     *
+     * @param  array  $queryCondition  Associative array of conditions
      * @return bool True if record exists, false otherwise
      */
     public function check_host_user_exists($queryCondition)
     {
         // Check if any record exists matching the conditions
         $result = HostUserModel::where($queryCondition)->exists();
+
         return $result;
     }
 
     /**
      * Get Super Admin host list with aggregates and filters.
-     * 
-     * @param array $filters
-     * @param string $sortBy
-     * @param int $page
-     * @param int $perPage
+     *
+     * @param  array  $filters
+     * @param  string  $sortBy
+     * @param  int  $page
+     * @param  int  $perPage
      * @return object
      */
     public function get_super_admin_host_list_with_aggregates($filters, $sortBy, $page, $perPage)
@@ -240,10 +246,10 @@ class HostUserModel extends Authenticatable
                 'business_intersections.name as business_intersection_name', // Lookup intersection name
                 'countries.name as business_country_name', // Country name for business address
                 DB::raw('COUNT(DISTINCT events.event_id) as events_created'), // Total events created
-                DB::raw('SUM(CASE WHEN events.is_draft = 0 AND events.is_published = 1 AND ' .
-                    "CONCAT(events.start_date, ' ', COALESCE(events.start_time, '00:00:00')) <= ? AND " .
+                DB::raw('SUM(CASE WHEN events.is_draft = 0 AND events.is_published = 1 AND '.
+                    "CONCAT(events.start_date, ' ', COALESCE(events.start_time, '00:00:00')) <= ? AND ".
                     "CONCAT(events.end_date, ' ', COALESCE(events.end_time, '23:59:59')) >= ? THEN 1 ELSE 0 END) as events_live"), // Live events
-                DB::raw('SUM(CASE WHEN events.is_draft = 0 AND events.is_published = 1 AND ' .
+                DB::raw('SUM(CASE WHEN events.is_draft = 0 AND events.is_published = 1 AND '.
                     "CONCAT(events.end_date, ' ', COALESCE(events.end_time, '23:59:59')) < ? THEN 1 ELSE 0 END) as events_completed"), // Completed events
                 DB::raw('COALESCE(SUM(orders.total_amount), 0) as total_revenue_generated'), // Total revenue via orders
                 DB::raw('COALESCE(SUM(ticket_summary.total_tickets_sold), 0) as total_tickets_sold'), // Total tickets sold
@@ -303,7 +309,7 @@ class HostUserModel extends Authenticatable
         $hostsQuery->addBinding([$nowString, $nowString, $nowString], 'select');
 
         // Apply search filter if provided across name/email/phone
-        if (!empty($filters['search'])) {
+        if (! empty($filters['search'])) {
             $search = $filters['search'];
             $hostsQuery->where(function ($query) use ($search) {
                 $query->where('host_users.first_name', 'LIKE', "%{$search}%")
@@ -314,7 +320,7 @@ class HostUserModel extends Authenticatable
         }
 
         // Filter by account type if provided
-        if (!empty($filters['account_type'])) {
+        if (! empty($filters['account_type'])) {
             $hostsQuery->where('businesses.account_type', $filters['account_type']);
         }
 
@@ -328,17 +334,17 @@ class HostUserModel extends Authenticatable
         }
 
         // Filter by start_date (host created_at >= start) if provided
-        if (!empty($filters['start_date'])) {
+        if (! empty($filters['start_date'])) {
             $hostsQuery->whereDate('host_users.created_at', '>=', $filters['start_date']);
         }
 
         // Filter by end_date (host created_at <= end) if provided
-        if (!empty($filters['end_date'])) {
+        if (! empty($filters['end_date'])) {
             $hostsQuery->whereDate('host_users.created_at', '<=', $filters['end_date']);
         }
 
         // Apply status filter if provided (active/inactive)
-        if (!empty($filters['status'])) {
+        if (! empty($filters['status'])) {
             if ($filters['status'] === 'active') {
                 $hostsQuery->where('host_users.is_primary', true); // Example assumption: active indicates primary
             } elseif ($filters['status'] === 'inactive') {
@@ -347,22 +353,22 @@ class HostUserModel extends Authenticatable
         }
 
         // Filter by business intersection (host's business must have this intersection)
-        if (!empty($filters['business_intersection_id'])) {
+        if (! empty($filters['business_intersection_id'])) {
             $hostsQuery->where('businesses.business_intersection_id', $filters['business_intersection_id']);
         }
 
         // Filter by host state_id if provided
-        if (!empty($filters['state_id'])) {
+        if (! empty($filters['state_id'])) {
             $hostsQuery->where('host_users.state_id', $filters['state_id']);
         }
 
         // Filter by host zipcode if provided
-        if (!empty($filters['zipcode'])) {
+        if (! empty($filters['zipcode'])) {
             $hostsQuery->where('host_users.zipcode', $filters['zipcode']);
         }
 
         // Filter to only hosts that have at least one report
-        if (!empty($filters['has_reports'])) {
+        if (! empty($filters['has_reports'])) {
             $hostsQuery->havingRaw('COUNT(DISTINCT user_reports.report_id) > 0');
         }
 
@@ -391,9 +397,9 @@ class HostUserModel extends Authenticatable
         $hosts = $hostsQuery->get();
 
         // Return result object similar to other aggregate methods
-        return (object)array(
+        return (object) [
             'hosts' => $hosts,
             'total_records' => $totalRecords,
-        );
+        ];
     }
 }

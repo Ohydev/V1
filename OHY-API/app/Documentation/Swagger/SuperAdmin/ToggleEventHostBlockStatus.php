@@ -9,13 +9,17 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *     description="Allows an authenticated Super Admin to block or unblock a specific Event Host. Blocking immediately revokes all active Sanctum tokens, preventing logins and API access. Unblocking clears block metadata so the host can log in again. Returns precise error messaging when redundant actions are attempted (e.g., blocking an already blocked host).",
  *     tags={"Super Admin API"},
  *     security={{"sanctum": {}}},
+ *
  *     @OA\RequestBody(
  *         required=true,
+ *
  *         @OA\MediaType(
  *             mediaType="application/json",
+ *
  *             @OA\Schema(
  *                 type="object",
  *                 required={"host_user_id","action"},
+ *
  *                 @OA\Property(
  *                     property="host_user_id",
  *                     type="integer",
@@ -38,6 +42,7 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *                     description="Optional reason explaining why the host is being blocked. Stored in host_users.blocked_reason and returned to the host during login/middleware checks. Validation rule: 'nullable|string|max:500'."
  *                 )
  *             ),
+ *
  *             @OA\Examples(
  *                 example="BlockHost",
  *                 summary="Block an Event Host",
@@ -57,11 +62,14 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=200,
  *         description="Block status updated successfully.",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=true),
  *             @OA\Property(
  *                 property="data",
@@ -70,11 +78,14 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=400,
  *         description="Validation or redundant action error (E001/E004).",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -84,11 +95,14 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=401,
  *         description="Authentication error (E003).",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -98,11 +112,14 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=404,
  *         description="Host not found (E404).",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -112,11 +129,14 @@ namespace App\Documentation\Swagger\SuperAdmin;
  *             )
  *         )
  *     ),
+ *
  *     @OA\Response(
  *         response=500,
  *         description="Server error (E002).",
+ *
  *         @OA\JsonContent(
  *             type="object",
+ *
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(
  *                 property="error",
@@ -132,5 +152,3 @@ class ToggleEventHostBlockStatus
 {
     // Empty class for Swagger annotations
 }
-
-

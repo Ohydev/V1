@@ -29,7 +29,7 @@ const coercePayload = (input: unknown): ApiErrorPayload | undefined => {
     return undefined;
   }
   // Attempt to read the error nested object when present.
-  if ("error" in input && typeof (input as any).error === "object") {
+  if ("error" in input && typeof (input as { error?: unknown }).error === "object") {
     // Return nested error payload if it contains required props.
     return (input as { error: ApiErrorPayload }).error;
   }

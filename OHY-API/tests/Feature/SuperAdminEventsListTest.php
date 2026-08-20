@@ -2,15 +2,15 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Carbon;
-use App\Models\SuperAdminModel;
-use App\Models\HostUserModel;
 use App\Models\EventCategoryModel;
 use App\Models\EventModel;
+use App\Models\HostUserModel;
+use App\Models\SuperAdminModel;
 use App\Models\TicketModel;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Carbon;
 use Laravel\Sanctum\Sanctum;
+use Tests\TestCase;
 
 class SuperAdminEventsListTest extends TestCase
 {
@@ -105,4 +105,3 @@ class SuperAdminEventsListTest extends TestCase
         Carbon::setTestNow();
     }
 }
-

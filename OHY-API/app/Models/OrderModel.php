@@ -2,21 +2,21 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 
 class OrderModel extends Model
 {
     use HasFactory;
-    
+
     // Define table name for this model
     protected $table = 'orders';
-    
+
     // Define primary key column name
     protected $primaryKey = 'order_id';
-    
+
     // Define fillable fields that can be mass-assigned
     protected $fillable = [
         'order_number', // Order number (e.g., "ohy-12022025-001") - unique
@@ -41,17 +41,17 @@ class OrderModel extends Model
         'stripe_transfer_id', // Stripe Transfer ID for payouts
         'settled_at', // Timestamp when order was settled
     ];
-    
+
     // Define hidden fields that should not be included in JSON responses
     protected $hidden = [
         // No hidden fields - card fields removed, Stripe IDs are safe to expose
     ];
-    
+
     /**
      * Get the attributes that should be cast.
-     * 
+     *
      * Defines how attributes should be cast when accessed.
-     * 
+     *
      * @return array<string, string>
      */
     protected function casts(): array
@@ -66,10 +66,10 @@ class OrderModel extends Model
             'settled_at' => 'datetime', // Cast settled_at to Carbon instance
         ];
     }
-    
+
     /**
      * Relationship: Order belongs to a user
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
@@ -79,10 +79,10 @@ class OrderModel extends Model
         // Owner key: user_id in users table
         return $this->belongsTo(UserModel::class, 'user_id', 'user_id');
     }
-    
+
     /**
      * Relationship: Order belongs to a country
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function country()
@@ -92,10 +92,10 @@ class OrderModel extends Model
         // Owner key: country_id in countries table
         return $this->belongsTo(CountryModel::class, 'country_id', 'country_id');
     }
-    
+
     /**
      * Relationship: Order belongs to a coupon (nullable)
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function coupon()
@@ -105,10 +105,10 @@ class OrderModel extends Model
         // Owner key: coupon_id in coupons table
         return $this->belongsTo(CouponModel::class, 'coupon_id', 'coupon_id');
     }
-    
+
     /**
      * Relationship: Order has many order tickets
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function orderTickets()
@@ -118,96 +118,102 @@ class OrderModel extends Model
         // Local key: order_id in orders table
         return $this->hasMany(OrderTicketModel::class, 'order_id', 'order_id');
     }
-    
+
     /**
      * Get single order record by query conditions
-     * 
-     * @param array $queryCondition Associative array of conditions (e.g., ['order_id' => 1])
+     *
+     * @param  array  $queryCondition  Associative array of conditions (e.g., ['order_id' => 1])
      * @return object|null Order record or null if not found
      */
     public function get_order($queryCondition)
     {
         // Query database using Eloquent where clause with provided conditions
         $result = OrderModel::where($queryCondition)->first();
+
         return $result;
     }
-    
+
     /**
      * Get multiple order records by query conditions
-     * 
-     * @param array $queryCondition Associative array of conditions
+     *
+     * @param  array  $queryCondition  Associative array of conditions
      * @return \Illuminate\Database\Eloquent\Collection Collection of order records
      */
     public function get_orders_list($queryCondition)
     {
         // Query database to get collection of records matching conditions
         $result = OrderModel::where($queryCondition)->get();
+
         return $result;
     }
-    
+
     /**
      * Create new order record
-     * 
-     * @param array $data Associative array of data to insert
+     *
+     * @param  array  $data  Associative array of data to insert
      * @return \Illuminate\Database\Eloquent\Model Created order record
      */
     public function create_order($data)
     {
         // Create new record using Eloquent create method
         $result = OrderModel::create($data);
+
         return $result;
     }
-    
+
     /**
      * Update order record by query conditions
-     * 
-     * @param array $queryCondition Associative array of conditions to find record(s)
-     * @param array $editData Associative array of data to update
+     *
+     * @param  array  $queryCondition  Associative array of conditions to find record(s)
+     * @param  array  $editData  Associative array of data to update
      * @return int Number of affected rows
      */
     public function update_order_data($queryCondition, $editData)
     {
         // Update records matching query conditions
         $result = OrderModel::where($queryCondition)->update($editData);
+
         return $result;
     }
-    
+
     /**
      * Delete order record by query conditions
-     * 
-     * @param array $queryCondition Associative array of conditions to find record(s)
+     *
+     * @param  array  $queryCondition  Associative array of conditions to find record(s)
      * @return int Number of affected rows
      */
     public function delete_order($queryCondition)
     {
         // Delete records matching query conditions
         $result = OrderModel::where($queryCondition)->delete();
+
         return $result;
     }
-    
+
     /**
      * Check if order record exists by query conditions
-     * 
-     * @param array $queryCondition Associative array of conditions
+     *
+     * @param  array  $queryCondition  Associative array of conditions
      * @return bool True if record exists, false otherwise
      */
     public function check_order_exists($queryCondition)
     {
         // Check if any record exists matching the conditions
         $result = OrderModel::where($queryCondition)->exists();
+
         return $result;
     }
-    
+
     /**
      * Get events per users with ticket counts and spend
-     * 
+     *
      * Handles the query to get events per user with ticket counts and spend by joining orders, order_tickets, tickets, and events tables.
      * Filters by host_user_id and user_ids, applies events filter if provided, and groups by user and event.
-     * 
-     * @param int $hostUserId Host user ID to filter events
-     * @param array $userIds Array of user IDs to filter
-     * @param string|null $eventsFilter Event title search filter
-     * @param int|null $eventId Optional event ID to filter by specific event
+     *
+     * @param  int  $hostUserId  Host user ID to filter events
+     * @param  array  $userIds  Array of user IDs to filter
+     * @param  string|null  $eventsFilter  Event title search filter
+     * @param  int|null  $eventId  Optional event ID to filter by specific event
      * @return \Illuminate\Support\Collection Collection of event data grouped by user_id
      */
     public function get_events_per_users($hostUserId, $userIds, $eventsFilter, $eventId = null)
@@ -239,33 +245,33 @@ class OrderModel extends Model
             ->where('events.host_user_id', $hostUserId) // Filter by authenticated host user's events
             ->whereIn('orders.user_id', $userIds) // Filter by current page user IDs
             ->groupBy('orders.user_id', 'events.event_id', 'events.event_title'); // Group by user and event
-        
+
         // Apply events filter if provided (same filter as main query)
-        if (!empty($eventsFilter)) {
+        if (! empty($eventsFilter)) {
             $eventsQuery->where('events.event_title', 'LIKE', "%{$eventsFilter}%"); // Search in event title
         }
-        
+
         // Apply event_id filter if provided
         // This filters events to only return the specific event when filtering by event_id
-        if (!empty($eventId)) {
+        if (! empty($eventId)) {
             $eventsQuery->where('events.event_id', $eventId); // Filter by specific event ID
         }
-        
+
         // Execute events query
         $eventsData = $eventsQuery->get();
-        
+
         // Return collection of event data
         return $eventsData;
     }
 
     /**
      * Get events per users for Super Admin listings (global scope)
-     * 
-     * @param array $userIds
-     * @param array $filters
+     *
+     * @param  array  $userIds
+     * @param  array  $filters
      * @return \Illuminate\Support\Collection
      */
-    public function get_super_admin_events_per_users($userIds, $filters = array())
+    public function get_super_admin_events_per_users($userIds, $filters = [])
     {
         // Build query selecting event aggregates for supplied attendee IDs
         $eventsQuery = DB::table('orders') // Start from orders table to access user purchases
@@ -293,18 +299,18 @@ class OrderModel extends Model
             ->whereIn('orders.user_id', $userIds); // Restrict to attendees on current page
 
         // Optionally filter by host_user_id when provided
-        if (!empty($filters['host_user_id'])) {
+        if (! empty($filters['host_user_id'])) {
             $eventsQuery->where('events.host_user_id', $filters['host_user_id']); // Limit events to specified host
         }
 
         // Optionally filter by event_id when provided
-        if (!empty($filters['event_id'])) {
+        if (! empty($filters['event_id'])) {
             $eventsQuery->where('events.event_id', $filters['event_id']); // Limit to chosen event
         }
 
         // Optionally filter by events_filter when provided
-        if (!empty($filters['events_filter'])) {
-            $eventsQuery->where('events.event_title', 'LIKE', '%' . $filters['events_filter'] . '%'); // Apply title search
+        if (! empty($filters['events_filter'])) {
+            $eventsQuery->where('events.event_title', 'LIKE', '%'.$filters['events_filter'].'%'); // Apply title search
         }
 
         // Group by user and event to aggregate metrics
@@ -317,9 +323,8 @@ class OrderModel extends Model
     /**
      * Generate a daily sequential order number in the format ohy-ddmmyyyy-XXX
      *
-     * @param \Carbon\Carbon|null $date Optional date reference (defaults to now)
-     * @param bool $lockForUpdate Whether to lock the row selection for concurrency control
-     * @return string
+     * @param  \Carbon\Carbon|null  $date  Optional date reference (defaults to now)
+     * @param  bool  $lockForUpdate  Whether to lock the row selection for concurrency control
      */
     public static function generateDailyOrderNumber(?Carbon $date = null, bool $lockForUpdate = false): string
     {
@@ -337,10 +342,9 @@ class OrderModel extends Model
         $lastOrder = $query->first();
 
         if ($lastOrder && preg_match('/ohy-\d{8}-(\d+)/i', $lastOrder->order_number, $matches)) {
-            $sequence = (int)$matches[1] + 1;
+            $sequence = (int) $matches[1] + 1;
         }
 
         return sprintf('OHY-%s-%03d', $datePart, $sequence);
     }
 }
-
