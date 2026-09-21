@@ -12,3 +12,9 @@ Thumbs.db
 *.sql
 *.sqlite
 *.sqlite3
+
+# Personal study notes, not project docs
+learnings/
+
+# Local Claude Code settings (per-machine permissions, not project config)
+.claude/
