@@ -1,0 +1,34 @@
+server {
+    # ${PORT} is substituted by entrypoint.sh from Railway's runtime env
+    # var — Railway assigns this dynamically per deploy, it is not fixed.
+    listen ${PORT};
+    server_name _;
+
+    root /var/www/html/public;
+    index index.php;
+
+    # Event flyers/banners/videos — same limit the frontends' upload forms
+    # already assume.
+    client_max_body_size 50M;
+
+    access_log /dev/stdout;
+    error_log /dev/stderr;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location ~ \.php$ {
+        fastcgi_pass 127.0.0.1:9000;
+        fastcgi_index index.php;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_read_timeout 120;
+    }
+
+    # Never serve dotfiles (.env, .git, etc.) if one ever ends up under
+    # public/ by mistake.
+    location ~ /\.(?!well-known) {
+        deny all;
+    }
+}

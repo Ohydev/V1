@@ -1,0 +1,15 @@
+.git
+.gitignore
+.env
+.env.*
+!.env.example
+node_modules
+vendor
+# Runtime-only content — the Dockerfile creates fresh empty versions of
+# these directories at build time regardless of what's on disk here.
+storage/framework
+storage/logs
+tests
+.phpunit.cache
+.phpunit.result.cache
+README.md
