@@ -28,6 +28,9 @@ class BusinessAccountHostSeeder extends Seeder
         // Get a random country ID for business address
         $countryId = DB::table('countries')->where('is_deleted', 0)->inRandomOrder()->value('country_id');
 
+        // Get a random business intersection ID (required for a "complete" business profile)
+        $businessIntersectionId = DB::table('business_intersections')->inRandomOrder()->value('id');
+
         // Step 1: Create host_users record (Business account signup)
         // Initialize with signup information only
         $hostUserId = DB::table('host_users')->insertGetId([
@@ -55,6 +58,7 @@ class BusinessAccountHostSeeder extends Seeder
             'business_state' => $faker->state(), // Business state/province
             'business_zip_code' => $faker->postcode(), // Business ZIP/postal code
             'business_country_id' => $countryId, // Foreign key to countries table
+            'business_intersection_id' => $businessIntersectionId, // Required for a "complete" business profile
             'created_at' => now(), // Business creation timestamp
             'updated_at' => now(), // Last update timestamp
         ]);
@@ -70,7 +74,10 @@ class BusinessAccountHostSeeder extends Seeder
             'profile_image' => "host_users/{$hostUserId}/profile_image_".time().'.jpg', // Profile image path
             'phone_number' => $faker->phoneNumber(), // Contact phone number
             'website' => $faker->url(), // Personal/business website URL
-            'location' => $faker->city().', '.$faker->state(), // Location information
+            'city' => $faker->city(), // City
+            'state' => $faker->state(), // State/province
+            'country' => 'United States', // Country
+            'zipcode' => $faker->postcode(), // Postal/ZIP code
 
             // Banking information (added in profile - Banking tab)
             'account_holder_name' => $faker->name(), // Bank account holder name

@@ -17,24 +17,41 @@ use Stripe\StripeClient;
 class StripeService
 {
     /**
-     * Stripe client instance
+     * Stripe client instance, lazily created on first actual use.
      *
-     * @var \Stripe\StripeClient
+     * @var \Stripe\StripeClient|null
      */
     protected $stripe;
 
     /**
-     * Initialize Stripe service with Super Admin's secret key
+     * Defer Stripe connectivity until a method actually needs it, so pages
+     * that construct this service but only hit non-Stripe fallback paths
+     * (e.g. dashboards estimating fees when no payment_intent_id exists)
+     * keep working without STRIPE_SECRET configured.
      */
     public function __construct()
     {
-        $secretKey = config('services.stripe.secret');
+        //
+    }
 
-        if (empty($secretKey)) {
-            throw new \Exception('Stripe secret key is not configured. Please set STRIPE_SECRET in your .env file.');
+    /**
+     * Get the underlying Stripe client, connecting on first use.
+     *
+     * @throws \Exception if STRIPE_SECRET is not configured
+     */
+    protected function client(): StripeClient
+    {
+        if ($this->stripe === null) {
+            $secretKey = config('services.stripe.secret');
+
+            if (empty($secretKey)) {
+                throw new \Exception('Stripe secret key is not configured. Please set STRIPE_SECRET in your .env file.');
+            }
+
+            $this->stripe = new StripeClient($secretKey);
         }
 
-        $this->stripe = new StripeClient($secretKey);
+        return $this->stripe;
     }
 
     /**
@@ -72,7 +89,7 @@ class StripeService
                 ];
             }
 
-            $account = $this->stripe->accounts->create($accountData);
+            $account = $this->client()->accounts->create($accountData);
 
             Log::info('Stripe Connected Account created successfully', [
                 'method' => __METHOD__,
@@ -106,7 +123,7 @@ class StripeService
     public function createAccountLink(string $stripeAccountId, string $returnUrl, string $refreshUrl)
     {
         try {
-            $accountLink = $this->stripe->accountLinks->create([
+            $accountLink = $this->client()->accountLinks->create([
                 'account' => $stripeAccountId,
                 'refresh_url' => $refreshUrl,
                 'return_url' => $returnUrl,
@@ -143,7 +160,7 @@ class StripeService
     public function getAccountStatus(string $stripeAccountId)
     {
         try {
-            $account = $this->stripe->accounts->retrieve($stripeAccountId);
+            $account = $this->client()->accounts->retrieve($stripeAccountId);
 
             $status = [
                 'charges_enabled' => $account->charges_enabled ?? false,
@@ -228,7 +245,7 @@ class StripeService
                 $sessionData['payment_intent_data'] = $orderData['payment_intent_data'];
             }
 
-            $session = $this->stripe->checkout->sessions->create($sessionData);
+            $session = $this->client()->checkout->sessions->create($sessionData);
 
             Log::info('Stripe Checkout Session created successfully', [
                 'method' => __METHOD__,
@@ -274,7 +291,7 @@ class StripeService
                 $transferData['metadata'] = $metadata;
             }
 
-            $transfer = $this->stripe->transfers->create($transferData);
+            $transfer = $this->client()->transfers->create($transferData);
 
             Log::info('Stripe Transfer created successfully', [
                 'method' => __METHOD__,
@@ -312,7 +329,7 @@ class StripeService
     {
         try {
             // Retrieve PaymentIntent from Stripe API
-            $paymentIntent = $this->stripe->paymentIntents->retrieve($paymentIntentId);
+            $paymentIntent = $this->client()->paymentIntents->retrieve($paymentIntentId);
 
             // Check if PaymentIntent has charges
             if (empty($paymentIntent->charges) || $paymentIntent->charges->data->count() === 0) {
@@ -343,7 +360,7 @@ class StripeService
                 ? $charge->balance_transaction
                 : $charge->balance_transaction->id;
 
-            $balanceTransaction = $this->stripe->balanceTransactions->retrieve($balanceTransactionId);
+            $balanceTransaction = $this->client()->balanceTransactions->retrieve($balanceTransactionId);
 
             // Extract fee (fee is in cents)
             $feeCents = $balanceTransaction->fee ?? 0;

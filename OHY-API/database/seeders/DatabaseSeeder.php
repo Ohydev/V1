@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
         // Phase 1: Master Data Seeders
         // Seed countries table with all country data from SQL file
         $this->call(CountriesSeeder::class);
+        $this->call(StatesTableSeeder::class);
 
         // Seed event categories table with common categories
         $this->call(EventCategoriesSeeder::class);

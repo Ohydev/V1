@@ -3,6 +3,7 @@ import { toast } from '@/hooks/use-toast';
 import { getWishlistItems, addToWishlist as addToWishlistApi, removeFromWishlist as removeFromWishlistApi } from '@/api/services/wishlist';
 import { format, parse } from 'date-fns';
 import { getStorageUrl } from '@/utils/storage';
+import { authStorage } from '@/api/storage';
 
 interface WishlistItem {
   id: number;
@@ -93,6 +94,11 @@ export const WishlistProvider = ({ children }: { children: ReactNode }) => {
     let isMounted = true;
 
     const loadWishlistItems = async () => {
+      if (!authStorage.getToken()) {
+        setIsLoading(false);
+        return;
+      }
+
       try {
         setIsLoading(true);
         await fetchWishlistItems();

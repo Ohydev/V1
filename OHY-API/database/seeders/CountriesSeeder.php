@@ -10,117 +10,226 @@ class CountriesSeeder extends Seeder
     /**
      * Run the database seeds.
      *
-     * Imports countries data from the provided SQL file.
-     * This seeder reads the INSERT statements from countries.sql
-     * and executes them to populate the countries table.
+     * Seeds the countries table with the standard ISO 3166-1 country list
+     * (ISO alpha-2/alpha-3 codes, name, numeric code, dialing code).
      */
     public function run(): void
     {
-        // Read the countries SQL file content
-        // Try project path first, then fallback to user's Downloads folder
-        $sqlFile = base_path('database/seeders/countries.sql');
+        // [iso, name, nicename, iso3, numcode, phonecode]
+        $countries = [
+            ['AF', 'Afghanistan', 'Afghanistan', 'AFG', 4, 93],
+            ['AL', 'Albania', 'Albania', 'ALB', 8, 355],
+            ['DZ', 'Algeria', 'Algeria', 'DZA', 12, 213],
+            ['AD', 'Andorra', 'Andorra', 'AND', 20, 376],
+            ['AO', 'Angola', 'Angola', 'AGO', 24, 244],
+            ['AG', 'Antigua and Barbuda', 'Antigua and Barbuda', 'ATG', 28, 1268],
+            ['AR', 'Argentina', 'Argentina', 'ARG', 32, 54],
+            ['AM', 'Armenia', 'Armenia', 'ARM', 51, 374],
+            ['AU', 'Australia', 'Australia', 'AUS', 36, 61],
+            ['AT', 'Austria', 'Austria', 'AUT', 40, 43],
+            ['AZ', 'Azerbaijan', 'Azerbaijan', 'AZE', 31, 994],
+            ['BS', 'Bahamas', 'Bahamas', 'BHS', 44, 1242],
+            ['BH', 'Bahrain', 'Bahrain', 'BHR', 48, 973],
+            ['BD', 'Bangladesh', 'Bangladesh', 'BGD', 50, 880],
+            ['BB', 'Barbados', 'Barbados', 'BRB', 52, 1246],
+            ['BY', 'Belarus', 'Belarus', 'BLR', 112, 375],
+            ['BE', 'Belgium', 'Belgium', 'BEL', 56, 32],
+            ['BZ', 'Belize', 'Belize', 'BLZ', 84, 501],
+            ['BJ', 'Benin', 'Benin', 'BEN', 204, 229],
+            ['BT', 'Bhutan', 'Bhutan', 'BTN', 64, 975],
+            ['BO', 'Bolivia', 'Bolivia', 'BOL', 68, 591],
+            ['BA', 'Bosnia and Herzegovina', 'Bosnia and Herzegovina', 'BIH', 70, 387],
+            ['BW', 'Botswana', 'Botswana', 'BWA', 72, 267],
+            ['BR', 'Brazil', 'Brazil', 'BRA', 76, 55],
+            ['BN', 'Brunei', 'Brunei', 'BRN', 96, 673],
+            ['BG', 'Bulgaria', 'Bulgaria', 'BGR', 100, 359],
+            ['BF', 'Burkina Faso', 'Burkina Faso', 'BFA', 854, 226],
+            ['BI', 'Burundi', 'Burundi', 'BDI', 108, 257],
+            ['CV', 'Cabo Verde', 'Cabo Verde', 'CPV', 132, 238],
+            ['KH', 'Cambodia', 'Cambodia', 'KHM', 116, 855],
+            ['CM', 'Cameroon', 'Cameroon', 'CMR', 120, 237],
+            ['CA', 'Canada', 'Canada', 'CAN', 124, 1],
+            ['CF', 'Central African Republic', 'Central African Republic', 'CAF', 140, 236],
+            ['TD', 'Chad', 'Chad', 'TCD', 148, 235],
+            ['CL', 'Chile', 'Chile', 'CHL', 152, 56],
+            ['CN', 'China', 'China', 'CHN', 156, 86],
+            ['CO', 'Colombia', 'Colombia', 'COL', 170, 57],
+            ['KM', 'Comoros', 'Comoros', 'COM', 174, 269],
+            ['CG', 'Congo', 'Congo', 'COG', 178, 242],
+            ['CD', 'Congo (DRC)', 'Congo, Democratic Republic of the', 'COD', 180, 243],
+            ['CR', 'Costa Rica', 'Costa Rica', 'CRI', 188, 506],
+            ['HR', 'Croatia', 'Croatia', 'HRV', 191, 385],
+            ['CU', 'Cuba', 'Cuba', 'CUB', 192, 53],
+            ['CY', 'Cyprus', 'Cyprus', 'CYP', 196, 357],
+            ['CZ', 'Czechia', 'Czech Republic', 'CZE', 203, 420],
+            ['DK', 'Denmark', 'Denmark', 'DNK', 208, 45],
+            ['DJ', 'Djibouti', 'Djibouti', 'DJI', 262, 253],
+            ['DM', 'Dominica', 'Dominica', 'DMA', 212, 1767],
+            ['DO', 'Dominican Republic', 'Dominican Republic', 'DOM', 214, 1809],
+            ['EC', 'Ecuador', 'Ecuador', 'ECU', 218, 593],
+            ['EG', 'Egypt', 'Egypt', 'EGY', 818, 20],
+            ['SV', 'El Salvador', 'El Salvador', 'SLV', 222, 503],
+            ['GQ', 'Equatorial Guinea', 'Equatorial Guinea', 'GNQ', 226, 240],
+            ['ER', 'Eritrea', 'Eritrea', 'ERI', 232, 291],
+            ['EE', 'Estonia', 'Estonia', 'EST', 233, 372],
+            ['SZ', 'Eswatini', 'Eswatini', 'SWZ', 748, 268],
+            ['ET', 'Ethiopia', 'Ethiopia', 'ETH', 231, 251],
+            ['FJ', 'Fiji', 'Fiji', 'FJI', 242, 679],
+            ['FI', 'Finland', 'Finland', 'FIN', 246, 358],
+            ['FR', 'France', 'France', 'FRA', 250, 33],
+            ['GA', 'Gabon', 'Gabon', 'GAB', 266, 241],
+            ['GM', 'Gambia', 'Gambia', 'GMB', 270, 220],
+            ['GE', 'Georgia', 'Georgia', 'GEO', 268, 995],
+            ['DE', 'Germany', 'Germany', 'DEU', 276, 49],
+            ['GH', 'Ghana', 'Ghana', 'GHA', 288, 233],
+            ['GR', 'Greece', 'Greece', 'GRC', 300, 30],
+            ['GD', 'Grenada', 'Grenada', 'GRD', 308, 1473],
+            ['GT', 'Guatemala', 'Guatemala', 'GTM', 320, 502],
+            ['GN', 'Guinea', 'Guinea', 'GIN', 324, 224],
+            ['GW', 'Guinea-Bissau', 'Guinea-Bissau', 'GNB', 624, 245],
+            ['GY', 'Guyana', 'Guyana', 'GUY', 328, 592],
+            ['HT', 'Haiti', 'Haiti', 'HTI', 332, 509],
+            ['HN', 'Honduras', 'Honduras', 'HND', 340, 504],
+            ['HU', 'Hungary', 'Hungary', 'HUN', 348, 36],
+            ['IS', 'Iceland', 'Iceland', 'ISL', 352, 354],
+            ['IN', 'India', 'India', 'IND', 356, 91],
+            ['ID', 'Indonesia', 'Indonesia', 'IDN', 360, 62],
+            ['IR', 'Iran', 'Iran', 'IRN', 364, 98],
+            ['IQ', 'Iraq', 'Iraq', 'IRQ', 368, 964],
+            ['IE', 'Ireland', 'Ireland', 'IRL', 372, 353],
+            ['IL', 'Israel', 'Israel', 'ISR', 376, 972],
+            ['IT', 'Italy', 'Italy', 'ITA', 380, 39],
+            ['JM', 'Jamaica', 'Jamaica', 'JAM', 388, 1876],
+            ['JP', 'Japan', 'Japan', 'JPN', 392, 81],
+            ['JO', 'Jordan', 'Jordan', 'JOR', 400, 962],
+            ['KZ', 'Kazakhstan', 'Kazakhstan', 'KAZ', 398, 7],
+            ['KE', 'Kenya', 'Kenya', 'KEN', 404, 254],
+            ['KI', 'Kiribati', 'Kiribati', 'KIR', 296, 686],
+            ['KW', 'Kuwait', 'Kuwait', 'KWT', 414, 965],
+            ['KG', 'Kyrgyzstan', 'Kyrgyzstan', 'KGZ', 417, 996],
+            ['LA', 'Laos', 'Laos', 'LAO', 418, 856],
+            ['LV', 'Latvia', 'Latvia', 'LVA', 428, 371],
+            ['LB', 'Lebanon', 'Lebanon', 'LBN', 422, 961],
+            ['LS', 'Lesotho', 'Lesotho', 'LSO', 426, 266],
+            ['LR', 'Liberia', 'Liberia', 'LBR', 430, 231],
+            ['LY', 'Libya', 'Libya', 'LBY', 434, 218],
+            ['LI', 'Liechtenstein', 'Liechtenstein', 'LIE', 438, 423],
+            ['LT', 'Lithuania', 'Lithuania', 'LTU', 440, 370],
+            ['LU', 'Luxembourg', 'Luxembourg', 'LUX', 442, 352],
+            ['MG', 'Madagascar', 'Madagascar', 'MDG', 450, 261],
+            ['MW', 'Malawi', 'Malawi', 'MWI', 454, 265],
+            ['MY', 'Malaysia', 'Malaysia', 'MYS', 458, 60],
+            ['MV', 'Maldives', 'Maldives', 'MDV', 462, 960],
+            ['ML', 'Mali', 'Mali', 'MLI', 466, 223],
+            ['MT', 'Malta', 'Malta', 'MLT', 470, 356],
+            ['MH', 'Marshall Islands', 'Marshall Islands', 'MHL', 584, 692],
+            ['MR', 'Mauritania', 'Mauritania', 'MRT', 478, 222],
+            ['MU', 'Mauritius', 'Mauritius', 'MUS', 480, 230],
+            ['MX', 'Mexico', 'Mexico', 'MEX', 484, 52],
+            ['FM', 'Micronesia', 'Micronesia', 'FSM', 583, 691],
+            ['MD', 'Moldova', 'Moldova', 'MDA', 498, 373],
+            ['MC', 'Monaco', 'Monaco', 'MCO', 492, 377],
+            ['MN', 'Mongolia', 'Mongolia', 'MNG', 496, 976],
+            ['ME', 'Montenegro', 'Montenegro', 'MNE', 499, 382],
+            ['MA', 'Morocco', 'Morocco', 'MAR', 504, 212],
+            ['MZ', 'Mozambique', 'Mozambique', 'MOZ', 508, 258],
+            ['MM', 'Myanmar', 'Myanmar', 'MMR', 104, 95],
+            ['NA', 'Namibia', 'Namibia', 'NAM', 516, 264],
+            ['NR', 'Nauru', 'Nauru', 'NRU', 520, 674],
+            ['NP', 'Nepal', 'Nepal', 'NPL', 524, 977],
+            ['NL', 'Netherlands', 'Netherlands', 'NLD', 528, 31],
+            ['NZ', 'New Zealand', 'New Zealand', 'NZL', 554, 64],
+            ['NI', 'Nicaragua', 'Nicaragua', 'NIC', 558, 505],
+            ['NE', 'Niger', 'Niger', 'NER', 562, 227],
+            ['NG', 'Nigeria', 'Nigeria', 'NGA', 566, 234],
+            ['KP', 'North Korea', 'North Korea', 'PRK', 408, 850],
+            ['MK', 'North Macedonia', 'North Macedonia', 'MKD', 807, 389],
+            ['NO', 'Norway', 'Norway', 'NOR', 578, 47],
+            ['OM', 'Oman', 'Oman', 'OMN', 512, 968],
+            ['PK', 'Pakistan', 'Pakistan', 'PAK', 586, 92],
+            ['PW', 'Palau', 'Palau', 'PLW', 585, 680],
+            ['PA', 'Panama', 'Panama', 'PAN', 591, 507],
+            ['PG', 'Papua New Guinea', 'Papua New Guinea', 'PNG', 598, 675],
+            ['PY', 'Paraguay', 'Paraguay', 'PRY', 600, 595],
+            ['PE', 'Peru', 'Peru', 'PER', 604, 51],
+            ['PH', 'Philippines', 'Philippines', 'PHL', 608, 63],
+            ['PL', 'Poland', 'Poland', 'POL', 616, 48],
+            ['PT', 'Portugal', 'Portugal', 'PRT', 620, 351],
+            ['QA', 'Qatar', 'Qatar', 'QAT', 634, 974],
+            ['RO', 'Romania', 'Romania', 'ROU', 642, 40],
+            ['RU', 'Russia', 'Russia', 'RUS', 643, 7],
+            ['RW', 'Rwanda', 'Rwanda', 'RWA', 646, 250],
+            ['KN', 'Saint Kitts and Nevis', 'Saint Kitts and Nevis', 'KNA', 659, 1869],
+            ['LC', 'Saint Lucia', 'Saint Lucia', 'LCA', 662, 1758],
+            ['VC', 'Saint Vincent and the Grenadines', 'Saint Vincent and the Grenadines', 'VCT', 670, 1784],
+            ['WS', 'Samoa', 'Samoa', 'WSM', 882, 685],
+            ['SM', 'San Marino', 'San Marino', 'SMR', 674, 378],
+            ['ST', 'Sao Tome and Principe', 'Sao Tome and Principe', 'STP', 678, 239],
+            ['SA', 'Saudi Arabia', 'Saudi Arabia', 'SAU', 682, 966],
+            ['SN', 'Senegal', 'Senegal', 'SEN', 686, 221],
+            ['RS', 'Serbia', 'Serbia', 'SRB', 688, 381],
+            ['SC', 'Seychelles', 'Seychelles', 'SYC', 690, 248],
+            ['SL', 'Sierra Leone', 'Sierra Leone', 'SLE', 694, 232],
+            ['SG', 'Singapore', 'Singapore', 'SGP', 702, 65],
+            ['SK', 'Slovakia', 'Slovakia', 'SVK', 703, 421],
+            ['SI', 'Slovenia', 'Slovenia', 'SVN', 705, 386],
+            ['SB', 'Solomon Islands', 'Solomon Islands', 'SLB', 90, 677],
+            ['SO', 'Somalia', 'Somalia', 'SOM', 706, 252],
+            ['ZA', 'South Africa', 'South Africa', 'ZAF', 710, 27],
+            ['KR', 'South Korea', 'South Korea', 'KOR', 410, 82],
+            ['SS', 'South Sudan', 'South Sudan', 'SSD', 728, 211],
+            ['ES', 'Spain', 'Spain', 'ESP', 724, 34],
+            ['LK', 'Sri Lanka', 'Sri Lanka', 'LKA', 144, 94],
+            ['SD', 'Sudan', 'Sudan', 'SDN', 729, 249],
+            ['SR', 'Suriname', 'Suriname', 'SUR', 740, 597],
+            ['SE', 'Sweden', 'Sweden', 'SWE', 752, 46],
+            ['CH', 'Switzerland', 'Switzerland', 'CHE', 756, 41],
+            ['SY', 'Syria', 'Syria', 'SYR', 760, 963],
+            ['TW', 'Taiwan', 'Taiwan', 'TWN', 158, 886],
+            ['TJ', 'Tajikistan', 'Tajikistan', 'TJK', 762, 992],
+            ['TZ', 'Tanzania', 'Tanzania', 'TZA', 834, 255],
+            ['TH', 'Thailand', 'Thailand', 'THA', 764, 66],
+            ['TL', 'Timor-Leste', 'Timor-Leste', 'TLS', 626, 670],
+            ['TG', 'Togo', 'Togo', 'TGO', 768, 228],
+            ['TO', 'Tonga', 'Tonga', 'TON', 776, 676],
+            ['TT', 'Trinidad and Tobago', 'Trinidad and Tobago', 'TTO', 780, 1868],
+            ['TN', 'Tunisia', 'Tunisia', 'TUN', 788, 216],
+            ['TR', 'Turkey', 'Turkey', 'TUR', 792, 90],
+            ['TM', 'Turkmenistan', 'Turkmenistan', 'TKM', 795, 993],
+            ['TV', 'Tuvalu', 'Tuvalu', 'TUV', 798, 688],
+            ['UG', 'Uganda', 'Uganda', 'UGA', 800, 256],
+            ['UA', 'Ukraine', 'Ukraine', 'UKR', 804, 380],
+            ['AE', 'United Arab Emirates', 'United Arab Emirates', 'ARE', 784, 971],
+            ['GB', 'United Kingdom', 'United Kingdom', 'GBR', 826, 44],
+            ['US', 'United States', 'United States of America', 'USA', 840, 1],
+            ['UY', 'Uruguay', 'Uruguay', 'URY', 858, 598],
+            ['UZ', 'Uzbekistan', 'Uzbekistan', 'UZB', 860, 998],
+            ['VU', 'Vanuatu', 'Vanuatu', 'VUT', 548, 678],
+            ['VA', 'Vatican City', 'Vatican City', 'VAT', 336, 379],
+            ['VE', 'Venezuela', 'Venezuela', 'VEN', 862, 58],
+            ['VN', 'Vietnam', 'Vietnam', 'VNM', 704, 84],
+            ['YE', 'Yemen', 'Yemen', 'YEM', 887, 967],
+            ['ZM', 'Zambia', 'Zambia', 'ZMB', 894, 260],
+            ['ZW', 'Zimbabwe', 'Zimbabwe', 'ZWE', 716, 263],
+        ];
 
-        if (! file_exists($sqlFile)) {
-            // Alternative path: user's Downloads folder
-            $sqlFile = 'C:\Users\chrom\Downloads\countries.sql';
-        }
+        $rows = array_map(function (array $c) {
+            [$iso, $name, $nicename, $iso3, $numcode, $phonecode] = $c;
 
-        // Read SQL file content
-        $sql = file_get_contents($sqlFile);
+            return [
+                'iso' => $iso,
+                'name' => $name,
+                'nicename' => $nicename,
+                'flag_icon' => null,
+                'iso3' => $iso3,
+                'numcode' => $numcode,
+                'phonecode' => $phonecode,
+                'is_deleted' => 0,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }, $countries);
 
-        // Extract the INSERT statement using regex
-        // Match INSERT INTO `countries` ... VALUES ... (multiline)
-        preg_match('/INSERT INTO `countries`[^;]+;/s', $sql, $matches);
-
-        if (! empty($matches[0])) {
-            // Execute the INSERT statement directly
-            // Use DB::unprepared() to execute raw SQL
-            DB::unprepared($matches[0]);
-        } else {
-            // Fallback: Parse and insert manually if regex fails
-            // This handles cases where SQL format might be different
-            $lines = explode("\n", $sql);
-            $insertStarted = false;
-            $batchData = [];
-
-            foreach ($lines as $line) {
-                $line = trim($line);
-
-                // Check if this is the INSERT statement start
-                if (strpos($line, 'INSERT INTO `countries`') !== false) {
-                    $insertStarted = true;
-                }
-
-                if ($insertStarted && ! empty($line)) {
-                    // Extract value tuples from the line
-                    // Pattern: (1, 'AF', 'AFGHANISTAN', ...)
-                    preg_match_all('/\(([^)]+)\)/', $line, $valueMatches);
-
-                    foreach ($valueMatches[1] as $valueString) {
-                        // Parse comma-separated values, handling NULL and strings
-                        $values = [];
-                        $currentValue = '';
-                        $inQuotes = false;
-                        $quoteChar = '';
-
-                        for ($i = 0; $i < strlen($valueString); $i++) {
-                            $char = $valueString[$i];
-
-                            if (($char === '"' || $char === "'") && ($i === 0 || $valueString[$i - 1] !== '\\')) {
-                                if (! $inQuotes) {
-                                    $inQuotes = true;
-                                    $quoteChar = $char;
-                                } elseif ($char === $quoteChar) {
-                                    $inQuotes = false;
-                                    $quoteChar = '';
-                                }
-                                $currentValue .= $char;
-                            } elseif ($char === ',' && ! $inQuotes) {
-                                $values[] = trim($currentValue);
-                                $currentValue = '';
-                            } else {
-                                $currentValue .= $char;
-                            }
-                        }
-
-                        if (! empty($currentValue)) {
-                            $values[] = trim($currentValue);
-                        }
-
-                        // Insert into countries table if we have enough values
-                        if (count($values) >= 9) {
-                            // Parse values: country_id, iso, name, nicename, flag_icon, iso3, numcode, phonecode, is_deleted
-                            $batchData[] = [
-                                'iso' => trim($values[1], "'\""),
-                                'name' => trim($values[2], "'\""),
-                                'nicename' => trim($values[3], "'\""),
-                                'flag_icon' => ($values[4] === 'NULL' || empty($values[4])) ? null : trim($values[4], "'\""),
-                                'iso3' => ($values[5] === 'NULL' || empty($values[5])) ? null : trim($values[5], "'\""),
-                                'numcode' => ($values[6] === 'NULL' || empty($values[6])) ? null : (int) $values[6],
-                                'phonecode' => (int) $values[7],
-                                'is_deleted' => isset($values[8]) ? (int) $values[8] : 0,
-                                'created_at' => now(),
-                                'updated_at' => now(),
-                            ];
-                        }
-                    }
-
-                    // Check if this is the end of INSERT (COMMIT statement or end of file)
-                    if (strpos($line, 'COMMIT') !== false || strpos($line, ';') !== false && count($batchData) > 0) {
-                        // Insert batch of countries
-                        if (! empty($batchData)) {
-                            DB::table('countries')->insert($batchData);
-                            $batchData = [];
-                        }
-                        break;
-                    }
-                }
-            }
-
-            // Insert any remaining batch data
-            if (! empty($batchData)) {
-                DB::table('countries')->insert($batchData);
-            }
-        }
+        DB::table('countries')->insert($rows);
     }
 }

@@ -71,7 +71,10 @@ class PersonalAccountHostSeeder extends Seeder
             'profile_image' => "host_users/{$hostUserId}/profile_image_".time().'.jpg', // Profile image path
             'phone_number' => $faker->phoneNumber(), // Contact phone number
             'website' => $faker->url(), // Personal/business website URL
-            'location' => $faker->city().', '.$faker->state(), // Location information
+            'city' => $faker->city(), // City
+            'state' => $faker->state(), // State/province
+            'country' => 'United States', // Country
+            'zipcode' => $faker->postcode(), // Postal/ZIP code
 
             // Banking information (added in profile - Banking tab)
             'account_holder_name' => $faker->name(), // Bank account holder name

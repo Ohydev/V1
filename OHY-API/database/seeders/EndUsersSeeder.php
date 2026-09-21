@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\OrderModel;
 use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -56,7 +55,8 @@ class EndUsersSeeder extends Seeder
         for ($userIndex = 1; $userIndex <= 10; $userIndex++) {
             // Step 1: Create user record
             $userId = DB::table('users')->insertGetId([
-                'full_name' => $faker->name(), // User's full name
+                'first_name' => $faker->firstName(), // User's first name
+                'last_name' => $faker->lastName(), // User's last name
                 'email' => $faker->unique()->safeEmail(), // Unique email address
                 'password' => Hash::make('Ohy@123456'), // Password for all test accounts
                 'contact_number' => $faker->phoneNumber(), // Contact phone number
@@ -137,7 +137,7 @@ class EndUsersSeeder extends Seeder
                 $orderId = DB::table('orders')->insertGetId([
                     'order_number' => $orderNumber, // Unique order number
                     'user_id' => $userId, // End User who made the purchase
-                    'order_status' => 'completed', // Order status (only status for now)
+                    'order_status' => 'paid', // Order status
                     'order_date' => $faker->dateTimeBetween('-3 months', 'now')->format('Y-m-d'), // Random date from past 3 months
                     'full_name' => $faker->name(), // Purchaser's full name
                     'email' => $faker->email(), // Purchaser's email
@@ -147,9 +147,6 @@ class EndUsersSeeder extends Seeder
                     'state' => $faker->state(), // Billing state/province
                     'zip_code' => $faker->postcode(), // Billing ZIP/postal code
                     'country_id' => $billingCountryId, // Foreign key to countries
-                    'card_number' => Crypt::encrypt($faker->creditCardNumber()), // Encrypted card number
-                    'expiry_date' => Crypt::encrypt($faker->date('m/y', '+2 years')), // Encrypted expiry date (MM/YY)
-                    'cvv' => Crypt::encrypt($faker->numerify('###')), // Encrypted CVV
                     'subtotal' => round($subtotal, 2), // Sum of all ticket prices
                     'coupon_discount' => $couponDiscount ? round($couponDiscount, 2) : null, // Discount amount from coupon
                     'total_amount' => round($totalAmount, 2), // Final amount paid

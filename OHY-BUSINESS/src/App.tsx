@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ForgotPassword from "./pages/ForgotPassword";
+import Login from "./pages/Login";
 import { RedirectToEventFrontend } from "./components/RedirectToEventFrontend";
 import NotFound from "./pages/NotFound";
 import Dashboard from "./pages/Dashboard";
@@ -33,6 +34,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<RedirectToEventFrontend />} />
             <Route path="/register" element={<RedirectToEventFrontend />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/dashboard" element={<DashboardLayout />}>
               <Route index element={<Dashboard />} />

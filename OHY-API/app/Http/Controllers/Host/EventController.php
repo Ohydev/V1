@@ -4744,11 +4744,13 @@ class EventController extends Controller
                     }
 
                     // Add event data to user's events array
+                    $ticketSubtotal = (float) $eventData->ticket_subtotal; // Base ticket cost for this event
+                    $allocatedCouponDiscount = (float) $eventData->coupon_discount_amount; // Coupon discount share allocated to this event
                     $eventsByUserId[$userId][] = [
                         'event_id' => (int) $eventData->event_id, // Event ID as integer
                         'event_title' => $eventData->event_title, // Event title
                         'tickets_purchased' => (int) $eventData->tickets_purchased, // Tickets purchased as integer
-                        'event_spend' => (float) $eventData->event_spend, // Event spend as float
+                        'event_spend' => $ticketSubtotal - $allocatedCouponDiscount, // Final amount paid for this event
                     ];
                 }
 
