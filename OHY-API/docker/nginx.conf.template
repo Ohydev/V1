@@ -1,3 +1,9 @@
+# Included inside nginx's http{} block, so log_format is allowed here.
+# Logs the proxy headers Railway adds, so the real client IP is visible
+# (the connecting address is always an internal Railway hop in 100.x).
+log_format railway '$remote_addr xff="$http_x_forwarded_for" xrealip="$http_x_real_ip" '
+                   '"$request" $status $body_bytes_sent "$http_user_agent"';
+
 server {
     # ${PORT} is substituted by entrypoint.sh from Railway's runtime env
     # var — Railway assigns this dynamically per deploy, it is not fixed.
@@ -11,7 +17,7 @@ server {
     # already assume.
     client_max_body_size 50M;
 
-    access_log /dev/stdout;
+    access_log /dev/stdout railway;
     error_log /dev/stderr;
 
     location / {
