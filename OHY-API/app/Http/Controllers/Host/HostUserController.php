@@ -503,7 +503,7 @@ class HostUserController extends Controller
 
                     try {
                         // Disable SSL verification to avoid local certificate issues when calling external API
-                        $response = Http::withoutVerifying()->timeout(10)->get($zippopotamUrl);
+                        $response = Http::timeout(10)->get($zippopotamUrl);
                     } catch (\Exception $e) {
                         Log::warning('Zippopotam lookup failed in updateHostUserProfile', [
                             'zipcode' => $zipcode,

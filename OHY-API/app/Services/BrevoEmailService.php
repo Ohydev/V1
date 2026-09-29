@@ -95,12 +95,11 @@ class BrevoEmailService
 
             // Send HTTP POST request to Brevo API using Laravel HTTP client (uses HTTPS port 443)
             // Note: Laravel Http facade response object has status(), json(), and body() methods
-            $response = Http::withoutVerifying()
-                ->withHeaders([
-                    'api-key' => $apiKey,
-                    'Content-Type' => 'application/json',
-                    'Accept' => 'application/json',
-                ])
+            $response = Http::withHeaders([
+                'api-key' => $apiKey,
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+            ])
                 ->timeout(30)
                 ->post($this->brevoApiUrl, $payload);
 
