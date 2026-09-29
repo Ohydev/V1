@@ -3,7 +3,10 @@
 # Runs php-fpm + nginx in one container, supervised by supervisord.
 # `php artisan serve` is never used here — it's single-threaded and
 # explicitly a local-dev-only tool (see learnings/deployment/deployment-roadmap.md).
-FROM php:8.2-fpm
+# Must be PHP 8.4+: config/database.php uses \Pdo\Mysql::ATTR_SSL_CA, which
+# doesn't exist before 8.4 (the old PDO::MYSQL_ATTR_SSL_CA spelling is
+# deprecated in 8.5 and was corrupting JSON responses). 8.5 matches local dev.
+FROM php:8.5-fpm
 
 # System packages: nginx + supervisor to run both processes, gettext-base
 # for envsubst (writes nginx's listen port from Railway's runtime $PORT

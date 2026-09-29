@@ -12,7 +12,12 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        // Railway terminates HTTPS at its edge proxy and forwards plain
+        // HTTP to the container. Trust its X-Forwarded-* headers so Laravel
+        // knows the original request was https (correct generated URLs,
+        // secure cookies). '*' is safe here: the container is only
+        // reachable through Railway's proxy.
+        $middleware->trustProxies(at: '*');
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

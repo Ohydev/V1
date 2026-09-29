@@ -48,5 +48,10 @@ php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 
+# Railway volumes mount owned by root, and caching above ran as root —
+# hand storage back to php-fpm's user (www-data) or uploads and compiled
+# views fail with "permission denied".
+chown -R www-data:www-data storage bootstrap/cache
+
 echo "==> starting php-fpm + nginx"
 exec supervisord -c /etc/supervisor/conf.d/supervisord.conf

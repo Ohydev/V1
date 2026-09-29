@@ -10,6 +10,9 @@ vendor
 storage/framework
 storage/logs
 tests
+# Local-dev copied directory (artisan serve workaround); the entrypoint
+# creates the real symlink.
+public/storage
 .phpunit.cache
 .phpunit.result.cache
 README.md
