@@ -82,15 +82,15 @@ Route::get('/v1/get_public_cms_page/{slug}', [MasterDataController::class, 'getP
 
 // Routes:: Public Routes for Authentication for the Host Users & Super Admin
 Route::prefix('v1')->group(function () {
-    Route::post('/host_registration_otp_request', [HostUserController::class, 'requestRegistrationOtp']);
-    Route::post('/host_user_register', [HostUserController::class, 'hostUserRegister']);
-    Route::post('/host_user_login', [HostUserController::class, 'hostUserLogin']);
-    Route::post('/super_admin_login', [SuperAdminController::class, 'superAdminLogin']);
+    Route::post('/host_registration_otp_request', [HostUserController::class, 'requestRegistrationOtp'])->middleware('throttle:otp-send');
+    Route::post('/host_user_register', [HostUserController::class, 'hostUserRegister'])->middleware('throttle:otp-verify');
+    Route::post('/host_user_login', [HostUserController::class, 'hostUserLogin'])->middleware('throttle:login');
+    Route::post('/super_admin_login', [SuperAdminController::class, 'superAdminLogin'])->middleware('throttle:login');
 
     // Routes:: These are the public routes for host forgot password functionality.
-    Route::post('/host_forgot_password_request', [HostUserController::class, 'requestForgotPassword']);
-    Route::post('/host_verify_forgot_password_otp', [HostUserController::class, 'verifyForgotPasswordOtp']);
-    Route::post('/host_reset_password', [HostUserController::class, 'resetPassword']);
+    Route::post('/host_forgot_password_request', [HostUserController::class, 'requestForgotPassword'])->middleware('throttle:otp-send');
+    Route::post('/host_verify_forgot_password_otp', [HostUserController::class, 'verifyForgotPasswordOtp'])->middleware('throttle:otp-verify');
+    Route::post('/host_reset_password', [HostUserController::class, 'resetPassword'])->middleware('throttle:otp-verify');
 });
 
 // Routes:: Public Routes for Authentication for the End Users
@@ -101,14 +101,14 @@ Route::prefix('v1')->group(function () {
     Route::get('/get_event_categories', [UserEventCategoryController::class, 'getEventCategories']);
 
     // Routes:: These are the public routes which are used at the end user to register & login without authentication.
-    Route::post('/user_registration_otp_request', [UserController::class, 'requestRegistrationOtp']);
-    Route::post('/user_register', [UserController::class, 'userRegister']);
-    Route::post('/user_login', [UserController::class, 'userLogin']);
+    Route::post('/user_registration_otp_request', [UserController::class, 'requestRegistrationOtp'])->middleware('throttle:otp-send');
+    Route::post('/user_register', [UserController::class, 'userRegister'])->middleware('throttle:otp-verify');
+    Route::post('/user_login', [UserController::class, 'userLogin'])->middleware('throttle:login');
 
     // Routes:: These are the public routes for forgot password functionality.
-    Route::post('/user_forgot_password_request', [UserController::class, 'requestForgotPassword']);
-    Route::post('/user_verify_forgot_password_otp', [UserController::class, 'verifyForgotPasswordOtp']);
-    Route::post('/user_reset_password', [UserController::class, 'resetPassword']);
+    Route::post('/user_forgot_password_request', [UserController::class, 'requestForgotPassword'])->middleware('throttle:otp-send');
+    Route::post('/user_verify_forgot_password_otp', [UserController::class, 'verifyForgotPasswordOtp'])->middleware('throttle:otp-verify');
+    Route::post('/user_reset_password', [UserController::class, 'resetPassword'])->middleware('throttle:otp-verify');
 });
 
 // Routes:: Authenticated Routes
