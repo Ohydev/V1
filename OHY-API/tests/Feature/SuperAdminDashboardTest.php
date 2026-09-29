@@ -11,7 +11,6 @@ use App\Models\TicketModel;
 use App\Models\VenueModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
-use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class SuperAdminDashboardTest extends TestCase
@@ -72,7 +71,7 @@ class SuperAdminDashboardTest extends TestCase
             'total_amount' => 1500,
         ]);
 
-        Sanctum::actingAs($superAdmin, ['*']);
+        $this->withApiToken($superAdmin);
 
         $response = $this->getJson('/api/v1/get_super_admin_dashboard');
 

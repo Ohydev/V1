@@ -18,7 +18,6 @@ use App\Models\TicketModel;
 use App\Models\VenueModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
-use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class SuperAdminEventDetailsTest extends TestCase
@@ -99,7 +98,7 @@ class SuperAdminEventDetailsTest extends TestCase
             'discount_type' => 'percentage',
         ]);
 
-        Sanctum::actingAs($superAdmin, ['*']);
+        $this->withApiToken($superAdmin);
 
         $response = $this->getJson('/api/v1/get_super_admin_event_details?event_id='.$event->event_id);
 

@@ -11,7 +11,7 @@ on:
 
 jobs:
   test:
-    name: Format check + migrations
+    name: Format check + migrations + tests
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -38,7 +38,9 @@ jobs:
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "8.2"
+          # Match the production image (OHY-API/Dockerfile) and local dev.
+          # config/database.php uses \Pdo\Mysql, which needs PHP 8.4+.
+          php-version: "8.5"
 
       - name: Install PHP dependencies
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
@@ -66,5 +68,4 @@ jobs:
         run: ./vendor/bin/pint --test
 
       - name: Run test suite
-        run: |
-          echo "::warning::Test suite is not runnable yet - 16 of the app's models (EventModel, TicketModel, OrderModel, etc.) are missing database/factories/*.php files the tests depend on. This is a pre-existing gap, not something CI broke. Skipping for now; needs someone familiar with the schema to write the factories before this step can be turned on."
+        run: php artisan test

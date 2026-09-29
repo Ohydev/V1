@@ -7,7 +7,6 @@ use App\Models\SuperAdminModel;
 use App\Models\UserModel;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class SuperAdminRegisteredUsersListTest extends TestCase
@@ -27,7 +26,7 @@ class SuperAdminRegisteredUsersListTest extends TestCase
         $response->assertJson([
             'success' => false,
             'error' => [
-                'error_code' => 'E003',
+                'error_code' => 'T001', // missing token is rejected by AuthenticateApiToken first
             ],
         ]);
     }
@@ -35,7 +34,7 @@ class SuperAdminRegisteredUsersListTest extends TestCase
     public function test_it_returns_paginated_users()
     {
         $superAdmin = SuperAdminModel::factory()->create();
-        Sanctum::actingAs($superAdmin, ['*']);
+        $this->withApiToken($superAdmin);
 
         UserModel::factory()->count(15)->create();
 
@@ -70,16 +69,16 @@ class SuperAdminRegisteredUsersListTest extends TestCase
     public function test_it_applies_search_and_date_filters()
     {
         $superAdmin = SuperAdminModel::factory()->create();
-        Sanctum::actingAs($superAdmin, ['*']);
+        $this->withApiToken($superAdmin);
 
         $oldUser = UserModel::factory()->create([
-            'full_name' => 'Alpha User',
+            'first_name' => 'Alpha', 'last_name' => 'User',
             'email' => 'alpha@example.com',
             'created_at' => Carbon::now()->subDays(10),
         ]);
 
         $newUser = UserModel::factory()->create([
-            'full_name' => 'Bravo User',
+            'first_name' => 'Bravo', 'last_name' => 'User',
             'email' => 'bravo@example.com',
             'created_at' => Carbon::now()->subDays(2),
         ]);
@@ -102,10 +101,10 @@ class SuperAdminRegisteredUsersListTest extends TestCase
     public function test_it_sorts_by_total_spend()
     {
         $superAdmin = SuperAdminModel::factory()->create();
-        Sanctum::actingAs($superAdmin, ['*']);
+        $this->withApiToken($superAdmin);
 
-        $userHigh = UserModel::factory()->create(['full_name' => 'High Spender']);
-        $userLow = UserModel::factory()->create(['full_name' => 'Low Spender']);
+        $userHigh = UserModel::factory()->create(['first_name' => 'High', 'last_name' => 'Spender']);
+        $userLow = UserModel::factory()->create(['first_name' => 'Low', 'last_name' => 'Spender']);
 
         OrderModel::factory()->create([
             'user_id' => $userHigh->user_id,

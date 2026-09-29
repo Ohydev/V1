@@ -9,7 +9,6 @@ use App\Models\SuperAdminModel;
 use App\Models\TicketModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
-use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class SuperAdminEventsListTest extends TestCase
@@ -82,9 +81,9 @@ class SuperAdminEventsListTest extends TestCase
             'price' => 80,
         ]);
 
-        Sanctum::actingAs($superAdmin, ['*']);
+        $this->withApiToken($superAdmin);
 
-        $response = $this->getJson('/api/v1/get_super_admin_events_list');
+        $response = $this->postJson('/api/v1/get_super_admin_events_list');
 
         $response->assertStatus(200)
             ->assertJsonStructure([
