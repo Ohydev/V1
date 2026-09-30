@@ -11,9 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/hooks/useAuth";
 import { Popover, PopoverAnchor, PopoverContent } from "@/components/ui/popover";
 import { Switch } from "@/components/ui/switch";
-import { useToast } from "@/hooks/use-toast";
-import { switchProfile } from "@/api/services/auth";
-import { ApiError } from "@/api/errors";
+import { useSwitchToHost } from "@/hooks/useSwitchToHost";
 
 interface HeaderProps {
   solid?: boolean;
@@ -22,7 +20,6 @@ interface HeaderProps {
 const Header = ({ solid = false }: HeaderProps) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isSwitchingToHost, setIsSwitchingToHost] = useState(false);
   const [showHostModeConfirm, setShowHostModeConfirm] = useState(false);
   const { getTotalItems } = useCart();
   const { getTotalItems: getWishlistItems } = useWishlist();
@@ -30,7 +27,7 @@ const Header = ({ solid = false }: HeaderProps) => {
   const location = useLocation();
   const isOnAuthPage = location.pathname === "/auth";
   const { isAuthenticated } = useAuth();
-  const { toast } = useToast();
+  const { switchToHost: handleSwitchToHost, isSwitchingToHost } = useSwitchToHost();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -42,43 +39,6 @@ const Header = ({ solid = false }: HeaderProps) => {
   }, []);
 
   const shouldBeWhite = solid || isScrolled;
-
-  const handleSwitchToHost = async () => {
-    setIsSwitchingToHost(true);
-    try {
-      const response = await switchProfile({ mode: "host" });
-      
-      // Get host URL from environment variable with fallback
-      const hostUrl = import.meta.env.VITE_HOST_FRONTEND_URL || "http://localhost:8081";
-      // Pass token as URL parameter - host app will read it and store in its own localStorage
-      const dashboardUrl = `${hostUrl}/dashboard?token=${encodeURIComponent(response.token)}`;
-      
-      // Open host dashboard in the same tab
-      window.location.href = dashboardUrl;
-    } catch (error) {
-      console.error("Switch to host mode error:", error);
-      
-      let errorMessage = "Failed to switch to host mode. Please try again.";
-      if (error instanceof ApiError) {
-        if (typeof error.details === "string") {
-          errorMessage = error.details;
-        } else if (typeof error.details === "object" && error.details !== null) {
-          const fieldErrors = Object.entries(error.details as Record<string, string[]>)
-            .map(([field, messages]) => `${field}: ${messages.join(", ")}`)
-            .join("\n");
-          errorMessage = fieldErrors || errorMessage;
-        }
-      }
-      
-      toast({
-        title: "Switch failed",
-        description: errorMessage,
-        variant: "destructive",
-      });
-    } finally {
-      setIsSwitchingToHost(false);
-    }
-  };
 
   return (
     <header className={`fixed top-0 left-0 right-0 w-full z-50 animate-fade-in-down transition-all duration-300 ${

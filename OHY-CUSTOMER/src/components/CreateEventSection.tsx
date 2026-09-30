@@ -1,8 +1,22 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, MessageCircle, Calendar } from "lucide-react";
 import createEventBg from "@/assets/create-event-bg.webp";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
+import { useSwitchToHost } from "@/hooks/useSwitchToHost";
 
 const CreateEventSection = () => {
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+  const { switchToHost, isSwitchingToHost } = useSwitchToHost();
+
+  // Logged in: go straight to the host dashboard. Otherwise sign up / log in
+  // first (same page the header's "Create Events" button uses).
+  const handleGetStarted = () => {
+    if (isAuthenticated) switchToHost();
+    else navigate("/auth?tab=register");
+  };
+
   return (
     <section className="relative py-20 pb-0 overflow-hidden">
       {/* Background Image with Overlay */}
@@ -26,7 +40,8 @@ const CreateEventSection = () => {
             Turn your vision into reality. Our powerful platform makes it easy to create, promote, and manage unforgettable events.
           </p>
           <Button 
-            onClick={() => window.open(import.meta.env.VITE_HOST_FRONTEND_URL || "http://localhost:8081", "_blank", "noopener,noreferrer")}
+            onClick={handleGetStarted}
+            disabled={isSwitchingToHost}
             variant="pill-solid"
             size="lg" 
             className="px-8 py-6 text-lg font-semibold font-montserrat"
