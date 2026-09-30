@@ -556,7 +556,7 @@ class UserController extends Controller
                     $userId = $user->user_id;
 
                     // Get original file extension
-                    $extension = $profileImage->getClientOriginalExtension();
+                    $extension = ($profileImage->guessExtension() ?? 'bin');
 
                     // Generate unique filename: profile_image_{timestamp}.{extension}
                     $filename = 'profile_image_'.time().'.'.$extension;

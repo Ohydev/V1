@@ -546,7 +546,7 @@ class EventController extends Controller
                         }
 
                         // Generate unique filename with timestamp
-                        $thumbnailExtension = $thumbnailFile->getClientOriginalExtension(); // Get file extension
+                        $thumbnailExtension = ($thumbnailFile->guessExtension() ?? 'bin'); // Get file extension
                         $thumbnailFileName = 'thumbnail_'.time().'_'.uniqid().'.'.$thumbnailExtension; // Unique filename
                         $thumbnailPath = 'events/'.$eventId.'/thumbnail/'.$thumbnailFileName; // Storage path
 
@@ -591,7 +591,7 @@ class EventController extends Controller
                         }
 
                         // Generate unique filename with timestamp
-                        $bannerExtension = $bannerFile->getClientOriginalExtension(); // Get file extension
+                        $bannerExtension = ($bannerFile->guessExtension() ?? 'bin'); // Get file extension
                         $bannerFileName = 'banner_'.time().'_'.uniqid().'.'.$bannerExtension; // Unique filename
                         $bannerPath = 'events/'.$eventId.'/banner/'.$bannerFileName; // Storage path
 
@@ -638,7 +638,7 @@ class EventController extends Controller
                         // Process each flyer file
                         foreach ($flyerFiles as $index => $flyerFile) {
                             // Generate unique filename with timestamp and index
-                            $flyerExtension = $flyerFile->getClientOriginalExtension(); // Get file extension
+                            $flyerExtension = ($flyerFile->guessExtension() ?? 'bin'); // Get file extension
                             $flyerFileName = 'flyer_'.time().'_'.$index.'_'.uniqid().'.'.$flyerExtension; // Unique filename
 
                             // Store flyer file in storage/public directory
@@ -685,7 +685,7 @@ class EventController extends Controller
                         // Process each video file
                         foreach ($videoFiles as $index => $videoFile) {
                             // Generate unique filename with timestamp and index
-                            $videoExtension = $videoFile->getClientOriginalExtension(); // Get file extension
+                            $videoExtension = ($videoFile->guessExtension() ?? 'bin'); // Get file extension
                             $videoFileName = 'video_'.time().'_'.$index.'_'.uniqid().'.'.$videoExtension; // Unique filename
 
                             // Store video file in storage/public directory
@@ -1735,7 +1735,7 @@ class EventController extends Controller
                         }
 
                         // Generate unique filename with timestamp and uniqid
-                        $venueImageExtension = $venueImageFile->getClientOriginalExtension(); // Get file extension
+                        $venueImageExtension = ($venueImageFile->guessExtension() ?? 'bin'); // Get file extension
                         $venueImageFileName = 'venue_image_'.time().'_'.uniqid().'.'.$venueImageExtension; // Unique filename
 
                         // Store venue image file in storage/public directory
@@ -1998,7 +1998,7 @@ class EventController extends Controller
                                 $artistImageFile = $request->file("artists.{$index}.artist_image");
 
                                 // Generate unique filename with timestamp and uniqid
-                                $artistImageExtension = $artistImageFile->getClientOriginalExtension(); // Get file extension
+                                $artistImageExtension = ($artistImageFile->guessExtension() ?? 'bin'); // Get file extension
                                 $artistImageFileName = 'artist_image_'.time().'_'.uniqid().'.'.$artistImageExtension; // Unique filename
 
                                 // Store artist image file in storage/public directory

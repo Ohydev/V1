@@ -305,7 +305,7 @@ class SuperAdminController extends Controller
 
                     // Generate unique filename using timestamp
                     $timestamp = time(); // Current timestamp
-                    $extension = $profileImage->getClientOriginalExtension(); // Original file extension
+                    $extension = ($profileImage->guessExtension() ?? 'bin'); // Original file extension
                     $filename = "profile_image_{$timestamp}.{$extension}"; // Compose filename
 
                     // Store file in public disk and capture stored path

@@ -665,7 +665,7 @@ class HostUserController extends Controller
 
                     // Generate filename with timestamp to ensure uniqueness
                     $timestamp = time(); // Current timestamp
-                    $extension = $file->getClientOriginalExtension(); // Get original file extension
+                    $extension = ($file->guessExtension() ?? 'bin'); // Get original file extension
                     $filename = "profile_image_{$timestamp}.{$extension}"; // Format: profile_image_1234567890.jpg
 
                     // Store file in public disk under host_users/{host_user_id}/ directory

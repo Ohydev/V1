@@ -18,18 +18,38 @@ server {
     client_max_body_size 50M;
 
     access_log /dev/stdout railway;
+
+    # Security headers (API responses; Railway already forces HTTPS).
+    add_header Strict-Transport-Security "max-age=31536000" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-Frame-Options "DENY" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
     error_log /dev/stderr;
 
     location / {
         try_files $uri $uri/ /index.php?$query_string;
     }
 
-    location ~ \.php$ {
+    # Only Laravel's front controller may run as PHP. Any other .php path
+    # (e.g. a file someone manages to upload into /storage) is a 404, never
+    # executed.
+    location = /index.php {
         fastcgi_pass 127.0.0.1:9000;
-        fastcgi_index index.php;
         include fastcgi_params;
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_hide_header X-Powered-By;
         fastcgi_read_timeout 120;
+    }
+
+    location ~ \.php$ {
+        return 404;
+    }
+
+    # Uploaded files are served as plain static files.
+    location /storage/ {
+        add_header X-Content-Type-Options "nosniff" always;
+        add_header Content-Security-Policy "default-src 'none'; img-src 'self'; media-src 'self'; style-src 'unsafe-inline'; sandbox" always;
+        try_files $uri =404;
     }
 
     # Never serve dotfiles (.env, .git, etc.) if one ever ends up under
