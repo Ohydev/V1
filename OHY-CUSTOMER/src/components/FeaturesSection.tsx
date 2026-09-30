@@ -1,29 +1,35 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ChevronLeft, ChevronRight, ArrowRight, Zap, Monitor, Leaf, Users, Utensils, Heart, Plane, Music, Palette, BookOpen, Film, Shirt, GraduationCap } from "lucide-react";
+import { ChevronLeft, ChevronRight, ArrowRight, Briefcase, CalendarDays, GraduationCap, Leaf, Monitor, Music, Palette, Shirt, Sparkles, Trophy, Utensils } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getEventCategories } from "@/api/services/events";
 import { EventCategory } from "@/api/types";
 
-const DISPLAY_CONFIGS: { icon: LucideIcon; color: string; iconColor: string; hoverBg: string }[] = [
-  { icon: Palette, color: "bg-indigo-100", iconColor: "text-indigo-600", hoverBg: "bg-[url('/lovable-uploads/9aa0df1d-eb29-4be7-a01a-7db861bee8fc.png')] bg-cover bg-center" },
-  { icon: Zap, color: "bg-pink-100", iconColor: "text-pink-600", hoverBg: "bg-[url('/lovable-uploads/4a220fa1-8c6f-4895-8ce2-736139f84608.png')] bg-cover bg-center" },
-  { icon: GraduationCap, color: "bg-violet-100", iconColor: "text-violet-600", hoverBg: "bg-[url('/lovable-uploads/b2f752f8-5b5c-474b-880c-9497c76ea94e.png')] bg-cover bg-center" },
-  { icon: Users, color: "bg-purple-100", iconColor: "text-purple-600", hoverBg: "bg-[url('/lovable-uploads/35823af3-b32c-4bd5-ac0f-29fdae64f237.png')] bg-cover bg-center" },
-  { icon: Shirt, color: "bg-emerald-100", iconColor: "text-emerald-600", hoverBg: "bg-[url('/lovable-uploads/a044ecb7-6423-403e-848f-2edf461b4576.png')] bg-cover bg-center" },
-  { icon: Utensils, color: "bg-orange-100", iconColor: "text-orange-600", hoverBg: "bg-[url('/lovable-uploads/637b3f99-4f20-4762-a5fb-e8af30946c7d.png')] bg-cover bg-center" },
-  { icon: Leaf, color: "bg-green-100", iconColor: "text-green-600", hoverBg: "bg-[url('/lovable-uploads/2bfe273a-d3d4-4cdb-8781-e6cc7e9a52cd.png')] bg-cover bg-center" },
-  { icon: Music, color: "bg-yellow-100", iconColor: "text-yellow-600", hoverBg: "bg-[url('/lovable-uploads/7c4583ed-a29a-4b1b-9f04-8e4c40ccaa64.png')] bg-cover bg-center" },
-  { icon: Heart, color: "bg-red-100", iconColor: "text-red-600", hoverBg: "bg-[url('/lovable-uploads/6fe3d656-6944-4360-81da-b299b58e5291.png')] bg-cover bg-center" },
-  { icon: Monitor, color: "bg-blue-100", iconColor: "text-blue-600", hoverBg: "bg-[url('/lovable-uploads/0c0bd140-c04e-41ce-a364-e503fa4a1ed5.png')] bg-cover bg-center" },
-  { icon: Plane, color: "bg-cyan-100", iconColor: "text-cyan-600", hoverBg: "bg-[url('/lovable-uploads/73f202db-a602-4970-aac8-ef45a3c89f25.png')] bg-cover bg-center" },
-  { icon: Film, color: "bg-teal-100", iconColor: "text-teal-600", hoverBg: "bg-[url('/lovable-uploads/b586bad0-38cd-40f7-922f-d5512629c650.png')] bg-cover bg-center" },
-];
+type DisplayConfig = { icon: LucideIcon; color: string; iconColor: string; hoverBg: string };
+
+// Keyed by category name so each category always gets its own icon and photo,
+// whatever order the API returns them in. Photo sources and licenses:
+// public/images/categories/CREDITS.md
+const CATEGORY_DISPLAY: Record<string, DisplayConfig> = {
+  "arts & culture": { icon: Palette, color: "bg-indigo-100", iconColor: "text-indigo-600", hoverBg: "bg-[url('/images/categories/arts-culture.webp')] bg-cover bg-center" },
+  "business": { icon: Briefcase, color: "bg-pink-100", iconColor: "text-pink-600", hoverBg: "bg-[url('/images/categories/business.webp')] bg-cover bg-center" },
+  "education": { icon: GraduationCap, color: "bg-violet-100", iconColor: "text-violet-600", hoverBg: "bg-[url('/images/categories/education.webp')] bg-cover bg-center" },
+  "entertainment": { icon: Sparkles, color: "bg-purple-100", iconColor: "text-purple-600", hoverBg: "bg-[url('/images/categories/entertainment.webp')] bg-cover bg-center" },
+  "fashion": { icon: Shirt, color: "bg-emerald-100", iconColor: "text-emerald-600", hoverBg: "bg-[url('/images/categories/fashion.webp')] bg-cover bg-center" },
+  "food & drink": { icon: Utensils, color: "bg-orange-100", iconColor: "text-orange-600", hoverBg: "bg-[url('/images/categories/food-drink.webp')] bg-cover bg-center" },
+  "health & wellness": { icon: Leaf, color: "bg-green-100", iconColor: "text-green-600", hoverBg: "bg-[url('/images/categories/health-wellness.webp')] bg-cover bg-center" },
+  "music": { icon: Music, color: "bg-yellow-100", iconColor: "text-yellow-600", hoverBg: "bg-[url('/images/categories/music.webp')] bg-cover bg-center" },
+  "sports": { icon: Trophy, color: "bg-red-100", iconColor: "text-red-600", hoverBg: "bg-[url('/images/categories/sports.webp')] bg-cover bg-center" },
+  "technology": { icon: Monitor, color: "bg-blue-100", iconColor: "text-blue-600", hoverBg: "bg-[url('/images/categories/technology.webp')] bg-cover bg-center" },
+};
+
+// For categories added later that don't have a photo yet.
+const DEFAULT_DISPLAY: DisplayConfig = { icon: CalendarDays, color: "bg-slate-100", iconColor: "text-slate-600", hoverBg: "bg-gradient-to-br from-slate-600 to-slate-900" };
 
 function mapApiCategoriesToDisplay(apiCategories: EventCategory[]) {
-  return apiCategories.map((cat, index) => {
-    const config = DISPLAY_CONFIGS[index % DISPLAY_CONFIGS.length];
+  return apiCategories.map((cat) => {
+    const config = CATEGORY_DISPLAY[cat.category_name.trim().toLowerCase()] ?? DEFAULT_DISPLAY;
     return {
       event_category_id: cat.event_category_id,
       name: cat.category_name,
