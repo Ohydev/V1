@@ -14,3 +14,9 @@ attribution required (credited here anyway). Unsplash+ (paid) photos excluded.
 | courses.webp | Courses | ANYA RICHTER | https://unsplash.com/photos/people-painting-at-a-table-with-art-supplies-V5-OCit5ZF0 |
 | networking.webp | Networking | Ali Colak | https://unsplash.com/photos/a-group-of-people-standing-around-a-table-vj7HscDwZf4 |
 | wellness.webp | Wellness | Boxed Water Is Better | https://unsplash.com/photos/woman-in-yellow-sports-bra-and-yellow-shorts-jumping-on-white-metal-frame-y-TpYAlcBYM |
+
+## Other homepage photos
+
+| File | Where | Photographer | Source |
+|---|---|---|---|
+| ../create-event-bg.webp | "Create Your Event Today" section | Emmanuel Zua | https://unsplash.com/photos/woman-holding-microphone-near-her-mouth-1Q8WP77OWv0 |

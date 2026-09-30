@@ -9,7 +9,7 @@ const CreateEventSection = () => {
       <div className="absolute inset-0">
         <img 
           src={createEventBg} 
-          alt="Excited event crowd"
+          alt="Event host with a microphone energizing a crowd"
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-black/60"></div>
@@ -26,7 +26,7 @@ const CreateEventSection = () => {
             Turn your vision into reality. Our powerful platform makes it easy to create, promote, and manage unforgettable events.
           </p>
           <Button 
-            onClick={() => window.open("http://localhost:8080/", "_blank", "noopener,noreferrer")}
+            onClick={() => window.open(import.meta.env.VITE_HOST_FRONTEND_URL || "http://localhost:8081", "_blank", "noopener,noreferrer")}
             variant="pill-solid"
             size="lg" 
             className="px-8 py-6 text-lg font-semibold font-montserrat"

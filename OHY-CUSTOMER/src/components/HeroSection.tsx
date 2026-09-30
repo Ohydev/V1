@@ -127,7 +127,7 @@ const HeroSection = ({ onSearch }: HeroSectionProps) => {
         {/* Top Badge */}
         <div className="mb-4">
           <span className="inline-block text-white/90 text-[15px] font-medium tracking-widest uppercase">
-            UNFORGETTABLE EVENTS START'S WITH YOU
+            UNFORGETTABLE EVENTS START WITH YOU
           </span>
         </div>
 
