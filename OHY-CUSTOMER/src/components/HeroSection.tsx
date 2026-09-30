@@ -43,6 +43,14 @@ const HeroSection = ({ onSearch }: HeroSectionProps) => {
   const [isLoadingCategories, setIsLoadingCategories] = useState(false);
 
   const [currentSlide, setCurrentSlide] = useState(0);
+  // Keep showing the last photo that has loaded, so a slow download never
+  // reveals the plain background behind the slideshow.
+  const [loadedSlides, setLoadedSlides] = useState<Set<number>>(new Set());
+  const [visibleSlide, setVisibleSlide] = useState(0);
+
+  useEffect(() => {
+    if (loadedSlides.has(currentSlide)) setVisibleSlide(currentSlide);
+  }, [currentSlide, loadedSlides]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedDate, setSelectedDate] = useState<Date>();
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
@@ -96,10 +104,11 @@ const HeroSection = ({ onSearch }: HeroSectionProps) => {
         {HERO_SLIDES.map(({ image }, index) => (
           <div
             key={index}
-            className={`hero-slide ${index === currentSlide ? 'opacity-100' : 'opacity-0'}`}
+            className={`hero-slide ${index === visibleSlide ? 'opacity-100' : 'opacity-0'}`}
           >
             <img 
               src={image}
+              onLoad={() => setLoadedSlides((prev) => new Set(prev).add(index))}
               alt=""
               className="w-full h-full object-cover animate-hero-zoom-in-slow"
             />
