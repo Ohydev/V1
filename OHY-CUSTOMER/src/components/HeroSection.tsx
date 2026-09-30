@@ -6,10 +6,12 @@ import { Calendar } from "@/components/ui/calendar";
 import { CalendarDays } from "lucide-react";
 import { useState, useEffect, FormEvent } from "react";
 import { format } from "date-fns";
-import heroBackground from "@/assets/hero-concert.png";
-import heroSlide1 from "@/assets/hero-slide-1.png";
-import heroSlide2 from "@/assets/hero-slide-2.png";
-import heroSlide3 from "@/assets/hero-slide-3.png";
+import heroEvents from "@/assets/hero/events.webp";
+import heroSportsEvents from "@/assets/hero/sports-events.webp";
+import heroConferences from "@/assets/hero/conferences.webp";
+import heroCourses from "@/assets/hero/courses.webp";
+import heroNetworking from "@/assets/hero/networking.webp";
+import heroWellness from "@/assets/hero/wellness.webp";
 import TypewriterText from "./TypewriterText";
 import { getEventCategories } from "@/api/services/events";
 import { EventCategory } from "@/api/types";
@@ -23,6 +25,19 @@ type HeroSectionProps = {
   onSearch?: (filters: HeroSearchFilters) => void;
 };
 
+// Each headline word has its own background photo. The typewriter reports
+// when the word changes, so the photo always matches the word on screen.
+// Photo sources and licenses: src/assets/hero/CREDITS.md
+const HERO_SLIDES = [
+  { word: "Events", image: heroEvents },
+  { word: "Sports Events", image: heroSportsEvents },
+  { word: "Conferences", image: heroConferences },
+  { word: "Courses", image: heroCourses },
+  { word: "Networking", image: heroNetworking },
+  { word: "Wellness", image: heroWellness },
+];
+const HERO_WORDS = HERO_SLIDES.map((slide) => slide.word);
+
 const HeroSection = ({ onSearch }: HeroSectionProps) => {
   const [categoryOptions, setCategoryOptions] = useState<EventCategory[]>([]);
   const [isLoadingCategories, setIsLoadingCategories] = useState(false);
@@ -32,21 +47,6 @@ const HeroSection = ({ onSearch }: HeroSectionProps) => {
   const [selectedDate, setSelectedDate] = useState<Date>();
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
   
-  const images = [
-    heroBackground,
-    heroSlide1,
-    heroSlide2,
-    heroSlide3,
-  ];
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % images.length);
-    }, 4000);
-
-    return () => clearInterval(interval);
-  }, []);
-
   useEffect(() => {
     let isMounted = true;
 
@@ -93,14 +93,14 @@ const HeroSection = ({ onSearch }: HeroSectionProps) => {
     <section className="relative min-h-[100vh] bg-gradient-hero flex items-center justify-center overflow-hidden">
       {/* Background Image Slideshow with Overlay */}
       <div className="absolute inset-0">
-        {images.map((image, index) => (
+        {HERO_SLIDES.map(({ image }, index) => (
           <div
             key={index}
             className={`hero-slide ${index === currentSlide ? 'opacity-100' : 'opacity-0'}`}
           >
             <img 
               src={image}
-              alt={`Hero Background ${index + 1}`}
+              alt=""
               className="w-full h-full object-cover animate-hero-zoom-in-slow"
             />
           </div>
@@ -122,7 +122,9 @@ const HeroSection = ({ onSearch }: HeroSectionProps) => {
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[90px] font-bold text-white leading-tight font-montserrat">
             Discover{" "}
             <TypewriterText 
-              words={["Events", "Sports Events", "Conferences", "Courses", "Networking", "Wellness"]}
+              words={HERO_WORDS}
+              pauseMs={2500}
+              onWordChange={setCurrentSlide}
               className="text-accent"
             />
             <br />

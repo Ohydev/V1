@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, MessageCircle, Calendar } from "lucide-react";
-import createEventBg from "@/assets/create-event-bg.png";
+import createEventBg from "@/assets/create-event-bg.webp";
 
 const CreateEventSection = () => {
   return (

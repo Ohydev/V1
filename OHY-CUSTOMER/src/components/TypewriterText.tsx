@@ -3,9 +3,13 @@ import { useState, useEffect } from 'react';
 interface TypewriterTextProps {
   words: string[];
   className?: string;
+  // How long a fully typed word stays before it's erased.
+  pauseMs?: number;
+  // Called with the index of each new word as it starts typing.
+  onWordChange?: (index: number) => void;
 }
 
-const TypewriterText = ({ words, className = '' }: TypewriterTextProps) => {
+const TypewriterText = ({ words, className = '', pauseMs = 1200, onWordChange }: TypewriterTextProps) => {
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [currentText, setCurrentText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
@@ -29,13 +33,17 @@ const TypewriterText = ({ words, className = '' }: TypewriterTextProps) => {
         
         if (currentText === currentWord) {
           // Wait before starting to delete
-          setTimeout(() => setIsDeleting(true), 1200);
+          setTimeout(() => setIsDeleting(true), pauseMs);
         }
       }
     }, isDeleting ? 60 : 80);
 
     return () => clearTimeout(timeout);
-  }, [currentText, currentWordIndex, isDeleting, words]);
+  }, [currentText, currentWordIndex, isDeleting, words, pauseMs]);
+
+  useEffect(() => {
+    onWordChange?.(currentWordIndex);
+  }, [currentWordIndex, onWordChange]);
 
   // Cursor blinking effect
   useEffect(() => {
