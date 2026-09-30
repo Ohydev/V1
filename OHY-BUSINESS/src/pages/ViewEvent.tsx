@@ -271,7 +271,8 @@ const ViewEvent = () => {
         }
       } catch (err) {
         // Extract error message from API response or use default
-        const errorMessage = (err as AxiosError)?.response?.data?.error?.error_message || 'Failed to load event details';
+        const apiMessage = (err as AxiosError<ApiErrorResponse>)?.response?.data?.error?.error_message;
+        const errorMessage = typeof apiMessage === 'string' && apiMessage ? apiMessage : 'Failed to load event details';
         // Update error state
         setError(errorMessage);
         // Display error toast notification
@@ -410,9 +411,11 @@ const ViewEvent = () => {
     if (isAttendeesError && attendeesError) {
       // Extract error message from API response
       const axiosError = attendeesError as AxiosError<ApiErrorResponse>;
+      const apiMessage = axiosError.response?.data?.error?.error_message;
       const errorMessage =
-        axiosError.response?.data?.error?.error_message ||
-        "Failed to load attendees. Please try again.";
+        typeof apiMessage === "string" && apiMessage
+          ? apiMessage
+          : "Failed to load attendees. Please try again.";
       // Display error toast notification
       toast.error(errorMessage);
     }

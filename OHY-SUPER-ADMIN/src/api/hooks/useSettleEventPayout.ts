@@ -3,11 +3,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 // Import ApiError type to surface normalized backend errors.
 import { ApiError } from "../errors";
 // Import service along with request and response typings.
-import {
-  settleEventPayout,
-  type SettleEventPayoutRequest,
-  type SettleEventPayoutResponse,
-} from "../services/settlementService";
+import { settleEventPayout } from "../services/settlementService";
+import type { SettleEventPayoutRequest, SettleEventPayoutResponse } from "../types/settlement";
 
 /**
  * Custom hook that handles event payout settlement workflow.

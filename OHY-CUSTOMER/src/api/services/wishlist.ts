@@ -1,6 +1,6 @@
 import { api } from "../client";
 import { endpoints } from "../endpoints";
-import { ApiResponse, WishlistItemsResponse, AddToWishlistRequest, AddToWishlistResponse, RemoveFromWishlistRequest, RemoveFromWishlistResponse } from "../types";
+import { ApiResponse, ErrorPayload, WishlistItemsResponse, AddToWishlistRequest, AddToWishlistResponse, RemoveFromWishlistRequest, RemoveFromWishlistResponse } from "../types";
 
 type ApiErrorPayload = {
 	error_code?: string;
@@ -22,7 +22,7 @@ const ensureSuccess = <T>(data: ApiResponse<T>, fallbackMessage: string) => {
 	if (data.success) {
 		return data.data;
 	}
-	throw buildApiError(data.error as ApiErrorPayload | undefined, fallbackMessage);
+	throw buildApiError((data as ErrorPayload).error as ApiErrorPayload | undefined, fallbackMessage);
 };
 
 export async function getWishlistItems() {

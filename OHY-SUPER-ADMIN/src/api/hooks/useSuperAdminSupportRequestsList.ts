@@ -1,5 +1,5 @@
 // Import useQuery for data fetching with caching.
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 // Import typed ApiError for consistent error contracts.
 import { ApiError } from "../errors";
 // Import auth storage helper to gate requests without token.
@@ -36,7 +36,7 @@ export const useSuperAdminSupportRequestsList = (
     // Disable the query when token is missing to prevent 401s.
     enabled: Boolean(token),
     // Keep previous page data while fetching the next to avoid flicker.
-    keepPreviousData: true,
+    placeholderData: keepPreviousData,
     // Cache data briefly to minimize repeated calls when navigating pages.
     staleTime: 30 * 1000,
   });

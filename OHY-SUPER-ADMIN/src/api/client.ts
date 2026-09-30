@@ -23,8 +23,6 @@ export const apiClient = axios.create({
 
 // Attach a request interceptor to inject Sanctum tokens into every request.
 apiClient.interceptors.request.use((config) => {
-  // Ensure headers object exists before mutation.
-  config.headers = config.headers ?? {};
   // Determine whether the outgoing payload is FormData for uploads.
   const isFormDataPayload =
     typeof FormData !== "undefined" && config.data instanceof FormData;

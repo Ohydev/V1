@@ -28,7 +28,7 @@ import { Country } from "@/api/types/profile.types";
  */
 interface CountryComboboxProps {
   // List of countries to display
-  countries: Country[];
+  countries: Pick<Country, "country_id" | "name" | "nicename">[];
   // Selected country ID (null if no selection)
   value: number | null;
   // Callback when country selection changes

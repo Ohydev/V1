@@ -1,5 +1,5 @@
 // Import React Query helper for data fetching with caching.
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 // Import ApiError for consistent error handling.
 import { ApiError } from "../errors";
 // Import auth storage to gate the query when unauthenticated.
@@ -34,7 +34,7 @@ export const useSuperAdminAttendees = (
     // Disable when token missing to avoid unauthorized errors.
     enabled: Boolean(token),
     // Keep previous data for smoother pagination transitions.
-    keepPreviousData: true,
+    placeholderData: keepPreviousData,
     // Cache entries briefly to reduce duplicate calls.
     staleTime: 30 * 1000,
   });

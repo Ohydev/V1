@@ -214,7 +214,7 @@ export const FixedResolutionImageCropper = ({
             <div className="w-full max-w-md fixed-resolution-cropper">
               <ReactCrop
                 crop={crop}
-                onChange={(_, newCrop) => {
+                onChange={(newCrop) => {
                   // Prevent resizing - only allow moving
                   // Keep crop size fixed, only update position
                   if (fixedCropSizeRef.current && newCrop.unit === 'px') {

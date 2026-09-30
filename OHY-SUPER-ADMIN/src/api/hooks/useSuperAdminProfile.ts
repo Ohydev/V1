@@ -19,13 +19,15 @@ export const useSuperAdminProfile = () => {
     // Provide a stable cache key for the profile data.
     queryKey: ["superAdminProfile"],
     // Define the query function that invokes the API service.
-    queryFn: () => getSuperAdminProfile(),
+    // Sync the profile to storage whenever a new response arrives
+    // (React Query v5 removed useQuery's onSuccess, so do it here).
+    queryFn: async () => {
+      const data = await getSuperAdminProfile();
+      authStorage.setProfile(data.super_admin_info);
+      return data;
+    },
     // Only run the query when a token exists to avoid unnecessary calls.
     enabled: Boolean(token),
-    // Sync the profile to storage whenever a new response arrives.
-    onSuccess: (data) => {
-      authStorage.setProfile(data.super_admin_info);
-    },
     // Keep cached data fresh briefly to avoid flicker when navigating.
     staleTime: 60 * 1000,
   });

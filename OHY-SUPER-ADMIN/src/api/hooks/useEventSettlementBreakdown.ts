@@ -5,12 +5,9 @@ import { ApiError } from "../errors";
 // Import auth storage helper to gate requests without token.
 import { authStorage } from "../storage";
 // Import service function plus response type definition.
-import {
-  getEventSettlementBreakdown,
-  type GetEventSettlementBreakdownResponse,
-} from "../services/settlementService";
+import { getEventSettlementBreakdown } from "../services/settlementService";
 // Import type for request parameters.
-import type { GetEventSettlementBreakdownRequest } from "../types/settlement";
+import type { GetEventSettlementBreakdownRequest, GetEventSettlementBreakdownResponse } from "../types/settlement";
 
 /**
  * React Query hook to fetch the event settlement breakdown.

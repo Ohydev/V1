@@ -213,9 +213,11 @@ const Attendees = () => {
     if (isError && error) {
       // Extract error message from API response
       const axiosError = error as AxiosError<ApiErrorResponse>;
+      const apiMessage = axiosError.response?.data?.error?.error_message;
       const errorMessage =
-        axiosError.response?.data?.error?.error_message ||
-        "Failed to load attendees. Please try again.";
+        typeof apiMessage === "string" && apiMessage
+          ? apiMessage
+          : "Failed to load attendees. Please try again.";
       // Display error toast notification
       toast.error(errorMessage);
     }

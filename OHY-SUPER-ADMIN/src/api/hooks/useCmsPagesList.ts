@@ -1,5 +1,5 @@
 // Import useQuery to enable cached data fetching.
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 // Import ApiError type to keep error typing consistent.
 import { ApiError } from "../errors";
 // Import authStorage to ensure calls only run when authenticated.
@@ -42,7 +42,7 @@ export const useCmsPagesList = (params?: GetCmsPagesListParams) => {
     // Disable automatic execution when no token exists.
     enabled: Boolean(token),
     // Keep previous data while fetching to smooth pagination UX.
-    keepPreviousData: true,
+    placeholderData: keepPreviousData,
     // Cache data briefly to avoid duplicate calls when revisiting.
     staleTime: 30 * 1000,
   });
