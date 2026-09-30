@@ -108,7 +108,12 @@ const HeroSection = ({ onSearch }: HeroSectionProps) => {
           >
             <img 
               src={image}
-              onLoad={() => setLoadedSlides((prev) => new Set(prev).add(index))}
+              onLoad={(e) =>
+                // Wait until it's decoded too; hidden images decode lazily.
+                e.currentTarget.decode().catch(() => {}).then(() =>
+                  setLoadedSlides((prev) => new Set(prev).add(index))
+                )
+              }
               alt=""
               className="w-full h-full object-cover animate-hero-zoom-in-slow"
             />
