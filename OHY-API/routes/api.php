@@ -25,7 +25,6 @@ use App\Http\Middleware\AuthenticateHostUser;
 use App\Http\Middleware\AuthenticateSuperAdmin;
 use App\Http\Middleware\AuthenticateUser;
 use App\Http\Middleware\AuthenticateUserOrHost;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -43,25 +42,6 @@ use Illuminate\Support\Facades\Route;
 
 // Route: Health Check API (Public, No Authentication Required)
 Route::get('/v1/health', [HealthController::class, 'check']);
-
-Route::get('/v1/clear-config', function () {
-    Artisan::call('config:clear');
-    Artisan::call('cache:clear');
-
-    return 'Config cleared';
-});
-
-Route::get('/v1/run-migrations', function () {
-    Artisan::call('migrate', [
-        '--force' => true, // required for production
-    ]);
-
-    return response()->json([
-        'status' => 'success',
-        'message' => 'Migrations executed successfully',
-        'output' => Artisan::output(),
-    ]);
-});
 
 // Routes:: Stripe Webhook (Public, CSRF Exempt)
 Route::post('/v1/stripe/webhook', [StripeWebhookController::class, 'handleWebhook'])
@@ -269,7 +249,6 @@ Route::prefix('v1')->middleware([AuthenticateApiToken::class])->group(function (
 
         // Routes:: Order Management Routes Authentication is required.
         Route::post('/create_checkout_session', [OrderController::class, 'createCheckoutSession']);
-        Route::post('/create_order', [OrderController::class, 'createOrder']); // Legacy endpoint - use create_checkout_session instead
         Route::get('/get_user_orders_list', [OrderController::class, 'getUserOrdersList']);
         Route::get('/get_order_details', [OrderController::class, 'getOrderDetails']);
 
