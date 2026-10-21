@@ -111,6 +111,16 @@ const RegisterTab = ({ onRegistrationSuccess }: RegisterTabProps) => {
       return;
     }
 
+    if (password.length < 8 || !/[A-Za-z]/.test(password) || !/\d/.test(password)) {
+      setIsLoading(false);
+      toast({
+        title: "Password too weak",
+        description: "Use at least 8 characters, including a letter and a number.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     if (password !== confirmPassword) {
       setIsLoading(false);
       toast({
@@ -405,7 +415,7 @@ const RegisterTab = ({ onRegistrationSuccess }: RegisterTabProps) => {
                   placeholder="••••••••"
                   autoComplete="new-password"
                   required
-                  minLength={6}
+                  minLength={8}
                   className="h-12 rounded-full px-6 pr-12"
                 />
                 <button
@@ -428,7 +438,7 @@ const RegisterTab = ({ onRegistrationSuccess }: RegisterTabProps) => {
                   placeholder="••••••••"
                   autoComplete="new-password"
                   required
-                  minLength={6}
+                  minLength={8}
                   className="h-12 rounded-full px-6 pr-12"
                 />
                 <button
