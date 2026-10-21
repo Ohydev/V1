@@ -372,6 +372,16 @@ const RegisterTab = ({ onRegistrationSuccess }: RegisterTabProps) => {
                     }}
                     initialFocus
                     disabled={(date) => date > new Date()}
+                    captionLayout="dropdown-buttons"
+                    fromYear={1900}
+                    toYear={new Date().getFullYear()}
+                    classNames={{
+                      caption_label: "hidden",
+                      caption_dropdowns: "flex gap-2",
+                      dropdown:
+                        "h-8 rounded-md border border-input bg-background px-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring",
+                      vhidden: "sr-only",
+                    }}
                   />
                 </PopoverContent>
               </Popover>
