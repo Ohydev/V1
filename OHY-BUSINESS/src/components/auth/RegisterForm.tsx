@@ -52,7 +52,7 @@ const registerSchema = z
     email: z.string().email("Invalid email format").min(1, "Email is required"),
     location: z.enum(LOCATION_OPTIONS, { errorMap: () => ({ message: "Please select a location" }) }),
     zipcode: z.string().min(1, "Zipcode is required").regex(/^\d{5}(-\d{4})?$/, "Zipcode must be 5 digits or 5+4 format (e.g. 12345 or 12345-6789)"),
-    gender: z.enum(["Male", "Female", "Other", "Prefer not to say"], { errorMap: () => ({ message: "Please select a gender option" }) }),
+    gender: z.enum(["Male", "Female", "Other", "Prefer Not to say"], { errorMap: () => ({ message: "Please select a gender option" }) }),
     dob: z.string().min(1, "Date of birth is required"),
     password: z
       .string()
@@ -572,7 +572,7 @@ export const RegisterForm = ({ embedded = false, onRegistrationSuccess }: Regist
                           <SelectItem value="Male">Male</SelectItem>
                           <SelectItem value="Female">Female</SelectItem>
                           <SelectItem value="Other">Other</SelectItem>
-                          <SelectItem value="Prefer not to say">Prefer not to say</SelectItem>
+                          <SelectItem value="Prefer Not to say">Prefer not to say</SelectItem>
                         </SelectContent>
                       </Select>
                       {errors.gender && touchedFields.gender && (

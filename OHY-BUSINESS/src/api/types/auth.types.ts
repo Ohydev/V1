@@ -37,7 +37,7 @@ export interface RegisterRequest {
   location: string;
   // Zipcode (required)
   zipcode: string;
-  // Gender (required): "Male", "Female", "Other", "Prefer not to say"
+  // Gender (required): "Male", "Female", "Other", "Prefer Not to say"
   gender: string;
   // Date of birth (required, yyyy-MM-dd)
   dob: string;

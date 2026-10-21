@@ -117,7 +117,7 @@ const personalFormSchema = z.object({
   // Zipcode is required
   zipcode: z.string().min(1, "Zipcode is required").regex(/^\d{5}(-\d{4})?$/, "Zipcode must be 5 digits or 5+4 format (e.g. 12345 or 12345-6789)"),
   // Gender is required
-  gender: z.enum(["Male", "Female", "Other", "Prefer not to say"], {
+  gender: z.enum(["Male", "Female", "Other", "Prefer Not to say"], {
     errorMap: () => ({ message: "Please select a gender option" }),
   }),
   // State ID from get_states API (required in UI)
@@ -313,7 +313,7 @@ const Profile = () => {
       state_id: undefined as unknown as number,
       country: "United States",
       zipcode: userInfo?.zipcode || "",
-      gender: (userInfo?.gender as PersonalFormData["gender"]) || "Prefer not to say",
+      gender: (userInfo?.gender as PersonalFormData["gender"]) || "Prefer Not to say",
     },
     // Validate on blur for better UX (same as Profile page)
     mode: "onBlur",
@@ -571,7 +571,7 @@ const Profile = () => {
             state_id: personalData.state_id ?? (undefined as unknown as number),
             country: (personalData.country || "United States") as PersonalFormData["country"],
             zipcode: personalData.zipcode || "",
-            gender: (personalData.gender || "Prefer not to say") as PersonalFormData["gender"],
+            gender: (personalData.gender || "Prefer Not to say") as PersonalFormData["gender"],
           });
 
           // Set profile image preview if image exists
@@ -1227,7 +1227,7 @@ const Profile = () => {
                         <SelectItem value="Male">Male</SelectItem>
                         <SelectItem value="Female">Female</SelectItem>
                         <SelectItem value="Other">Other</SelectItem>
-                        <SelectItem value="Prefer not to say">Prefer not to say</SelectItem>
+                        <SelectItem value="Prefer Not to say">Prefer not to say</SelectItem>
                       </SelectContent>
                     </Select>
                     {personalErrors.gender && (personalTouchedFields.gender || personalShowErrors) && (

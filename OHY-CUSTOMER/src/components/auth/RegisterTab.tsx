@@ -341,7 +341,7 @@ const RegisterTab = ({ onRegistrationSuccess }: RegisterTabProps) => {
                   <SelectItem value="Male">Male</SelectItem>
                   <SelectItem value="Female">Female</SelectItem>
                   <SelectItem value="Other">Other</SelectItem>
-                  <SelectItem value="Prefer not to say">Prefer not to say</SelectItem>
+                  <SelectItem value="Prefer Not to say">Prefer not to say</SelectItem>
                 </SelectContent>
               </Select>
               <input type="hidden" name="gender" value={gender} required />

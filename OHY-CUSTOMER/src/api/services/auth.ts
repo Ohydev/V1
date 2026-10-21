@@ -19,6 +19,7 @@ import {
 	State
 } from "../types";
 import { authStorage } from "../storage";
+import { normalizeApiError } from "../errors";
 
 export async function login(req: LoginRequest) {
 	const { data } = await api.post<ApiResponse<{ message: string; user_info: any; token: string }>>(
@@ -29,7 +30,7 @@ export async function login(req: LoginRequest) {
 		authStorage.setToken(data.data.token);
 		return data.data as LoginResponse;
 	}
-	throw new Error("Unexpected response shape");
+	throw normalizeApiError({ response: { status: 200, data } });
 }
 
 export async function requestRegistrationOtp(req: UserRegistrationOtpRequest) {
@@ -42,7 +43,7 @@ export async function requestRegistrationOtp(req: UserRegistrationOtpRequest) {
 		return data.data;
 	}
 	
-	throw new Error("Unexpected response shape");
+	throw normalizeApiError({ response: { status: 200, data } });
 }
 
 export async function register(req: RegisterRequest) {
@@ -52,7 +53,7 @@ export async function register(req: RegisterRequest) {
 		return data.data;
 	}
 	
-	throw new Error("Unexpected response shape");
+	throw normalizeApiError({ response: { status: 200, data } });
 }
 
 export async function requestForgotPasswordOtp(req: ForgotPasswordRequest) {
@@ -65,7 +66,7 @@ export async function requestForgotPasswordOtp(req: ForgotPasswordRequest) {
 		return data.data;
 	}
 	
-	throw new Error("Unexpected response shape");
+	throw normalizeApiError({ response: { status: 200, data } });
 }
 
 export async function verifyForgotPasswordOtp(req: VerifyForgotPasswordOtpRequest) {
@@ -78,7 +79,7 @@ export async function verifyForgotPasswordOtp(req: VerifyForgotPasswordOtpReques
 		return data.data;
 	}
 	
-	throw new Error("Unexpected response shape");
+	throw normalizeApiError({ response: { status: 200, data } });
 }
 
 export async function resetPassword(req: ResetPasswordRequest) {
@@ -91,7 +92,7 @@ export async function resetPassword(req: ResetPasswordRequest) {
 		return data.data;
 	}
 	
-	throw new Error("Unexpected response shape");
+	throw normalizeApiError({ response: { status: 200, data } });
 }
 
 export function logout() {
@@ -112,7 +113,7 @@ export async function switchProfile(req: SwitchProfileRequest) {
 		// User token remains unchanged in user domain's localStorage
 		return data.data;
 	}
-	throw new Error("Unexpected response shape");
+	throw normalizeApiError({ response: { status: 200, data } });
 }
 
 export async function getStates() {
@@ -122,7 +123,7 @@ export async function getStates() {
 		return data.data.states as State[];
 	}
 
-	throw new Error("Unexpected response shape");
+	throw normalizeApiError({ response: { status: 200, data } });
 }
 
 
